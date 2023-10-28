@@ -1,0 +1,4 @@
+name: CustomItems
+version: '${project.version}'
+main: me.brzeph.customitems.Main
+api-version: '1.20'
