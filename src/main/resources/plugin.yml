@@ -2,3 +2,18 @@ name: CustomItems
 version: '${project.version}'
 main: me.brzeph.customitems.Main
 api-version: '1.20'
+depend: [NBTAPI]
+
+commands:
+  nbt:
+    description: gives the nbt tags of the item
+    usage: /<command>
+  t1pick:
+    description: gives the player a t1 custom pick
+    usage: /<command>
+  t1ore:
+    description: gives the player a t1 custom ore
+    usage: /<command>
+  t2ore:
+    description: gives the player a t2 custom ore
+    usage: /<command>
