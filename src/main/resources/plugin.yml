@@ -11,9 +11,32 @@ commands:
   t1pick:
     description: gives the player a t1 custom pick
     usage: /<command>
+  t2pick:
+    description: gives the player a t2 custom pick
+    usage: /<command>
+  t3pick:
+    description: gives the player a t3 custom pick
+    usage: /<command>
+  t4pick:
+    description: gives the player a t4 custom pick
+    usage: /<command>
+  t5pick:
+    description: gives the player a t5 custom pick
+    usage: /<command>
+
+
   t1ore:
     description: gives the player a t1 custom ore
     usage: /<command>
   t2ore:
     description: gives the player a t2 custom ore
+    usage: /<command>
+  t3ore:
+    description: gives the player a T2 custom ore
+    usage: /<command>
+  t4ore:
+    description: gives the player a t4 custom ore
+    usage: /<command>
+  t5ore:
+    description: gives the player a t5 custom ore
     usage: /<command>
