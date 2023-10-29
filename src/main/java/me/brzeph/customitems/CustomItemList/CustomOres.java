@@ -15,13 +15,8 @@ public class CustomOres {
 
         // Set custom NBT data
         NBTCompound itemCompound = nbtItem.addCompound("customData");
-        itemCompound.setString("tier", "1");
-        itemCompound.setString("customOre", "customCoal");
-        itemCompound.setString("BreakableByT1Pick", "true");
-        itemCompound.setString("BreakableByT2Pick", "true");
-        itemCompound.setString("BreakableByT3Pick", "true");
-        itemCompound.setString("BreakableByT4Pick", "true");
-        itemCompound.setString("BreakableByT5Pick", "true");
+        itemCompound.setInteger("tier", 1); //this is for the miningEvents
+        itemCompound.setString("customOre", "tier 1");
 
         ItemStack itemStack = nbtItem.getItem();
         ItemMeta itemMeta = itemStack.getItemMeta();
@@ -41,13 +36,8 @@ public class CustomOres {
 
         // Set custom NBT data
         NBTCompound itemCompound = nbtItem.addCompound("customData");
-        itemCompound.setString("tier", "2");
-        itemCompound.setString("customOre", "customEmerald");
-        itemCompound.setString("BreakableByT1Pick", "false");
-        itemCompound.setString("BreakableByT2Pick", "true");
-        itemCompound.setString("BreakableByT3Pick", "true");
-        itemCompound.setString("BreakableByT4Pick", "true");
-        itemCompound.setString("BreakableByT5Pick", "true");
+        itemCompound.setInteger("tier", 2); //this is for the miningEvents
+        itemCompound.setString("customOre", "tier 2");
 
         ItemStack itemStack = nbtItem.getItem();
         ItemMeta itemMeta = itemStack.getItemMeta();
@@ -68,13 +58,8 @@ public class CustomOres {
 
         // Set custom NBT data
         NBTCompound itemCompound = nbtItem.addCompound("customData");
-        itemCompound.setString("tier", "3");
-        itemCompound.setString("customOre", "customIron");
-        itemCompound.setString("BreakableByT1Pick", "false");
-        itemCompound.setString("BreakableByT2Pick", "false");
-        itemCompound.setString("BreakableByT3Pick", "true");
-        itemCompound.setString("BreakableByT4Pick", "true");
-        itemCompound.setString("BreakableByT5Pick", "true");
+        itemCompound.setInteger("tier", 3); //this is for the miningEvents
+        itemCompound.setString("customOre", "tier 3");
 
         ItemStack itemStack = nbtItem.getItem();
         ItemMeta itemMeta = itemStack.getItemMeta();
@@ -95,13 +80,8 @@ public class CustomOres {
 
         // Set custom NBT data
         NBTCompound itemCompound = nbtItem.addCompound("customData");
-        itemCompound.setString("tier", "4");
-        itemCompound.setString("customOre", "customDiamond");
-        itemCompound.setString("BreakableByT1Pick", "false");
-        itemCompound.setString("BreakableByT2Pick", "false");
-        itemCompound.setString("BreakableByT3Pick", "false");
-        itemCompound.setString("BreakableByT4Pick", "true");
-        itemCompound.setString("BreakableByT5Pick", "true");
+        itemCompound.setInteger("tier", 4); //this is for the miningEvents
+        itemCompound.setString("customOre", "tier 4");
 
         ItemStack itemStack = nbtItem.getItem();
         ItemMeta itemMeta = itemStack.getItemMeta();
@@ -122,13 +102,8 @@ public class CustomOres {
 
         // Set custom NBT data
         NBTCompound itemCompound = nbtItem.addCompound("customData");
-        itemCompound.setString("tier", "5");
-        itemCompound.setString("customOre", "customGold");
-        itemCompound.setString("BreakableByT1Pick", "false");
-        itemCompound.setString("BreakableByT2Pick", "false");
-        itemCompound.setString("BreakableByT3Pick", "false");
-        itemCompound.setString("BreakableByT4Pick", "false");
-        itemCompound.setString("BreakableByT5Pick", "true");
+        itemCompound.setInteger("tier", 5); //this is for the miningEvents
+        itemCompound.setString("customOre", "tier 5");
 
         ItemStack itemStack = nbtItem.getItem();
         ItemMeta itemMeta = itemStack.getItemMeta();
@@ -140,7 +115,6 @@ public class CustomOres {
         lore.add("This ore is tier 5");
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
-
 
         return nbtItem.getItem();
     }

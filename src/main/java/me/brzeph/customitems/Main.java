@@ -6,13 +6,18 @@ package me.brzeph.customitems;
 // TODO: create pickaxe's enchantment system
 
 import me.brzeph.customitems.Commands.Commands;
+import me.brzeph.customitems.MiningEvents.MiningEvents;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Main extends JavaPlugin {
 
+    private static Main instance;
+
     @Override
     public void onEnable() {
+        instance = this;
         // Plugin startup logic
+        getServer().getPluginManager().registerEvents(new MiningEvents(), this);
         getServer().getConsoleSender().sendMessage("[CustomItems] plugin is now active");
         String[] commands = {"nbt", "t1pick", "t2pick", "t3pick", "t4pick", "t5pick", "t1ore", "t2ore", "t3ore", "t4ore", "t5ore"};
         for (String command : commands) {
@@ -23,5 +28,8 @@ public final class Main extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+    }
+    public static Main getInstance() {
+        return instance;
     }
 }

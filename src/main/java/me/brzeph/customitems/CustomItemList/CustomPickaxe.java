@@ -18,12 +18,8 @@ public class CustomPickaxe {
         String uniqueItemID = UUID.randomUUID().toString();
         // Set custom NBT data
         NBTCompound itemCompound = nbtItem.addCompound("customData");
-        itemCompound.setString("tier", "1");
-        itemCompound.setString("CanBreakT1", "true");
-        itemCompound.setString("CanBreakT2", "false");
-        itemCompound.setString("CanBreakT3", "false");
-        itemCompound.setString("CanBreakT4", "false");
-        itemCompound.setString("CanBreakT5", "false");
+        itemCompound.setInteger("tier", 1); //this is for the miningEvents
+        itemCompound.setString("customPickaxe", "tier 1");
 
         // Add a unique "ItemIdentifications" tag
         itemCompound.setString("ItemIdentifications", uniqueItemID);
@@ -50,12 +46,8 @@ public class CustomPickaxe {
         String uniqueItemID = UUID.randomUUID().toString();
         // Set custom NBT data
         NBTCompound itemCompound = nbtItem.addCompound("customData");
-        itemCompound.setString("tier", "2");
-        itemCompound.setString("CanBreakT1", "true");
-        itemCompound.setString("CanBreakT2", "true");
-        itemCompound.setString("CanBreakT3", "false");
-        itemCompound.setString("CanBreakT4", "false");
-        itemCompound.setString("CanBreakT5", "false");
+        itemCompound.setInteger("tier", 2); //this is for the miningEvents
+        itemCompound.setString("customPickaxe", "tier 2");
 
         // Add a unique "ItemIdentifications" tag
         itemCompound.setString("ItemIdentifications", uniqueItemID);
@@ -77,17 +69,13 @@ public class CustomPickaxe {
     public static ItemStack create_dr_iron_pickaxe() {
         NBTItem nbtItem = new NBTItem(new ItemStack(Material.IRON_PICKAXE, 1));
 
-        //sets a random id to each created item [helps to locate duping]
-        String uniqueItemID = UUID.randomUUID().toString();
         // Set custom NBT data
         NBTCompound itemCompound = nbtItem.addCompound("customData");
-        itemCompound.setString("tier", "3");
-        itemCompound.setString("CanBreakT1", "true");
-        itemCompound.setString("CanBreakT2", "true");
-        itemCompound.setString("CanBreakT3", "true");
-        itemCompound.setString("CanBreakT4", "false");
-        itemCompound.setString("CanBreakT5", "false");
+        itemCompound.setInteger("tier", 3); //this is for the miningEvents
+        itemCompound.setString("customPickaxe", "tier 3");
 
+        //sets a random id to each created item [helps to locate duping]
+        String uniqueItemID = UUID.randomUUID().toString();
         // Add a unique "ItemIdentifications" tag
         itemCompound.setString("ItemIdentifications", uniqueItemID);
 
@@ -112,12 +100,8 @@ public class CustomPickaxe {
         String uniqueItemID = UUID.randomUUID().toString();
         // Set custom NBT data
         NBTCompound itemCompound = nbtItem.addCompound("customData");
-        itemCompound.setString("tier", "4");
-        itemCompound.setString("CanBreakT1", "true");
-        itemCompound.setString("CanBreakT2", "true");
-        itemCompound.setString("CanBreakT3", "true");
-        itemCompound.setString("CanBreakT4", "true");
-        itemCompound.setString("CanBreakT5", "false");
+        itemCompound.setInteger("tier", 4); //this is for the miningEvents
+        itemCompound.setString("customPickaxe", "tier 4");
 
         // Add a unique "ItemIdentifications" tag
         itemCompound.setString("ItemIdentifications", uniqueItemID);
@@ -143,12 +127,8 @@ public class CustomPickaxe {
         String uniqueItemID = UUID.randomUUID().toString();
         // Set custom NBT data
         NBTCompound itemCompound = nbtItem.addCompound("customData");
-        itemCompound.setString("tier", "5");
-        itemCompound.setString("CanBreakT1", "true");
-        itemCompound.setString("CanBreakT2", "true");
-        itemCompound.setString("CanBreakT3", "true");
-        itemCompound.setString("CanBreakT4", "true");
-        itemCompound.setString("CanBreakT5", "true");
+        itemCompound.setInteger("tier", 5); //this is for the miningEvents
+        itemCompound.setString("customPickaxe", "tier 5");
 
         // Add a unique "ItemIdentifications" tag
         itemCompound.setString("ItemIdentifications", uniqueItemID);

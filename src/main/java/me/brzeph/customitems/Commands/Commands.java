@@ -19,19 +19,10 @@ public class Commands implements CommandExecutor {
     @NotNull
     private static List<String> getStrings() {
         List<String> desiredOrder = new ArrayList<>();
-        desiredOrder.add(ChatColor.YELLOW + "tier");
-        desiredOrder.add("CanBreakT1");
-        desiredOrder.add("CanBreakT2");
-        desiredOrder.add("CanBreakT3");
-        desiredOrder.add("CanBreakT4");
-        desiredOrder.add("CanBreakT5");
+        desiredOrder.add("tier");
+        desiredOrder.add("customPickaxe");
         desiredOrder.add("customOre");
         desiredOrder.add("ItemIdentifications");
-        desiredOrder.add("BreakableByT1Pick");
-        desiredOrder.add("BreakableByT2Pick");
-        desiredOrder.add("BreakableByT3Pick");
-        desiredOrder.add("BreakableByT4Pick");
-        desiredOrder.add("BreakableByT5Pick");
         return desiredOrder;
     }
     @Override
