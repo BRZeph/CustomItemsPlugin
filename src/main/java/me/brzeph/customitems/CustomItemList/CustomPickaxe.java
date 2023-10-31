@@ -1,7 +1,7 @@
 package me.brzeph.customitems.CustomItemList;
 
 import de.tr7zw.nbtapi.NBTItem;
-import me.brzeph.customitems.MiningEvents.BaseValues;
+import me.brzeph.customitems.MiningEvents.BaseEnchantmentValues;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -20,7 +20,7 @@ public class CustomPickaxe {
         nbtItem.setInteger("tier", 1);
         nbtItem.setInteger("currentXP", currentXP);
         nbtItem.setInteger("currentLevel", currentLevel);
-        Field[] fields = BaseValues.class.getDeclaredFields();
+        Field[] fields = BaseEnchantmentValues.class.getDeclaredFields();
         for (Field field : fields){
             if (field.getType() == int.class){
                 try {
@@ -57,7 +57,7 @@ public class CustomPickaxe {
         nbtItem.setInteger("tier", 2);
         nbtItem.setInteger("currentXP", currentXP);
         nbtItem.setInteger("currentLevel", currentLevel);
-        Field[] fields = BaseValues.class.getDeclaredFields();
+        Field[] fields = BaseEnchantmentValues.class.getDeclaredFields();
         for (Field field : fields){
             if (field.getType() == int.class){
                 try {
@@ -93,7 +93,7 @@ public class CustomPickaxe {
         nbtItem.setInteger("tier", 3);
         nbtItem.setInteger("currentXP", currentXP);
         nbtItem.setInteger("currentLevel", currentLevel);
-        Field[] fields = BaseValues.class.getDeclaredFields();
+        Field[] fields = BaseEnchantmentValues.class.getDeclaredFields();
         for (Field field : fields){
             if (field.getType() == int.class){
                 try {
@@ -129,7 +129,7 @@ public class CustomPickaxe {
         nbtItem.setInteger("tier", 4);
         nbtItem.setInteger("currentXP", currentXP);
         nbtItem.setInteger("currentLevel", currentLevel);
-        Field[] fields = BaseValues.class.getDeclaredFields();
+        Field[] fields = BaseEnchantmentValues.class.getDeclaredFields();
         for (Field field : fields){
             if (field.getType() == int.class){
                 try {
@@ -165,7 +165,7 @@ public class CustomPickaxe {
         nbtItem.setInteger("tier", 5);
         nbtItem.setInteger("currentXP", currentXP);
         nbtItem.setInteger("currentLevel", currentLevel);
-        Field[] fields = BaseValues.class.getDeclaredFields();
+        Field[] fields = BaseEnchantmentValues.class.getDeclaredFields();
         for (Field field : fields){
             if (field.getType() == int.class){
                 try {
