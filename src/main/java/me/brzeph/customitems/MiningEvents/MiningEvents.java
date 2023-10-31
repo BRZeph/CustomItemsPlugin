@@ -1,6 +1,5 @@
 package me.brzeph.customitems.MiningEvents;
 
-import de.tr7zw.nbtapi.NBTBlock;
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.GameMode;
@@ -57,21 +56,8 @@ public class MiningEvents implements Listener {
         }
         // Log the keys in the persistent data container.
         NBTItem item = new NBTItem(itemHeld);
-        NBTCompound customData = item.getCompound("customData");
-        for (String key : customData.getKeys()) {
-        }
-        // Check if the customPickaxe key is present and retrieve its value.
-        if (customData.hasTag("customPickaxe")) {
-            String customPickaxe = customData.getString("customPickaxe");
-
-            // Check if the value is in the expected format.
-            if (customPickaxe.startsWith("tier ") && isNumeric(customPickaxe.substring(5))) {
-                int tier = Integer.parseInt(customPickaxe.substring(5));
-
-                if (tier >= 1 && tier <= 5) {
-                    return true;
-                }
-            }
+        if (item.getInteger("tier") != 0) {
+            return true;
         }
         return false;
     }
@@ -84,6 +70,7 @@ public class MiningEvents implements Listener {
             return false;
         }
     }
+
     public boolean pickaxeCanBreakOre(ItemStack itemHeld, Block blockBroken) {
 
         // Check if the itemHeld has customPickaxe NBT tag
@@ -117,4 +104,5 @@ public class MiningEvents implements Listener {
             }
         return false;
     }
+
 }

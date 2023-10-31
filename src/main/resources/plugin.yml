@@ -8,6 +8,10 @@ commands:
   nbt:
     description: gives the nbt tags of the item
     usage: /<command>
+
+  pick:
+    description: gives the player all custom picks
+    usage: /<command>
   t1pick:
     description: gives the player a t1 custom pick
     usage: /<command>

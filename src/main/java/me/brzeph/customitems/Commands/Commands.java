@@ -1,6 +1,5 @@
 package me.brzeph.customitems.Commands;
 
-import de.tr7zw.nbtapi.NBTCompound;
 import me.brzeph.customitems.CustomItemList.CustomPickaxe;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -11,20 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import de.tr7zw.nbtapi.NBTItem;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Commands implements CommandExecutor {
-    @NotNull
-    private static List<String> getStrings() {
-        List<String> desiredOrder = new ArrayList<>();
-        desiredOrder.add("tier");
-        desiredOrder.add("customPickaxe");
-        desiredOrder.add("customOre");
-        desiredOrder.add("ItemIdentifications");
-        return desiredOrder;
-    }
-
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] strings) {
         if (!(sender instanceof Player)) {
@@ -32,34 +18,48 @@ public class Commands implements CommandExecutor {
         }
         Player player = (Player) sender;
 
+
         //creates /nbt command
+        if (cmd.getName().equalsIgnoreCase("nbt")){
+            NBTItem heldItem = new NBTItem(player.getInventory().getItemInMainHand());
 
-        if (cmd.getName().equalsIgnoreCase("nbt")) {
-            ItemStack heldItem = player.getInventory().getItemInMainHand();
-
-            if (heldItem != null) {
-                NBTItem nbtItem = new NBTItem(heldItem);
-
-                if (nbtItem.hasNBTData()) {
-                    player.sendMessage(ChatColor.GREEN + "The NBT tags on the item are:");
-                    List<String> desiredOrder = getStrings();
-
-                    for (String tagName : desiredOrder) {
-                        NBTCompound customData = nbtItem.getCompound("customData");
-                        if (customData != null && customData.hasKey(tagName)) {
-                            String tagValue = customData.getString(tagName);
-                            player.sendMessage(ChatColor.GREEN + tagName + ": " + tagValue);
-                        }
-                    }
-                } else {
-                    player.sendMessage(ChatColor.GREEN + "The held item does not have any NBT tags.");
+            String[] desiredOrder = {
+                    "tier",
+                    "currentXP",
+                    "currentLevel",
+                    "enchantmentDoubleOre",
+                    "enchantmentTripleOre",
+                    "enchantmentMiningSuccess",
+                    "enchantmentGemFind",
+                    "enchantmentTreasureFind",
+                    "enchantmentDurability"
+            };
+            StringBuilder nbtTags = new StringBuilder();
+            for (String key : desiredOrder) {
+                if (heldItem.hasKey(key)) {
+                    String tagName = heldItem.getString(key);
+                    int tagValue = heldItem.getInteger(key);
+                    nbtTags.append(key).append(": ").append(tagName).append(tagValue).append("\n");
                 }
-            } else {
-                player.sendMessage(ChatColor.GREEN + "You are not holding any items");
             }
+            player.sendMessage(ChatColor.GREEN + "the nbt tags on your item are: " + "\n" + nbtTags);
+            return true;
+        }
+        if (cmd.getName().equalsIgnoreCase("pick")){
+            ItemStack customPickaxeT1 = CustomPickaxe.create_dr_wooden_pickaxe();
+            ItemStack customPickaxeT2 = CustomPickaxe.create_dr_stone_pickaxe();
+            ItemStack customPickaxeT3 = CustomPickaxe.create_dr_iron_pickaxe();
+            ItemStack customPickaxeT4 = CustomPickaxe.create_dr_diamond_pickaxe();
+            ItemStack customPickaxeT5 = CustomPickaxe.create_dr_gold_pickaxe();
+            player.getInventory().addItem(customPickaxeT1);
+            player.getInventory().addItem(customPickaxeT2);
+            player.getInventory().addItem(customPickaxeT3);
+            player.getInventory().addItem(customPickaxeT4);
+            player.getInventory().addItem(customPickaxeT5);
+            player.sendMessage(ChatColor.GREEN + "You received pickaxes of all tiers");
         }
 
-        //creates /tXpick command
+        //creates /tXPick command
 
         if (cmd.getName().equalsIgnoreCase("t1pick")) {
             ItemStack customPickaxe = CustomPickaxe.create_dr_wooden_pickaxe();
