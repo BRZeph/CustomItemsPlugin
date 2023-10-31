@@ -1,7 +1,6 @@
 package me.brzeph.customitems.Commands;
 
 import de.tr7zw.nbtapi.NBTCompound;
-import me.brzeph.customitems.CustomItemList.CustomOres;
 import me.brzeph.customitems.CustomItemList.CustomPickaxe;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -25,6 +24,7 @@ public class Commands implements CommandExecutor {
         desiredOrder.add("ItemIdentifications");
         return desiredOrder;
     }
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] strings) {
         if (!(sender instanceof Player)) {
@@ -61,127 +61,31 @@ public class Commands implements CommandExecutor {
 
         //creates /tXpick command
 
-        if (cmd.getName().equalsIgnoreCase("t1pick")){
+        if (cmd.getName().equalsIgnoreCase("t1pick")) {
             ItemStack customPickaxe = CustomPickaxe.create_dr_wooden_pickaxe();
             player.getInventory().addItem(customPickaxe);
             player.sendMessage(ChatColor.GREEN + "You received a Tier 1 pickaxe!");
         }
-        if (cmd.getName().equalsIgnoreCase("t2pick")){
+        if (cmd.getName().equalsIgnoreCase("t2pick")) {
             ItemStack customPickaxe = CustomPickaxe.create_dr_stone_pickaxe();
             player.getInventory().addItem(customPickaxe);
             player.sendMessage(ChatColor.GREEN + "You received a Tier 2 pickaxe!");
         }
-        if (cmd.getName().equalsIgnoreCase("t3pick")){
+        if (cmd.getName().equalsIgnoreCase("t3pick")) {
             ItemStack customPickaxe = CustomPickaxe.create_dr_iron_pickaxe();
             player.getInventory().addItem(customPickaxe);
             player.sendMessage(ChatColor.GREEN + "You received a Tier 3 pickaxe!");
         }
-        if (cmd.getName().equalsIgnoreCase("t4pick")){
+        if (cmd.getName().equalsIgnoreCase("t4pick")) {
             ItemStack customPickaxe = CustomPickaxe.create_dr_diamond_pickaxe();
             player.getInventory().addItem(customPickaxe);
             player.sendMessage(ChatColor.GREEN + "You received a Tier 4 pickaxe!");
         }
-        if (cmd.getName().equalsIgnoreCase("t5pick")){
+        if (cmd.getName().equalsIgnoreCase("t5pick")) {
             ItemStack customPickaxe = CustomPickaxe.create_dr_gold_pickaxe();
             player.getInventory().addItem(customPickaxe);
             player.sendMessage(ChatColor.GREEN + "You received a Tier 5 pickaxe!");
         }
-
-
-        //creates /t1ore command
-
-        if (cmd.getName().equalsIgnoreCase("t1ore")) {
-            int amount = 1; // Default amount
-            if (strings.length > 0) {
-                try {
-                    amount = Integer.parseInt(strings[0]);
-                    amount = Math.min(amount, 64); // Limit to 64 if X > 64
-                } catch (NumberFormatException e) {
-                    player.sendMessage(ChatColor.RED + "Invalid input. Using default amount (1).");
-                }
-            }
-
-            for (int i = 0; i < amount; i++) {
-                ItemStack customOre = CustomOres.create_dr_coal_ore();
-                player.getInventory().addItem(customOre);
-            }
-
-            player.sendMessage(ChatColor.GREEN + "You received " + amount + " Tier 1 ore(s)!");
-        }
-        if (cmd.getName().equalsIgnoreCase("t2ore")) {
-            int amount = 1; // Default amount
-            if (strings.length > 0) {
-                try {
-                    amount = Integer.parseInt(strings[0]);
-                    amount = Math.min(amount, 64); // Limit to 64 if X > 64
-                } catch (NumberFormatException e) {
-                    player.sendMessage(ChatColor.RED + "Invalid input. Using default amount (1).");
-                }
-            }
-
-            for (int i = 0; i < amount; i++) {
-                ItemStack customOre = CustomOres.create_dr_emerald_ore();
-                player.getInventory().addItem(customOre);
-            }
-
-            player.sendMessage(ChatColor.GREEN + "You received " + amount + " Tier 2 ore(s)!");
-        }
-        if (cmd.getName().equalsIgnoreCase("t3ore")) {
-            int amount = 1; // Default amount
-            if (strings.length > 0) {
-                try {
-                    amount = Integer.parseInt(strings[0]);
-                    amount = Math.min(amount, 64); // Limit to 64 if X > 64
-                } catch (NumberFormatException e) {
-                    player.sendMessage(ChatColor.RED + "Invalid input. Using default amount (1).");
-                }
-            }
-
-            for (int i = 0; i < amount; i++) {
-                ItemStack customOre = CustomOres.create_dr_iron_ore();
-                player.getInventory().addItem(customOre);
-            }
-
-            player.sendMessage(ChatColor.GREEN + "You received " + amount + " Tier 3 ore(s)!");
-        }
-        if (cmd.getName().equalsIgnoreCase("t4ore")) {
-            int amount = 1; // Default amount
-            if (strings.length > 0) {
-                try {
-                    amount = Integer.parseInt(strings[0]);
-                    amount = Math.min(amount, 64); // Limit to 64 if X > 64
-                } catch (NumberFormatException e) {
-                    player.sendMessage(ChatColor.RED + "Invalid input. Using default amount (1).");
-                }
-            }
-
-            for (int i = 0; i < amount; i++) {
-                ItemStack customOre = CustomOres.create_dr_diamond_ore();
-                player.getInventory().addItem(customOre);
-            }
-
-            player.sendMessage(ChatColor.GREEN + "You received " + amount + " Tier 4 ore(s)!");
-        }
-        if (cmd.getName().equalsIgnoreCase("t5ore")) {
-            int amount = 1; // Default amount
-            if (strings.length > 0) {
-                try {
-                    amount = Integer.parseInt(strings[0]);
-                    amount = Math.min(amount, 64); // Limit to 64 if X > 64
-                } catch (NumberFormatException e) {
-                    player.sendMessage(ChatColor.RED + "Invalid input. Using default amount (1).");
-                }
-            }
-
-            for (int i = 0; i < amount; i++) {
-                ItemStack customOre = CustomOres.create_dr_gold_ore();
-                player.getInventory().addItem(customOre);
-            }
-
-            player.sendMessage(ChatColor.GREEN + "You received " + amount + " Tier 5 ore(s)!");
-        }
-
         return true;
     }
-
 }
