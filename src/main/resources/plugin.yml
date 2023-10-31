@@ -5,8 +5,11 @@ api-version: '1.20'
 depend: [NBTAPI]
 
 commands:
-  nbt:
+  nbtTags:
     description: gives the nbt tags of the item
+    usage: /<command>
+  nbt:
+    description: changes the nbt tags of an item
     usage: /<command>
 
   pick:

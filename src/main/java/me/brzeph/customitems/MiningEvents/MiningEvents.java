@@ -16,7 +16,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
 
-import static me.brzeph.customitems.MiningEvents.OresXPValue.t1OreXPGenerator;
+import static me.brzeph.customitems.MiningEvents.RandomValueGenerators.*;
 
 public class MiningEvents implements Listener {
     @EventHandler
@@ -109,10 +109,47 @@ public class MiningEvents implements Listener {
         nbtItem.setInteger("currentXP", newCurrentXP);
         player.getInventory().setItemInMainHand(nbtItem.getItem());
 
+        int enchantmentDoubleOre = nbtItem.getInteger("enchantmentDoubleOre");
+        int enchantmentTripleOre = nbtItem.getInteger("enchantmentTripleOre");
+        int enchantmentMiningSuccess = nbtItem.getInteger("enchantmentMiningSuccess");
+        int enchantmentGemFind = nbtItem.getInteger("enchantmentGemFind");
+        int enchantmentTreasureFind = nbtItem.getInteger("enchantmentTreasureFind");
+        int enchantmentDurability = nbtItem.getInteger("enchantmentDurability");
+
         if (blockBroken.getType() == Material.COAL_ORE){
             int amountOfOreDropped = 1;
-            ItemStack coalResult = new ItemStack(Material.COAL_ORE, amountOfOreDropped);
+            if (doubleOreRandomRoll() <= enchantmentDoubleOre && doubleOreRandomRoll() != 0){
+                player.sendMessage("Congratulations, the double ore enchantment just worked");
+                amountOfOreDropped = amountOfOreDropped*2;
+            }
+            if (tripleOreRandomRoll() <= enchantmentTripleOre && tripleOreRandomRoll() != 0){
+                player.sendMessage("Congratulations, the triple ore enchantment just worked");
+                amountOfOreDropped = amountOfOreDropped*3;
+            }
+            if (gemFindRandomRollForEnchantment() <= enchantmentGemFind && gemFindRandomRollForEnchantment() != 0) {
+                int intGem = gemFindRandomRollForGems()/5;
+                ItemStack gems = new ItemStack(Material.EMERALD, intGem);
+                if (player.getInventory().firstEmpty() >= 0) {
+                    player.getInventory().addItem(gems);
+                }else {
+                    Location dropLocation = player.getLocation();
+                    player.getWorld().dropItemNaturally(dropLocation, gems);
+                }
+                player.sendMessage("You have found " + intGem + " gems");
+            }
+            if (treasureFindRandomRoll() <= enchantmentTreasureFind && treasureFindRandomRoll() != 0){
+                int intGem = 640/5;
+                ItemStack treasure = new ItemStack(Material.EMERALD, intGem);
+                if (player.getInventory().firstEmpty() >= 0) {
+                    player.getInventory().addItem(treasure);
+                }else {
+                    Location dropLocation = player.getLocation();
+                    player.getWorld().dropItemNaturally(dropLocation, treasure);
+                }
+                player.sendMessage("You have found " + intGem + " gems");
+            }
 
+            ItemStack coalResult = new ItemStack(Material.COAL_ORE, amountOfOreDropped);
             if (player.getInventory().firstEmpty() >= 0){
                 player.getInventory().addItem(coalResult);
 
@@ -122,6 +159,7 @@ public class MiningEvents implements Listener {
             }
 
             player.sendMessage("Successfully mined a coal ore");
+            player.sendMessage("You got " + amountOfOreDropped + " ores");
             player.sendMessage("+" + XPGained + " XP gained");
 
         } else if (blockBroken.getType() == Material.EMERALD_ORE){

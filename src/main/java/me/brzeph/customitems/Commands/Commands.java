@@ -20,7 +20,7 @@ public class Commands implements CommandExecutor {
 
 
         //creates /nbt command
-        if (cmd.getName().equalsIgnoreCase("nbt")){
+        if (cmd.getName().equalsIgnoreCase("nbtTags")) {
             NBTItem heldItem = new NBTItem(player.getInventory().getItemInMainHand());
 
             String[] desiredOrder = {
@@ -45,7 +45,7 @@ public class Commands implements CommandExecutor {
             player.sendMessage(ChatColor.GREEN + "the nbt tags on your item are: " + "\n" + nbtTags);
             return true;
         }
-        if (cmd.getName().equalsIgnoreCase("pick")){
+        if (cmd.getName().equalsIgnoreCase("pick")) {
             ItemStack customPickaxeT1 = CustomPickaxe.create_dr_wooden_pickaxe();
             ItemStack customPickaxeT2 = CustomPickaxe.create_dr_stone_pickaxe();
             ItemStack customPickaxeT3 = CustomPickaxe.create_dr_iron_pickaxe();
@@ -57,6 +57,30 @@ public class Commands implements CommandExecutor {
             player.getInventory().addItem(customPickaxeT4);
             player.getInventory().addItem(customPickaxeT5);
             player.sendMessage(ChatColor.GREEN + "You received pickaxes of all tiers");
+        }
+
+        if (cmd.getName().equalsIgnoreCase("nbt")) {
+            ItemStack heldItem = new ItemStack(player.getInventory().getItemInMainHand());
+
+            if (heldItem != null) {
+                if (strings.length == 2) {
+                    String nbtKey = strings[0].replace("modifiers.", ""); // Remove the "modifiers." part
+                    int nbtValue = Integer.parseInt(strings[1]);
+
+                    NBTItem nbti = new NBTItem(heldItem);
+                    player.sendMessage("the tag is " + nbtKey);
+                    player.sendMessage("the tag value is " + nbtValue);
+                    nbti.setInteger(nbtKey, nbtValue);
+                    player.getInventory().setItemInMainHand(nbti.getItem());
+
+                    player.sendMessage("Successfully changed the NBT tag " + nbtKey + "'s value to " + nbtValue);
+                } else {
+                    player.sendMessage("That is an invalid input, ask upper staff how to use this command");
+                }
+            } else {
+                player.sendMessage("You are not holding any items");
+            }
+            return true;
         }
 
         //creates /tXPick command
