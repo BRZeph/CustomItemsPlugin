@@ -39,9 +39,9 @@ public class CustomPickaxe {
         List<String> lore = new ArrayList<>();
         lore.add("This pickaxe is tier 1");
         lore.add("Can only break the following ores: coal");
-        lore.add("Unique identifier: " + uniqueItemID);
-        lore.add(ChatColor.GREEN + "Current XP: " + currentXP);
-        lore.add(ChatColor.GREEN + "Current level: " + currentLevel);
+        lore.add("§5Unique identifier: " + uniqueItemID);
+        lore.add("§aCurrent XP: §6" + currentXP);
+        lore.add("§aCurrent level: §6" + currentLevel);
         //sets a random id to each created item [helps to locate duping]
 
         itemMeta.setLore(lore);
@@ -76,9 +76,9 @@ public class CustomPickaxe {
         List<String> lore = new ArrayList<>();
         lore.add("This pickaxe is tier 2");
         lore.add("Can only break the following ores: coal and emerald");
-        lore.add("Unique identifier: " + uniqueItemID);
-        lore.add(ChatColor.GREEN + "Current XP: " + currentXP);
-        lore.add(ChatColor.GREEN + "Current level: " + currentLevel);
+        lore.add("§5Unique identifier: " + uniqueItemID);
+        lore.add("§aCurrent XP: §6" + currentXP);
+        lore.add("§aCurrent level: §6" + currentLevel);
         //sets a random id to each created item [helps to locate duping]
 
         itemMeta.setLore(lore);
@@ -112,9 +112,9 @@ public class CustomPickaxe {
         List<String> lore = new ArrayList<>();
         lore.add("This pickaxe is tier 3");
         lore.add("Can only break the following ores: coal, emerald and iron");
-        lore.add("Unique identifier: " + uniqueItemID);
-        lore.add(ChatColor.GREEN + "Current XP: " + currentXP);
-        lore.add(ChatColor.GREEN + "Current level: " + currentLevel);
+        lore.add("§5Unique identifier: " + uniqueItemID);
+        lore.add("§aCurrent XP: §6" + currentXP);
+        lore.add("§aCurrent level: §6" + currentLevel);
         //sets a random id to each created item [helps to locate duping]
 
         itemMeta.setLore(lore);
@@ -148,9 +148,9 @@ public class CustomPickaxe {
         List<String> lore = new ArrayList<>();
         lore.add("This pickaxe is tier 4");
         lore.add("Can only break the following ores: coal, emerald, iron and diamond");
-        lore.add("Unique identifier: " + uniqueItemID);
-        lore.add(ChatColor.GREEN + "Current XP: " + currentXP);
-        lore.add(ChatColor.GREEN + "Current level: " + currentLevel);
+        lore.add("§5Unique identifier: " + uniqueItemID);
+        lore.add("§aCurrent XP: §6" + currentXP);
+        lore.add("§aCurrent level: §6" + currentLevel);
         //sets a random id to each created item [helps to locate duping]
 
         itemMeta.setLore(lore);
@@ -184,9 +184,9 @@ public class CustomPickaxe {
         List<String> lore = new ArrayList<>();
         lore.add("This pickaxe is tier 5");
         lore.add("Can only break the following ores: coal, emerald, iron, diamond and gold");
-        lore.add("Unique identifier: " + uniqueItemID);
-        lore.add(ChatColor.GREEN + "Current XP: " + currentXP);
-        lore.add(ChatColor.GREEN + "Current level: " + currentLevel);
+        lore.add("§5Unique identifier: " + uniqueItemID);
+        lore.add("§aCurrent XP: §6" + currentXP);
+        lore.add("§aCurrent level: §6" + currentLevel);
         //sets a random id to each created item [helps to locate duping]
 
         itemMeta.setLore(lore);

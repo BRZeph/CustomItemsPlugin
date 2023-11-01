@@ -34,7 +34,7 @@ public class MiningEvents implements Listener {
                     if (didBlockBreak(itemInHand, blockBroken)) {
                         event.setDropItems(false);
                         blockBrokenResult(itemInHand, blockBroken, player);
-                        didPickLevelUp(itemInHand, player);
+                        didPickLevelUp(player);
                         didPickChangeTier(itemInHand, blockBroken);
                     }
                 } else {
@@ -159,6 +159,7 @@ public class MiningEvents implements Listener {
             } else {
                 Location dropLocation = player.getLocation();
                 player.getWorld().dropItemNaturally(dropLocation, coalResult);
+                player.sendMessage(ChatColor.RED + "You don't have enough slots, the item[s] have been dropped on the ground");
             }
 
             player.sendMessage("Successfully mined a coal ore");
@@ -174,7 +175,7 @@ public class MiningEvents implements Listener {
         }else if (blockBroken.getType() == Material.GOLD_ORE){
 
         }
-        modifyItemLore(player, 3, ChatColor.GREEN + "Current XP: " + newCurrentXP);
+        modifyItemLore(player, 3, "§aCurrent XP: §6" + newCurrentXP);
     }
     public void modifyItemLore(Player player, int lineIndex, String newLore){
         ItemStack itemHeld = player.getInventory().getItemInMainHand();
@@ -197,27 +198,36 @@ public class MiningEvents implements Listener {
     public boolean didBlockBreak (ItemStack itemHeld, Block block){
         return true;
     } //checks mining success, make this method here so that it works before the blockBrokenResult
-    public void didPickLevelUp (ItemStack itemHeld, Player player){
+    //todo: make this not be this ugly lol
+    //todo: create the method that soldado mentioned to create items from nbt tags to facilitate the lore update of items etc
+    public void didPickLevelUp (Player player){
+        ItemStack itemHeld = new ItemStack(player.getInventory().getItemInMainHand());
 
         NBTItem nbtItem = new NBTItem(itemHeld);
         int currentXP = nbtItem.getInteger("currentXP");
         int currentLevel = nbtItem.getInteger("currentLevel");
         int requiredXP = XPToLevelUpRequiredMethod(itemHeld);
 
-        if (currentXP >= requiredXP){        //todo: make this not be this ugly lol
-            //todo: create the method that soldado mentioned to create items from nbt tags to facilitate the lore update of items etc
+        if (currentXP >= requiredXP){
 
             int newLevel = currentLevel + 1;
-            nbtItem.setInteger("currentLevel", newLevel);
             int newXP = currentXP - requiredXP;
-            nbtItem.setInteger("CurrentXP", newXP);
 
-            String newLevelString = ChatColor.GREEN + "Current level: " + Integer.toString(newLevel);
-            String newXPString = ChatColor.GREEN + "Current XP: " + Integer.toString(newXP);
-
-            player.sendMessage("Congratulations, your pickaxe just leveled up from " + (newLevel - 1) + " to " + newLevel);
+            String newLevelString = "§aCurrent level: §6" + Integer.toString(newLevel);
+            String newXPString = "§aCurrent XP: §6" + Integer.toString(newXP);
             modifyItemLore(player, 3, newXPString);
             modifyItemLore(player, 4, newLevelString);
+
+            NBTItem nbti = new NBTItem(player.getInventory().getItemInMainHand());
+
+            nbti.setInteger("currentXP", newXP);
+            nbti.setInteger("currentLevel", newLevel);
+            player.getInventory().setItemInMainHand(nbti.getItem());
+
+            player.sendMessage("§cCongratulations, your pickaxe just leveled up from " + (newLevel - 1) + " to " + newLevel);
+            player.sendMessage("§ccurrentXP: " + newXP);
+        }else {
+            player.sendMessage("§ccurrentXP: " + currentXP);
         }
     }
     public boolean didPickChangeTier (ItemStack itemHeld, Block block){
