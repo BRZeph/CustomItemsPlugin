@@ -35,7 +35,7 @@ public class MiningEvents implements Listener {
                         event.setDropItems(false);
                         blockBrokenResult(itemInHand, blockBroken, player);
                         didPickLevelUp(player);
-                        didPickChangeTier(itemInHand, blockBroken);
+                        didPickChangeTier(player);
                         oreRespawnMechanic(blockBroken, player);
 
                         if (didPickaxeLoseDurability(itemInHand, player)){
@@ -74,7 +74,6 @@ public class MiningEvents implements Listener {
         return false;
     }
     public void oreRespawnMechanic(Block blockBroken, Player player) {
-        player.sendMessage("DEBUG: oreRespawnMechanic starting");
 
         BlockState originalBlockState = blockBroken.getState();
 
@@ -87,8 +86,6 @@ public class MiningEvents implements Listener {
             originalBlockState.update(true, false);
             player.sendMessage("DEBUG: Block has been restored");
         }, 20 * 5);
-
-        player.sendMessage("DEBUG: oreRespawnMechanic ending");
     }
 
     private boolean isNumeric(String str) {
@@ -415,8 +412,10 @@ public class MiningEvents implements Listener {
         }
         int newCurrentXP = nbtItem.getInteger("currentXP") + XPGained;
         modifyItemLore(player, 3, "§aCurrent XP: §6" + newCurrentXP);
-        nbtItem.setInteger("currentXP", newCurrentXP);
-        player.getInventory().setItemInMainHand(nbtItem.getItem());
+
+        NBTItem nbti = new NBTItem(player.getInventory().getItemInMainHand());
+        nbti.setInteger("currentXP", newCurrentXP);
+        player.getInventory().setItemInMainHand(nbti.getItem());
     }
     public void modifyItemLore(Player player, int lineIndex, String newLore){
         ItemStack itemHeld = player.getInventory().getItemInMainHand();
@@ -505,8 +504,7 @@ public class MiningEvents implements Listener {
         int currentLevel = nbtItem.getInteger("currentLevel");
         int requiredXP = XPToLevelUpRequiredMethod(itemHeld);
 
-        if (currentXP >= requiredXP){    //todo: make this not be this ugly lol
-            //todo: create the method that soldado mentioned to create items from nbt tags to facilitate the lore update of items etc
+        if (currentXP >= requiredXP){
 
             int newLevel = currentLevel + 1;
             int newXP = currentXP - requiredXP;
@@ -528,7 +526,12 @@ public class MiningEvents implements Listener {
             player.sendMessage("§ccurrentXP: " + currentXP);
         }
     }
-    public boolean didPickChangeTier (ItemStack itemHeld, Block block){
-        return true; //checks for pick change tier, put this method with the didPickLevelUp method
+    public void didPickChangeTier (Player player){
+        ItemStack itemHeld = new ItemStack(player.getInventory().getItemInMainHand());
+        NBTItem nbtItem = new NBTItem(itemHeld);
+        int currentLevel = nbtItem.getInteger("currentLevel");
+        int currentXP = nbtItem.getInteger("currentXP");
+        player.sendMessage("[DEBUG]: current level: " + currentLevel);
+        player.sendMessage("[DEBUG]: current xp: " + currentXP);
     }
 }
