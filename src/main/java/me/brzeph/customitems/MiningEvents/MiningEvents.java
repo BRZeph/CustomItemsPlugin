@@ -210,43 +210,56 @@ public class MiningEvents implements Listener {
         int pickaxeTier = nbtItem.getInteger("tier");
         int blockTier = 0;
         int enchantmentMiningSuccess = nbtItem.getInteger("enchantmentMiningSuccess");
-        int incrementInBreakOreChance = currentLevel * 2;
+        int incrementInBreakOreChanceT1 = currentLevel * 2;
+        int incrementInBreakOreChanceT2 = (currentLevel - 20) * 2;
+        int incrementInBreakOreChanceT3 = (currentLevel - 40) * 2;
+        int incrementInBreakOreChanceT4 = (currentLevel - 60) * 2;
+        int incrementInBreakOreChanceT5 = (currentLevel - 80) * 2;
 
-        int debugTest = miningRandomRoll();
-        int miningRoll = debugTest - enchantmentMiningSuccess - incrementInBreakOreChance;
+        int baseRoll = miningRandomRoll();
 
-        player.sendMessage("§9DEBUG: total roll " + miningRoll);
-        player.sendMessage("§9DEBUG: rolled " + debugTest);
+        int miningRollT1 = baseRoll - enchantmentMiningSuccess - incrementInBreakOreChanceT1;
+        int miningRollT2 = baseRoll - enchantmentMiningSuccess - incrementInBreakOreChanceT2;
+        int miningRollT3 = baseRoll - enchantmentMiningSuccess - incrementInBreakOreChanceT3;
+        int miningRollT4 = baseRoll - enchantmentMiningSuccess - incrementInBreakOreChanceT4;
+        int miningRollT5 = baseRoll - enchantmentMiningSuccess - incrementInBreakOreChanceT5;
+
+        player.sendMessage("§9DEBUG: rolled " + baseRoll);
 
 
         if (block.getType() == Material.COAL_ORE){
             blockTier = 1;
+            player.sendMessage("§9DEBUG: total roll " + miningRollT1);
         }
         if (block.getType() == Material.EMERALD_ORE){
             blockTier = 2;
+            player.sendMessage("§9DEBUG: total roll " + miningRollT2);
         }
         if (block.getType() == Material.IRON_ORE){
             blockTier = 3;
+            player.sendMessage("§9DEBUG: total roll " + miningRollT3);
         }
         if (block.getType() == Material.DIAMOND_ORE){
             blockTier = 4;
+            player.sendMessage("§9DEBUG: total roll " + miningRollT4);
         }
         if (block.getType() == Material.GOLD_ORE){
             blockTier = 5;
+            player.sendMessage("§9DEBUG: total roll " + miningRollT5);
         }
         if (pickaxeTier > blockTier){
             return true;
         } else if(pickaxeTier < blockTier){
             return false;
-        }if (block.getType() == Material.COAL_ORE && miningRoll < baseT1BreakOreChance){
+        }if (block.getType() == Material.COAL_ORE && miningRollT1 < baseT1BreakOreChance){
             return true;
-        }if (block.getType() == Material.EMERALD_ORE && miningRoll < baseT2BreakOreChance){
+        }if (block.getType() == Material.EMERALD_ORE && miningRollT2 < baseT2BreakOreChance){
             return true;
-        }if (block.getType() == Material.IRON_ORE && miningRoll < baseT3BreakOreChance){
+        }if (block.getType() == Material.IRON_ORE && miningRollT3 < baseT3BreakOreChance){
             return true;
-        }if (block.getType() == Material.DIAMOND_ORE && miningRoll < baseT4BreakOreChance){
+        }if (block.getType() == Material.DIAMOND_ORE && miningRollT4 < baseT4BreakOreChance){
             return true;
-        }if (block.getType() == Material.GOLD_ORE && miningRoll < baseT5BreakOreChance){
+        }if (block.getType() == Material.GOLD_ORE && miningRollT5 < baseT5BreakOreChance){
             return true;
         }
         return false;
