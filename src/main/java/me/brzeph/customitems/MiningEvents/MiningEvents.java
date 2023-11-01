@@ -36,6 +36,11 @@ public class MiningEvents implements Listener {
                         blockBrokenResult(itemInHand, blockBroken, player);
                         didPickLevelUp(player);
                         didPickChangeTier(itemInHand, blockBroken);
+                        if (didPickaxeLoseDurability(itemInHand, player)){
+                            event.setCancelled(true);
+                        } else{
+                            event.setCancelled(false); //this makes the ore not break and stay there, gotta fix this
+                        }
                     } else{
                         player.sendMessage("§9Failed to break the ore");
                         event.setCancelled(true);
@@ -107,6 +112,18 @@ public class MiningEvents implements Listener {
             }
         return false;
     }
+    public boolean didPickaxeLoseDurability(ItemStack itemHeld, Player player){
+
+        NBTItem nbtItem = new NBTItem(itemHeld);
+        int enchantmentDurability = nbtItem.getInteger("enchantmentDurability");
+        int durabilityEnchantmentRoll = durabilityEnchantmentRandomRoll();
+        player.sendMessage("DEBUG: rolled " + durabilityEnchantmentRoll);
+        if (durabilityEnchantmentRoll < enchantmentDurability){
+            player.sendMessage("The Durability enchantment just worked, you did not lose any durability!");
+            return true;
+        }
+        return false;
+    }
     public void blockBrokenResult(ItemStack itemHeld, Block blockBroken, Player player) {
 
         NBTItem nbtItem = new NBTItem(itemHeld);
@@ -119,7 +136,6 @@ public class MiningEvents implements Listener {
         int enchantmentTripleOre = nbtItem.getInteger("enchantmentTripleOre");  //the mining success enchantment does not need to be here for it's already being
         int enchantmentGemFind = nbtItem.getInteger("enchantmentGemFind");      //check in the previous method of ''didBlockBreak''
         int enchantmentTreasureFind = nbtItem.getInteger("enchantmentTreasureFind");
-        int enchantmentDurability = nbtItem.getInteger("enchantmentDurability");
 
         if (blockBroken.getType() == Material.COAL_ORE){
             int amountOfOreDropped = 1;

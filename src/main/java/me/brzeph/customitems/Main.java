@@ -1,9 +1,8 @@
 package me.brzeph.customitems;
 
 // TODO: make sure that whenever the player breaks a block that is auto generated, it does not break by failing the ''onBlockBreakEvent''
-// TODO: create pickaxe's level system
 // TODO: implement new treasure find list on mining events
-// TODO: implement the system of when a block is successfully broken, it changes into a stone block for 5000 ticks and then respawn the ore
+// TODO: implement the system of when a block is broken, it changes into a stone block for 5000 ticks and then respawn the ore
 
 
 import me.brzeph.customitems.Commands.Commands;

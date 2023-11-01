@@ -39,4 +39,8 @@ public class RandomValueGenerators {
         Random random = new Random();
         return random.nextInt(100) + 1;
     }
+    public static int durabilityEnchantmentRandomRoll(){
+        Random random = new Random();
+        return random.nextInt(100) + 1;
+    }
 }
