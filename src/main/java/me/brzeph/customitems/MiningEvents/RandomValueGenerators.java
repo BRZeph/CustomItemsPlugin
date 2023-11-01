@@ -35,4 +35,8 @@ public class RandomValueGenerators {
 
         return random.nextInt(maxValue - minValue + 1) + minValue;
     }
+    public static int miningRandomRoll(){
+        Random random = new Random();
+        return random.nextInt(100) + 1;
+    }
 }

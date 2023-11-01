@@ -31,11 +31,14 @@ public class MiningEvents implements Listener {
         } else {
             if (isCustomPickaxe(itemInHand)) {
                 if (pickaxeCanBreakOre(itemInHand, blockBroken)) {
-                    if (didBlockBreak(itemInHand, blockBroken)) {
+                    if (didBlockBreak(itemInHand, blockBroken, player)) {
                         event.setDropItems(false);
                         blockBrokenResult(itemInHand, blockBroken, player);
                         didPickLevelUp(player);
                         didPickChangeTier(itemInHand, blockBroken);
+                    } else{
+                        player.sendMessage("§9Failed to break the ore");
+                        event.setCancelled(true);
                     }
                 } else {
                     player.sendMessage("Your pickaxe tier is not great enough to break this ore");
@@ -113,9 +116,8 @@ public class MiningEvents implements Listener {
         player.getInventory().setItemInMainHand(nbtItem.getItem());
 
         int enchantmentDoubleOre = nbtItem.getInteger("enchantmentDoubleOre");
-        int enchantmentTripleOre = nbtItem.getInteger("enchantmentTripleOre");
-        int enchantmentMiningSuccess = nbtItem.getInteger("enchantmentMiningSuccess");
-        int enchantmentGemFind = nbtItem.getInteger("enchantmentGemFind");
+        int enchantmentTripleOre = nbtItem.getInteger("enchantmentTripleOre");  //the mining success enchantment does not need to be here for it's already being
+        int enchantmentGemFind = nbtItem.getInteger("enchantmentGemFind");      //check in the previous method of ''didBlockBreak''
         int enchantmentTreasureFind = nbtItem.getInteger("enchantmentTreasureFind");
         int enchantmentDurability = nbtItem.getInteger("enchantmentDurability");
 
@@ -195,11 +197,62 @@ public class MiningEvents implements Listener {
             }
         }
     }
-    public boolean didBlockBreak (ItemStack itemHeld, Block block){
-        return true;
-    } //checks mining success, make this method here so that it works before the blockBrokenResult
-    //todo: make this not be this ugly lol
-    //todo: create the method that soldado mentioned to create items from nbt tags to facilitate the lore update of items etc
+    public boolean didBlockBreak (ItemStack itemHeld, Block block, Player player){
+        int baseT1BreakOreChance = 80;
+        int baseT2BreakOreChance = 75;
+        int baseT3BreakOreChance = 70;
+        int baseT4BreakOreChance = 65;
+        int baseT5BreakOreChance = 60;
+
+
+        NBTItem nbtItem = new NBTItem(itemHeld);
+        int currentLevel = nbtItem.getInteger("currentLevel");
+        int pickaxeTier = nbtItem.getInteger("tier");
+        int blockTier = 0;
+        int enchantmentMiningSuccess = nbtItem.getInteger("enchantmentMiningSuccess");
+        int incrementInBreakOreChance = currentLevel * 2;
+
+        int debugTest = miningRandomRoll();
+        int miningRoll = debugTest - enchantmentMiningSuccess - incrementInBreakOreChance;
+
+        player.sendMessage("§9DEBUG: total roll " + miningRoll);
+        player.sendMessage("§9DEBUG: rolled " + debugTest);
+
+
+        if (block.getType() == Material.COAL_ORE){
+            blockTier = 1;
+        }
+        if (block.getType() == Material.EMERALD_ORE){
+            blockTier = 2;
+        }
+        if (block.getType() == Material.IRON_ORE){
+            blockTier = 3;
+        }
+        if (block.getType() == Material.DIAMOND_ORE){
+            blockTier = 4;
+        }
+        if (block.getType() == Material.GOLD_ORE){
+            blockTier = 5;
+        }
+        if (pickaxeTier > blockTier){
+            return true;
+        } else if(pickaxeTier < blockTier){
+            return false;
+        }if (block.getType() == Material.COAL_ORE && miningRoll < baseT1BreakOreChance){
+            return true;
+        }if (block.getType() == Material.EMERALD_ORE && miningRoll < baseT2BreakOreChance){
+            return true;
+        }if (block.getType() == Material.IRON_ORE && miningRoll < baseT3BreakOreChance){
+            return true;
+        }if (block.getType() == Material.DIAMOND_ORE && miningRoll < baseT4BreakOreChance){
+            return true;
+        }if (block.getType() == Material.GOLD_ORE && miningRoll < baseT5BreakOreChance){
+            return true;
+        }
+        return false;
+    }
+
+
     public void didPickLevelUp (Player player){
         ItemStack itemHeld = new ItemStack(player.getInventory().getItemInMainHand());
 
@@ -208,7 +261,8 @@ public class MiningEvents implements Listener {
         int currentLevel = nbtItem.getInteger("currentLevel");
         int requiredXP = XPToLevelUpRequiredMethod(itemHeld);
 
-        if (currentXP >= requiredXP){
+        if (currentXP >= requiredXP){    //todo: make this not be this ugly lol
+            //todo: create the method that soldado mentioned to create items from nbt tags to facilitate the lore update of items etc
 
             int newLevel = currentLevel + 1;
             int newXP = currentXP - requiredXP;
