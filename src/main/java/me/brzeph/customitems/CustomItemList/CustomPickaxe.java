@@ -41,7 +41,7 @@ public class CustomPickaxe {
         lore.add("Can only break the following ores: coal");
         lore.add("Unique identifier: " + uniqueItemID);
         lore.add(ChatColor.GREEN + "Current XP: " + currentXP);
-        lore.add(ChatColor.GREEN + "current level: " + currentLevel);
+        lore.add(ChatColor.GREEN + "Current level: " + currentLevel);
         //sets a random id to each created item [helps to locate duping]
 
         itemMeta.setLore(lore);
@@ -78,7 +78,7 @@ public class CustomPickaxe {
         lore.add("Can only break the following ores: coal and emerald");
         lore.add("Unique identifier: " + uniqueItemID);
         lore.add(ChatColor.GREEN + "Current XP: " + currentXP);
-        lore.add(ChatColor.GREEN + "current level: " + currentLevel);
+        lore.add(ChatColor.GREEN + "Current level: " + currentLevel);
         //sets a random id to each created item [helps to locate duping]
 
         itemMeta.setLore(lore);
@@ -114,7 +114,7 @@ public class CustomPickaxe {
         lore.add("Can only break the following ores: coal, emerald and iron");
         lore.add("Unique identifier: " + uniqueItemID);
         lore.add(ChatColor.GREEN + "Current XP: " + currentXP);
-        lore.add(ChatColor.GREEN + "current level: " + currentLevel);
+        lore.add(ChatColor.GREEN + "Current level: " + currentLevel);
         //sets a random id to each created item [helps to locate duping]
 
         itemMeta.setLore(lore);
@@ -150,7 +150,7 @@ public class CustomPickaxe {
         lore.add("Can only break the following ores: coal, emerald, iron and diamond");
         lore.add("Unique identifier: " + uniqueItemID);
         lore.add(ChatColor.GREEN + "Current XP: " + currentXP);
-        lore.add(ChatColor.GREEN + "current level: " + currentLevel);
+        lore.add(ChatColor.GREEN + "Current level: " + currentLevel);
         //sets a random id to each created item [helps to locate duping]
 
         itemMeta.setLore(lore);
@@ -186,7 +186,7 @@ public class CustomPickaxe {
         lore.add("Can only break the following ores: coal, emerald, iron, diamond and gold");
         lore.add("Unique identifier: " + uniqueItemID);
         lore.add(ChatColor.GREEN + "Current XP: " + currentXP);
-        lore.add(ChatColor.GREEN + "current level: " + currentLevel);
+        lore.add(ChatColor.GREEN + "Current level: " + currentLevel);
         //sets a random id to each created item [helps to locate duping]
 
         itemMeta.setLore(lore);

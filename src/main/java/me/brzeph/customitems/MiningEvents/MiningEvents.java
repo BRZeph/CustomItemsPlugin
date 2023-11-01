@@ -16,6 +16,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
 
+import static me.brzeph.customitems.MiningEvents.MiningXPLevelsTable.XPToLevelUpRequiredMethod;
 import static me.brzeph.customitems.MiningEvents.RandomValueGenerators.*;
 
 public class MiningEvents implements Listener {
@@ -30,10 +31,12 @@ public class MiningEvents implements Listener {
         } else {
             if (isCustomPickaxe(itemInHand)) {
                 if (pickaxeCanBreakOre(itemInHand, blockBroken)) {
-                    event.setDropItems(false);
-                    blockBrokenResult(itemInHand, blockBroken, player);
-
-
+                    if (didBlockBreak(itemInHand, blockBroken)) {
+                        event.setDropItems(false);
+                        blockBrokenResult(itemInHand, blockBroken, player);
+                        didPickLevelUp(itemInHand, player);
+                        didPickChangeTier(itemInHand, blockBroken);
+                    }
                 } else {
                     player.sendMessage("Your pickaxe tier is not great enough to break this ore");
                     event.setCancelled(true);
@@ -104,7 +107,7 @@ public class MiningEvents implements Listener {
     public void blockBrokenResult(ItemStack itemHeld, Block blockBroken, Player player) {
 
         NBTItem nbtItem = new NBTItem(itemHeld);
-        int XPGained = t1OreXPGenerator();
+        int XPGained = t1OreXPGenerator(); //todo: replace this line later
         int newCurrentXP = nbtItem.getInteger("currentXP") + XPGained;
         nbtItem.setInteger("currentXP", newCurrentXP);
         player.getInventory().setItemInMainHand(nbtItem.getItem());
@@ -190,5 +193,34 @@ public class MiningEvents implements Listener {
                 }
             }
         }
+    }
+    public boolean didBlockBreak (ItemStack itemHeld, Block block){
+        return true;
+    } //checks mining success, make this method here so that it works before the blockBrokenResult
+    public void didPickLevelUp (ItemStack itemHeld, Player player){
+
+        NBTItem nbtItem = new NBTItem(itemHeld);
+        int currentXP = nbtItem.getInteger("currentXP");
+        int currentLevel = nbtItem.getInteger("currentLevel");
+        int requiredXP = XPToLevelUpRequiredMethod(itemHeld);
+
+        if (currentXP >= requiredXP){        //todo: make this not be this ugly lol
+            //todo: create the method that soldado mentioned to create items from nbt tags to facilitate the lore update of items etc
+
+            int newLevel = currentLevel + 1;
+            nbtItem.setInteger("currentLevel", newLevel);
+            int newXP = currentXP - requiredXP;
+            nbtItem.setInteger("CurrentXP", newXP);
+
+            String newLevelString = ChatColor.GREEN + "Current level: " + Integer.toString(newLevel);
+            String newXPString = ChatColor.GREEN + "Current XP: " + Integer.toString(newXP);
+
+            player.sendMessage("Congratulations, your pickaxe just leveled up from " + (newLevel - 1) + " to " + newLevel);
+            modifyItemLore(player, 3, newXPString);
+            modifyItemLore(player, 4, newLevelString);
+        }
+    }
+    public boolean didPickChangeTier (ItemStack itemHeld, Block block){
+        return true; //checks for pick change tier, put this method with the didPickLevelUp method
     }
 }
