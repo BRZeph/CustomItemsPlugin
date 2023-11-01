@@ -1,12 +1,12 @@
 package me.brzeph.customitems.MiningEvents;
 
 import de.tr7zw.nbtapi.NBTItem;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import me.brzeph.customitems.Main;
+import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -36,10 +36,10 @@ public class MiningEvents implements Listener {
                         blockBrokenResult(itemInHand, blockBroken, player);
                         didPickLevelUp(player);
                         didPickChangeTier(itemInHand, blockBroken);
+                        oreRespawnMechanic(blockBroken, player);
+
                         if (didPickaxeLoseDurability(itemInHand, player)){
                             event.setCancelled(true);
-                        } else{
-                            event.setCancelled(false); //this makes the ore not break and stay there, gotta fix this
                         }
                     } else{
                         player.sendMessage("§9Failed to break the ore");
@@ -72,6 +72,23 @@ public class MiningEvents implements Listener {
             return true;
         }
         return false;
+    }
+    public void oreRespawnMechanic(Block blockBroken, Player player) {
+        player.sendMessage("DEBUG: oreRespawnMechanic starting");
+
+        BlockState originalBlockState = blockBroken.getState();
+
+        Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+            blockBroken.setType(Material.STONE);
+        }, 1);
+
+        Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+            // Restore the original block state
+            originalBlockState.update(true, false);
+            player.sendMessage("DEBUG: Block has been restored");
+        }, 20 * 5);
+
+        player.sendMessage("DEBUG: oreRespawnMechanic ending");
     }
 
     private boolean isNumeric(String str) {
@@ -117,7 +134,6 @@ public class MiningEvents implements Listener {
         NBTItem nbtItem = new NBTItem(itemHeld);
         int enchantmentDurability = nbtItem.getInteger("enchantmentDurability");
         int durabilityEnchantmentRoll = durabilityEnchantmentRandomRoll();
-        player.sendMessage("DEBUG: rolled " + durabilityEnchantmentRoll);
         if (durabilityEnchantmentRoll < enchantmentDurability){
             player.sendMessage("The Durability enchantment just worked, you did not lose any durability!");
             return true;
@@ -240,28 +256,20 @@ public class MiningEvents implements Listener {
         int miningRollT4 = baseRoll - enchantmentMiningSuccess - incrementInBreakOreChanceT4;
         int miningRollT5 = baseRoll - enchantmentMiningSuccess - incrementInBreakOreChanceT5;
 
-        player.sendMessage("§9DEBUG: rolled " + baseRoll);
-
-
         if (block.getType() == Material.COAL_ORE){
             blockTier = 1;
-            player.sendMessage("§9DEBUG: total roll " + miningRollT1);
         }
         if (block.getType() == Material.EMERALD_ORE){
             blockTier = 2;
-            player.sendMessage("§9DEBUG: total roll " + miningRollT2);
         }
         if (block.getType() == Material.IRON_ORE){
             blockTier = 3;
-            player.sendMessage("§9DEBUG: total roll " + miningRollT3);
         }
         if (block.getType() == Material.DIAMOND_ORE){
             blockTier = 4;
-            player.sendMessage("§9DEBUG: total roll " + miningRollT4);
         }
         if (block.getType() == Material.GOLD_ORE){
             blockTier = 5;
-            player.sendMessage("§9DEBUG: total roll " + miningRollT5);
         }
         if (pickaxeTier > blockTier){
             return true;
