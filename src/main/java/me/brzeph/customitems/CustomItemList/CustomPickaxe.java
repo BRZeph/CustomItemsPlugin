@@ -15,11 +15,13 @@ import java.util.UUID;
 public class CustomPickaxe {
     public static ItemStack create_dr_wooden_pickaxe() {
         NBTItem nbtItem = new NBTItem(new ItemStack(Material.WOODEN_PICKAXE, 1));
+        String uniqueItemID = UUID.randomUUID().toString();
         int currentXP = 0;
         int currentLevel = 1;
         nbtItem.setInteger("tier", 1);
         nbtItem.setInteger("currentXP", currentXP);
         nbtItem.setInteger("currentLevel", currentLevel);
+        nbtItem.setString("uniqueItemID", uniqueItemID);
         Field[] fields = BaseEnchantmentValues.class.getDeclaredFields();
         for (Field field : fields){
             if (field.getType() == int.class){
@@ -35,14 +37,15 @@ public class CustomPickaxe {
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName("Custom T1 pickaxe");
 
-        String uniqueItemID = UUID.randomUUID().toString();
         List<String> lore = new ArrayList<>();
-        lore.add("This pickaxe is tier 1");
-        lore.add("Can only break the following ores: coal");
-        lore.add("§5Unique identifier: " + uniqueItemID);
-        lore.add("§aCurrent XP: §6" + currentXP);
-        lore.add("§aCurrent level: §6" + currentLevel);
-        lore.add("Mining success enchantment = 5");
+        lore.add("§7Level: §6" + currentLevel);
+        lore.add("§7XP: §6" + currentXP + "/" + currentLevel*300);
+        lore.add("§7::::::::::::::::::::::::::::::::::::::::");
+        lore.add("");
+        lore.add("§6Pickaxe tier §f1");
+        lore.add("§6Can only break the following ores: coal");
+        lore.add("");
+        lore.add("§cMining success enchantment: 5");
         //sets a random id to each created item [helps to locate duping]
 
         itemMeta.setLore(lore);
@@ -53,11 +56,13 @@ public class CustomPickaxe {
 
     public static ItemStack create_dr_stone_pickaxe() {
         NBTItem nbtItem = new NBTItem(new ItemStack(Material.STONE_PICKAXE, 1));
+        String uniqueItemID = UUID.randomUUID().toString();
         int currentXP = 0;
         int currentLevel = 20;
         nbtItem.setInteger("tier", 2);
         nbtItem.setInteger("currentXP", currentXP);
         nbtItem.setInteger("currentLevel", currentLevel);
+        nbtItem.setString("uniqueItemID", uniqueItemID);
         Field[] fields = BaseEnchantmentValues.class.getDeclaredFields();
         for (Field field : fields){
             if (field.getType() == int.class){
@@ -73,15 +78,15 @@ public class CustomPickaxe {
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName("Custom T2 pickaxe");
 
-        String uniqueItemID = UUID.randomUUID().toString();
         List<String> lore = new ArrayList<>();
-        lore.add("This pickaxe is tier 2");
-        lore.add("Can only break the following ores: coal and emerald");
-        lore.add("§5Unique identifier: " + uniqueItemID);
-        lore.add("§aCurrent XP: §6" + currentXP);
-        lore.add("§aCurrent level: §6" + currentLevel);
-        lore.add("Mining success enchantment = 5");
-        //sets a random id to each created item [helps to locate duping]
+        lore.add("§7Level: §6" + currentLevel);
+        lore.add("§7XP: §6" + currentXP + "/" + currentLevel*300);
+        lore.add("§7::::::::::::::::::::::::::::::::::::::::");
+        lore.add("");
+        lore.add("§6Pickaxe tier §f2");
+        lore.add("§6Can only break the following ores: coal and emerald");
+        lore.add("");
+        lore.add("§cMining success enchantment: 5");
 
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
@@ -90,11 +95,13 @@ public class CustomPickaxe {
     }
     public static ItemStack create_dr_iron_pickaxe() {
         NBTItem nbtItem = new NBTItem(new ItemStack(Material.IRON_PICKAXE, 1));
+        String uniqueItemID = UUID.randomUUID().toString();
         int currentXP = 0;
         int currentLevel = 40;
         nbtItem.setInteger("tier", 3);
         nbtItem.setInteger("currentXP", currentXP);
         nbtItem.setInteger("currentLevel", currentLevel);
+        nbtItem.setString("uniqueItemID", uniqueItemID);
         Field[] fields = BaseEnchantmentValues.class.getDeclaredFields();
         for (Field field : fields){
             if (field.getType() == int.class){
@@ -110,15 +117,15 @@ public class CustomPickaxe {
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName("Custom T3 pickaxe");
 
-        String uniqueItemID = UUID.randomUUID().toString();
         List<String> lore = new ArrayList<>();
-        lore.add("This pickaxe is tier 3");
-        lore.add("Can only break the following ores: coal, emerald and iron");
-        lore.add("§5Unique identifier: " + uniqueItemID);
-        lore.add("§aCurrent XP: §6" + currentXP);
-        lore.add("§aCurrent level: §6" + currentLevel);
-        lore.add("Mining success enchantment = 5");
-        //sets a random id to each created item [helps to locate duping]
+        lore.add("§7Level: §6" + currentLevel);
+        lore.add("§7XP: §6" + currentXP + "/" + currentLevel*300);
+        lore.add("§7::::::::::::::::::::::::::::::::::::::::");
+        lore.add("");
+        lore.add("§6Pickaxe tier §f3");
+        lore.add("§6Can only break the following ores: coal, emerald and iron");
+        lore.add("");
+        lore.add("§cMining success enchantment: 5");
 
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
@@ -127,11 +134,13 @@ public class CustomPickaxe {
     }
     public static ItemStack create_dr_diamond_pickaxe() {
         NBTItem nbtItem = new NBTItem(new ItemStack(Material.DIAMOND_PICKAXE, 1));
+        String uniqueItemID = UUID.randomUUID().toString();
         int currentXP = 0;
         int currentLevel = 60;
         nbtItem.setInteger("tier", 4);
         nbtItem.setInteger("currentXP", currentXP);
         nbtItem.setInteger("currentLevel", currentLevel);
+        nbtItem.setString("uniqueItemID", uniqueItemID);
         Field[] fields = BaseEnchantmentValues.class.getDeclaredFields();
         for (Field field : fields){
             if (field.getType() == int.class){
@@ -147,15 +156,15 @@ public class CustomPickaxe {
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName("Custom T4 pickaxe");
 
-        String uniqueItemID = UUID.randomUUID().toString();
         List<String> lore = new ArrayList<>();
-        lore.add("This pickaxe is tier 4");
-        lore.add("Can only break the following ores: coal, emerald, iron and diamond");
-        lore.add("§5Unique identifier: " + uniqueItemID);
-        lore.add("§aCurrent XP: §6" + currentXP);
-        lore.add("§aCurrent level: §6" + currentLevel);
-        lore.add("Mining success enchantment = 5");
-        //sets a random id to each created item [helps to locate duping]
+        lore.add("§7Level: §6" + currentLevel);
+        lore.add("§7XP: §6" + currentXP + "/" + currentLevel*300);
+        lore.add("§7::::::::::::::::::::::::::::::::::::::::");
+        lore.add("");
+        lore.add("§6Pickaxe tier §f4");
+        lore.add("§6Can only break the following ores: coal, emerald, iron and diamond");
+        lore.add("");
+        lore.add("§cMining success enchantment: 5");
 
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
@@ -164,11 +173,13 @@ public class CustomPickaxe {
     }
     public static ItemStack create_dr_gold_pickaxe() {
         NBTItem nbtItem = new NBTItem(new ItemStack(Material.GOLDEN_PICKAXE, 1));
+        String uniqueItemID = UUID.randomUUID().toString();
         int currentXP = 0;
         int currentLevel = 80;
         nbtItem.setInteger("tier", 5);
         nbtItem.setInteger("currentXP", currentXP);
         nbtItem.setInteger("currentLevel", currentLevel);
+        nbtItem.setString("uniqueItemID", uniqueItemID);
         Field[] fields = BaseEnchantmentValues.class.getDeclaredFields();
         for (Field field : fields){
             if (field.getType() == int.class){
@@ -182,17 +193,17 @@ public class CustomPickaxe {
         }
         ItemStack itemStack = nbtItem.getItem();
         ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName("Custom T5 pickaxe");
+        itemMeta.setDisplayName("§fCustom T5 pickaxe");
 
-        String uniqueItemID = UUID.randomUUID().toString();
         List<String> lore = new ArrayList<>();
-        lore.add("This pickaxe is tier 5");
-        lore.add("Can only break the following ores: coal, emerald, iron, diamond and gold");
-        lore.add("§5Unique identifier: " + uniqueItemID);
-        lore.add("§aCurrent XP: §6" + currentXP);
-        lore.add("§aCurrent level: §6" + currentLevel);
-        lore.add("Mining success enchantment = 5");
-        //sets a random id to each created item [helps to locate duping]
+        lore.add("§7Level: §6" + currentLevel);
+        lore.add("§7XP: §6" + currentXP + "/" + currentLevel*300);
+        lore.add("§7::::::::::::::::::::::::::::::::::::::::");
+        lore.add("");
+        lore.add("§6Pickaxe tier §f5");
+        lore.add("§6Can only break the following ores: coal, emerald, iron, diamond and gold");
+        lore.add("");
+        lore.add("§cMining success enchantment: 5");
 
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);

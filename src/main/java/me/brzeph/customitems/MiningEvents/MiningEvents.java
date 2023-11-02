@@ -2,7 +2,7 @@ package me.brzeph.customitems.MiningEvents;
 
 import de.tr7zw.nbtapi.NBTItem;
 import me.brzeph.customitems.Main;
-import me.brzeph.customitems.MiningEvents.enchantmentEnums.*;
+import me.brzeph.customitems.MiningEvents.enchantmentEnums.OreRespawnCooldown;
 import me.brzeph.customitems.MiningEvents.otherMiningRelatedEnums.pickRollExperienceEnum;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -12,12 +12,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
-
-import java.util.ArrayList;
-import java.util.List;
-
+import static me.brzeph.customitems.MiningEvents.Methods.ModifyItemLore.modifyItemLore;
+import static me.brzeph.customitems.MiningEvents.Methods.UpdateProgressBar.updateProgressBar;
+import static me.brzeph.customitems.MiningEvents.Methods.UpgradeTier.upgradeTier;
+import static me.brzeph.customitems.MiningEvents.Methods.UpdateLoreEnchantment.updateLoreForNewEnchantment;
 import static me.brzeph.customitems.MiningEvents.MiningXPLevelsTable.XPToLevelUpRequiredMethod;
 import static me.brzeph.customitems.MiningEvents.RandomValueGenerators.*;
 
@@ -29,7 +28,6 @@ public class MiningEvents implements Listener {
         Block blockBroken = event.getBlock();
 
         if (player.getGameMode() == GameMode.CREATIVE) {
-            return;
         } else {
             if (isCustomPickaxe(itemInHand)) {
                 if (pickaxeCanBreakOre(itemInHand, blockBroken)) {
@@ -38,7 +36,8 @@ public class MiningEvents implements Listener {
                         blockBrokenResult(itemInHand, blockBroken, player);
                         didPickLevelUp(player);
                         didPickChangeTier(player);
-                        oreRespawnMechanic(blockBroken, player);
+                        oreRespawnMechanic(blockBroken);
+                        updateProgressBar(player);
 
                         if (didPickaxeLoseDurability(itemInHand, player)){
                             event.setCancelled(true);
@@ -70,32 +69,38 @@ public class MiningEvents implements Listener {
         }
         // Log the keys in the persistent data container.
         NBTItem item = new NBTItem(itemHeld);
-        if (item.getInteger("tier") != 0) {
-            return true;
-        }
-        return false;
+        return item.getInteger("tier") != 0;
     }
-    public void oreRespawnMechanic(Block blockBroken, Player player) {
+    public void oreRespawnMechanic(Block blockBroken) {
 
         BlockState originalBlockState = blockBroken.getState();
 
-        Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
-            blockBroken.setType(Material.STONE);
-        }, 1);
-//TODO: insert ''if'' statement here to create a different respawn time to each ore
-        Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
-            // Restore the original block state
-            originalBlockState.update(true, false);
-            player.sendMessage("DEBUG: Block has been restored");
-        }, 20 * 5);
-    }
+        Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> blockBroken.setType(Material.STONE), 1);
 
-    private boolean isNumeric(String str) {
-        try {
-            Integer.parseInt(str);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
+        if (blockBroken.getType() == Material.COAL_ORE){
+            Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+                originalBlockState.update(true, false);
+            }, 20L * OreRespawnCooldown.getOreRespawnTime(1));
+
+        }if (blockBroken.getType() == Material.EMERALD_ORE){
+            Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+                originalBlockState.update(true, false);
+            }, 20L * OreRespawnCooldown.getOreRespawnTime(2));
+
+        }if (blockBroken.getType() == Material.IRON_ORE){
+            Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+                originalBlockState.update(true, false);
+            }, 20L * OreRespawnCooldown.getOreRespawnTime(3));
+
+        }if (blockBroken.getType() == Material.DIAMOND_ORE){
+            Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+                originalBlockState.update(true, false);
+            }, 20L * OreRespawnCooldown.getOreRespawnTime(4));
+
+        }if (blockBroken.getType() == Material.GOLD_ORE){
+            Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+                originalBlockState.update(true, false);
+            }, 20L * OreRespawnCooldown.getOreRespawnTime(5));
         }
     }
 
@@ -106,25 +111,15 @@ public class MiningEvents implements Listener {
         int pickaxeTier = nbtItem.getInteger("tier");
 
             if (blockBroken.getType() == Material.COAL_ORE) {
-                if (pickaxeTier >= 1){
-                    return true;
-                }
+                return pickaxeTier >= 1;
             } else if (blockBroken.getType() == Material.EMERALD_ORE){
-                if (pickaxeTier >= 2) {
-                    return true;
-                }
+                return pickaxeTier >= 2;
             } else if (blockBroken.getType() == Material.IRON_ORE){
-                if (pickaxeTier >= 3) {
-                    return true;
-                }
+                return pickaxeTier >= 3;
             } else if (blockBroken.getType() == Material.DIAMOND_ORE){
-                if (pickaxeTier >= 4) {
-                    return true;
-                }
+                return pickaxeTier >= 4;
             } else if (blockBroken.getType() == Material.GOLD_ORE){
-                if (pickaxeTier >= 5) {
-                    return true;
-                }
+                return pickaxeTier >= 5;
             }
         return false;
     }
@@ -146,6 +141,7 @@ public class MiningEvents implements Listener {
         int XPGained = 0;
         int amountOfOreDropped = 1;
         int tierGemFindAdaptation = 0;
+        int currentLevel = nbtItem.getInteger("currentLevel");
         int enchantmentDoubleOre = nbtItem.getInteger("enchantmentDoubleOre");
         int enchantmentTripleOre = nbtItem.getInteger("enchantmentTripleOre");  //the mining success enchantment does not need to be here for it's already being
         int enchantmentGemFind = nbtItem.getInteger("enchantmentGemFind");      //check in the previous method of ''didBlockBreak''
@@ -170,7 +166,7 @@ public class MiningEvents implements Listener {
                 ItemStack gems = new ItemStack(Material.EMERALD, intGem);
                 if (player.getInventory().firstEmpty() >= 0) {
                     player.getInventory().addItem(gems);
-                }else { //TODO: maybe change all of these ''randomRoll...'' to enums
+                }else {
                     Location dropLocation = player.getLocation();
                     player.getWorld().dropItemNaturally(dropLocation, gems);
                 }
@@ -413,29 +409,11 @@ public class MiningEvents implements Listener {
 
         }
         int newCurrentXP = nbtItem.getInteger("currentXP") + XPGained;
-        modifyItemLore(player, 3, "§aCurrent XP: §6" + newCurrentXP);
+        modifyItemLore(player, 1, "§7XP: §6" + newCurrentXP + "/" + currentLevel*300);
 
         NBTItem nbti = new NBTItem(player.getInventory().getItemInMainHand());
         nbti.setInteger("currentXP", newCurrentXP);
         player.getInventory().setItemInMainHand(nbti.getItem());
-    }
-    public void modifyItemLore(Player player, int lineIndex, String newLore){
-        ItemStack itemHeld = player.getInventory().getItemInMainHand();
-
-        if (itemHeld != null){
-            ItemMeta itemMeta = itemHeld.getItemMeta();
-
-            if (itemMeta != null && itemMeta.hasLore()){
-                List<String> lore = itemMeta.getLore();
-
-                if (lineIndex >= 0 && lineIndex < lore.size()){
-                    lore.set(lineIndex, newLore);
-                    itemMeta.setLore(lore);
-                    itemHeld.setItemMeta(itemMeta);
-                    player.getInventory().setItemInMainHand(itemHeld);
-                }
-            }
-        }
     }
     public boolean didBlockBreak (ItemStack itemHeld, Block block, Player player){
         int baseT1BreakOreChance = 80;
@@ -491,10 +469,8 @@ public class MiningEvents implements Listener {
             return true;
         }if (block.getType() == Material.DIAMOND_ORE && miningRollT4 < baseT4BreakOreChance){
             return true;
-        }if (block.getType() == Material.GOLD_ORE && miningRollT5 < baseT5BreakOreChance){
-            return true;
         }
-        return false;
+        return block.getType() == Material.GOLD_ORE && miningRollT5 < baseT5BreakOreChance;
     }
 
 
@@ -511,10 +487,10 @@ public class MiningEvents implements Listener {
             int newLevel = currentLevel + 1;
             int newXP = currentXP - requiredXP;
 
-            String newLevelString = "§aCurrent level: §6" + Integer.toString(newLevel);
-            String newXPString = "§aCurrent XP: §6" + Integer.toString(newXP);
-            modifyItemLore(player, 3, newXPString);
-            modifyItemLore(player, 4, newLevelString);
+            String newLevelString = "§7Level: §6" + newLevel;
+            String newXPString = "§7XP: §6" + newXP + "/" + newLevel*300;
+            modifyItemLore(player, 0, newLevelString);
+            modifyItemLore(player, 1, newXPString);
 
             NBTItem nbti = new NBTItem(player.getInventory().getItemInMainHand());
 
@@ -539,224 +515,5 @@ public class MiningEvents implements Listener {
             updateLoreForNewEnchantment(player);
         }
     }
-    public void updateLoreForNewEnchantment(Player player){
-        ItemStack itemHeld = player.getInventory().getItemInMainHand();
-        int i;
-        int startLine = 5;
-        ItemMeta itemMeta = itemHeld.getItemMeta();
-        List<String> lore = itemMeta.getLore();
 
-        for (i = lore.size() - 1; i >= startLine; i--){
-            lore.remove(i);
-        }
-        itemMeta.setLore(lore);
-        itemHeld.setItemMeta(itemMeta);
-        player.getInventory().setItemInMainHand(itemHeld);
-
-        ItemStack itemHeld2 = player.getInventory().getItemInMainHand();
-        List<String> lore2 = new ArrayList<>(itemHeld2.getItemMeta().getLore());
-        NBTItem nbti = new NBTItem(itemHeld2);
-
-        // Check and update enchantments
-            if (nbti.hasKey("enchantmentDoubleOre")) {
-                int doubleOreValue = nbti.getInteger("enchantmentDoubleOre");
-                if (doubleOreValue > 0) {
-                    lore2.add(ChatColor.GREEN + "Double Ore: " + doubleOreValue);
-                }
-            }if (nbti.hasKey("enchantmentTripleOre")) {
-                int tripleOreValue = nbti.getInteger("enchantmentTripleOre");
-                if (tripleOreValue > 0) {
-                    lore2.add(ChatColor.GREEN + "Triple Ore: " + tripleOreValue);
-                }
-            }if (nbti.hasKey("enchantmentMiningSuccess")) {
-                int miningSuccessValue = nbti.getInteger("enchantmentMiningSuccess");
-                if (miningSuccessValue > 0) {
-                    lore2.add(ChatColor.GREEN + "Mining Success: " + miningSuccessValue);
-                }
-            }if (nbti.hasKey("enchantmentGemFind")) {
-                int gemFind = nbti.getInteger("enchantmentGemFind");
-                if (gemFind > 0) {
-                    lore2.add(ChatColor.GREEN + "Gem find: " + gemFind);
-                }
-            }if (nbti.hasKey("enchantmentTreasureFind")) {
-                int treasureFind = nbti.getInteger("enchantmentTreasureFind");
-                if (treasureFind > 0) {
-                    lore2.add(ChatColor.GREEN + "Treasure find: " + treasureFind);
-                }
-            }if (nbti.hasKey("enchantmentDurability")) {
-                int durability = nbti.getInteger("enchantmentDurability");
-                if (durability > 0) {
-                    lore2.add(ChatColor.GREEN + "Treasure find: " + durability);
-                }
-            }
-
-            ItemMeta itemMeta2 = itemHeld2.getItemMeta();
-            itemMeta2.setLore(lore2);
-            itemHeld2.setItemMeta(itemMeta2);
-
-            player.getInventory().setItemInMainHand(itemHeld2);
-    }
-    public void upgradeTier (Player player){
-        ItemStack itemHeld = new ItemStack(player.getInventory().getItemInMainHand());
-        NBTItem nbtItem = new NBTItem(itemHeld);
-        int currentTier = nbtItem.getInteger("tier");
-        int newTier = 0;
-        if (currentTier == 1){
-            newTier = 2;
-            String newTierString = Integer.toString(newTier);
-
-            nbtItem.setInteger("tier", newTier);
-            player.getInventory().setItemInMainHand(nbtItem.getItem());
-
-            modifyItemLore(player, 0, "This pickaxe is tier " + newTierString);
-            modifyItemLore(player, 1, "Can only break the following ores: coal and emerald");
-
-            ItemStack upgradingVisual = new ItemStack(player.getInventory().getItemInMainHand());
-            upgradingVisual.setType(Material.STONE_PICKAXE);
-            player.getInventory().setItemInMainHand(upgradingVisual);
-
-            rollPickaxeEnchantmentOnLevelUp(player);
-            changeHoldingItemName(player, "Custom T2 pickaxe");
-
-
-        }if (currentTier == 2){
-            newTier = 3;
-            String newTierString = Integer.toString(newTier);
-
-            nbtItem.setInteger("tier", newTier);
-            player.getInventory().setItemInMainHand(nbtItem.getItem());
-
-            modifyItemLore(player, 0, "This pickaxe is tier " + newTierString);
-            modifyItemLore(player, 1, "Can only break the following ores: coal, emerald and iron");
-
-            ItemStack upgradingTier = new ItemStack(player.getInventory().getItemInMainHand());
-            upgradingTier.setType(Material.IRON_PICKAXE);
-            player.getInventory().setItemInMainHand(upgradingTier);
-
-            rollPickaxeEnchantmentOnLevelUp(player);
-            changeHoldingItemName(player, "Custom T3 pickaxe");
-
-        }if (currentTier == 3){
-            newTier = 4;
-            String newTierString = Integer.toString(newTier);
-
-            nbtItem.setInteger("tier", newTier);
-            player.getInventory().setItemInMainHand(nbtItem.getItem());
-
-            modifyItemLore(player, 0, "This pickaxe is tier " + newTierString);
-            modifyItemLore(player, 1, "Can only break the following ores: coal, emerald, iron and diamond");
-
-            ItemStack upgradingTier = new ItemStack(player.getInventory().getItemInMainHand());
-            upgradingTier.setType(Material.DIAMOND_PICKAXE);
-            player.getInventory().setItemInMainHand(upgradingTier);
-
-            rollPickaxeEnchantmentOnLevelUp(player);
-            changeHoldingItemName(player, "Custom T4 pickaxe");
-
-        }if (currentTier == 4){
-            newTier = 5;
-            String newTierString = Integer.toString(newTier);
-
-            nbtItem.setInteger("tier", newTier);
-            player.getInventory().setItemInMainHand(nbtItem.getItem());
-
-            modifyItemLore(player, 0, "This pickaxe is tier " + newTierString);
-            modifyItemLore(player, 1, "Can only break the following ores: coal, emerald, iron, diamond and gold");
-
-            ItemStack upgradingTier = new ItemStack(player.getInventory().getItemInMainHand());
-            upgradingTier.setType(Material.GOLDEN_PICKAXE);
-            player.getInventory().setItemInMainHand(upgradingTier);
-
-            rollPickaxeEnchantmentOnLevelUp(player);
-            changeHoldingItemName(player, "Custom T5 pickaxe");
-
-        }if (currentTier == 5){
-            pickaxeReachedLevel100(player);
-        }
-    }
-    public void pickaxeReachedLevel100 (Player player){
-    }
-    public void rollPickaxeEnchantmentOnLevelUp (Player player){
-        ItemStack itemHeld = new ItemStack(player.getInventory().getItemInMainHand());
-        NBTItem nbtItem = new NBTItem(itemHeld);
-        int currentTier = nbtItem.getInteger("tier");
-        int currentDoubleOreValue = nbtItem.getInteger("enchantmentDoubleOre");
-        int currentTripleOreValue = nbtItem.getInteger("enchantmentTripleOre");
-        int currentMiningSuccessValue = nbtItem.getInteger("enchantmentMiningSuccess");
-        int currentGemFindValue = nbtItem.getInteger("enchantmentGemFind");
-        int currentTreasureFindValue = nbtItem.getInteger("enchantmentTreasureFind");
-        int currentDurabilityValue = nbtItem.getInteger("enchantmentDurability");
-
-
-        boolean definedNewEnchantment = false;
-        while (!definedNewEnchantment){
-            int choosingEnchantment = randomlyChoosingNewEnchantment();
-
-            if (choosingEnchantment == 1){ //double ore
-                int rollValue = pickDoubleOreEnum.getRandomValueByTier(currentTier);
-                player.sendMessage("rolled: double ore");
-                if (rollValue > currentDoubleOreValue) {
-                    nbtItem.setInteger("enchantmentDoubleOre", rollValue);
-                    player.getInventory().setItemInMainHand(nbtItem.getItem());
-                    definedNewEnchantment = true;
-                }
-
-            }if (choosingEnchantment == 2){ //triple ore
-                int rollValue = pickTripleOreEnum.getRandomValueByTier(currentTier);
-                player.sendMessage("rolled: triple ore");
-                if (rollValue > currentTripleOreValue){
-                    nbtItem.setInteger("enchantmentTripleOre", rollValue);
-                    player.getInventory().setItemInMainHand(nbtItem.getItem());
-                    definedNewEnchantment = true;
-                }
-
-            }if (choosingEnchantment == 3){ //mining success
-                int rollValue = pickMiningSuccessEnum.getRandomValueByTier(currentTier);
-                player.sendMessage("rolled: mining success");
-                if (rollValue > currentMiningSuccessValue){
-                    nbtItem.setInteger("enchantmentMiningSuccess", rollValue);
-                    player.getInventory().setItemInMainHand(nbtItem.getItem());
-                    definedNewEnchantment = true;
-                }
-
-            }if (choosingEnchantment == 4){ //gem find
-                int rollValue = pickGemFindEnum.getRandomValueByTier(currentTier);
-                player.sendMessage("rolled: gem find");
-                if (rollValue > currentGemFindValue){
-                    nbtItem.setInteger("enchantmentGemFind", rollValue);
-                    player.getInventory().setItemInMainHand(nbtItem.getItem());
-                    definedNewEnchantment = true;
-                }
-
-            }if (choosingEnchantment == 5){ //treasure find
-                if (currentTier >= 3) {
-                    int rollValue = pickTreasureFindEnum.getRandomValueByTier(currentTier);
-                    player.sendMessage("rolled: treasure find");
-                    if (rollValue > currentTreasureFindValue) {
-                        nbtItem.setInteger("enchantmentTreasureFind", rollValue);
-                        player.getInventory().setItemInMainHand(nbtItem.getItem());
-                        definedNewEnchantment = true;
-                    }
-                }
-
-            }if (choosingEnchantment == 6){ //durability
-                int rollValue = pickDurabilityEnum.getRandomValueByTier(currentTier);
-                player.sendMessage("rolled: durability");
-                if (rollValue > currentDurabilityValue){
-                    nbtItem.setInteger("enchantmentDurability", rollValue);
-                    player.getInventory().setItemInMainHand(nbtItem.getItem());
-                    definedNewEnchantment = true;
-                }
-
-            }
-        }
-
-    }
-    public void changeHoldingItemName (Player player, String newName){
-        ItemStack itemStack = new ItemStack(player.getInventory().getItemInMainHand());
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName(newName);
-        itemStack.setItemMeta(itemMeta);
-        player.getInventory().setItemInMainHand(itemStack);
-    }
 }

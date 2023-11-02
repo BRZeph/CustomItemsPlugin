@@ -24,6 +24,7 @@ public class Commands implements CommandExecutor {
             NBTItem heldItem = new NBTItem(player.getInventory().getItemInMainHand());
 
             String[] desiredOrder = {
+                    "uniqueItemID",
                     "tier",
                     "currentXP",
                     "currentLevel",

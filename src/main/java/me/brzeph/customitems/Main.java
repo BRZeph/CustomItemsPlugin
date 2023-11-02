@@ -2,8 +2,12 @@ package me.brzeph.customitems;
 
 // TODO: make sure that whenever the player breaks a block that is auto generated, it does not break by failing the ''onBlockBreakEvent''
 // TODO: implement new treasure find list on mining events
-// TODO: implement the system of when a block is broken, it changes into a stone block for 5000 ticks and then respawn the ore
 // TODO: create the method soldado mentioned to create items from nbt tags
+
+// TODO: change pickaxe lore to be more like DR.
+// TODO: line 1: "Level: [currentLevel]"
+// TODO: line 2: "[currentXP]/[XPRequiredToLevelUp]"
+// TODO: line 3: "[bar that is proportional to the progress of XP]"
 
 
 import me.brzeph.customitems.Commands.Commands;
