@@ -11,7 +11,7 @@ import static me.brzeph.customitems.MiningEvents.Methods.PickaxeReachedLevel100.
 import static me.brzeph.customitems.MiningEvents.Methods.rollPickaxeEnchantOnTierChange.rollPickaxeEnchantmentOnLevelUp;
 
 public class UpgradeTier {
-    public static void upgradeTier (Player player){
+    public static void upgradeTier(Player player){
         ItemStack itemHeld = new ItemStack(player.getInventory().getItemInMainHand());
         NBTItem nbtItem = new NBTItem(itemHeld);
         int currentTier = nbtItem.getInteger("tier");

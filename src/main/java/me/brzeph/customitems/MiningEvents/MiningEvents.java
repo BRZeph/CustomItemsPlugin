@@ -3,6 +3,7 @@ package me.brzeph.customitems.MiningEvents;
 import de.tr7zw.nbtapi.NBTItem;
 import me.brzeph.customitems.Main;
 import me.brzeph.customitems.MiningEvents.enchantmentEnums.OreRespawnCooldown;
+import me.brzeph.customitems.MiningEvents.otherMiningRelatedEnums.pickGemFindValueByTierEnum;
 import me.brzeph.customitems.MiningEvents.otherMiningRelatedEnums.pickRollExperienceEnum;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -43,7 +44,8 @@ public class MiningEvents implements Listener {
                             event.setCancelled(true);
                         }
                     } else{
-                        player.sendMessage("§9Failed to break the ore");
+                        player.sendMessage("§cFailed to break the ore");
+                        oreRespawnMechanic(blockBroken);
                         event.setCancelled(true);
                     }
                 } else {
@@ -129,7 +131,7 @@ public class MiningEvents implements Listener {
         int enchantmentDurability = nbtItem.getInteger("enchantmentDurability");
         int durabilityEnchantmentRoll = durabilityEnchantmentRandomRoll();
         if (durabilityEnchantmentRoll < enchantmentDurability){
-            player.sendMessage("The Durability enchantment just worked, you did not lose any durability!");
+            player.sendMessage("§aThe Durability enchantment just worked, you did not lose any durability!");
             return true;
         }
         return false;
@@ -152,17 +154,17 @@ public class MiningEvents implements Listener {
             XPGained = pickRollExperienceEnum.getRandomValueByTier(1);
 
             if (doubleOreRandomRoll() <= enchantmentDoubleOre && doubleOreRandomRoll() != 0){
-                player.sendMessage("Congratulations, the double ore enchantment just worked");
+                player.sendMessage("§aCongratulations, the double ore enchantment just worked");
                 amountOfOreDropped = amountOfOreDropped*2;
             }
 
             if (tripleOreRandomRoll() <= enchantmentTripleOre && tripleOreRandomRoll() != 0){
-                player.sendMessage("Congratulations, the triple ore enchantment just worked");
+                player.sendMessage("§aCongratulations, the triple ore enchantment just worked");
                 amountOfOreDropped = amountOfOreDropped*3;
             }
 
             if (gemFindRandomRollForEnchantment() <= enchantmentGemFind && gemFindRandomRollForEnchantment() != 0) {
-                int intGem = gemFindRandomRollForGems()/tierGemFindAdaptation;
+                int intGem = pickGemFindValueByTierEnum.getRandomValueByTier(1);
                 ItemStack gems = new ItemStack(Material.EMERALD, intGem);
                 if (player.getInventory().firstEmpty() >= 0) {
                     player.getInventory().addItem(gems);
@@ -170,7 +172,7 @@ public class MiningEvents implements Listener {
                     Location dropLocation = player.getLocation();
                     player.getWorld().dropItemNaturally(dropLocation, gems);
                 }
-                player.sendMessage("You have found " + intGem + " gems");
+                player.sendMessage("§aYou have found " + intGem + " gems");
             }
 
             if (treasureFindRandomRoll() <= enchantmentTreasureFind && treasureFindRandomRoll() != 0){
@@ -182,7 +184,7 @@ public class MiningEvents implements Listener {
                     Location dropLocation = player.getLocation();
                     player.getWorld().dropItemNaturally(dropLocation, treasure);
                 }
-                player.sendMessage("You have found " + intGem + " gems");
+                player.sendMessage("§aYou have found " + intGem + " gems");
             }
 
             ItemStack coalResult = new ItemStack(Material.COAL_ORE, amountOfOreDropped);
@@ -192,10 +194,10 @@ public class MiningEvents implements Listener {
             } else {
                 Location dropLocation = player.getLocation();
                 player.getWorld().dropItemNaturally(dropLocation, coalResult);
-                player.sendMessage(ChatColor.RED + "You don't have enough slots, the item[s] have been dropped on the ground");
+                player.sendMessage(ChatColor.RED + "§cYou don't have enough slots, the item[s] have been dropped on the ground");
             }
 
-            player.sendMessage("Successfully mined a coal ore");
+            player.sendMessage("§aSuccessfully mined a coal ore");
             player.sendMessage("You got " + amountOfOreDropped + " ores");
             player.sendMessage("+" + XPGained + " XP gained");
 
@@ -204,17 +206,17 @@ public class MiningEvents implements Listener {
             XPGained = pickRollExperienceEnum.getRandomValueByTier(2);
 
             if (doubleOreRandomRoll() <= enchantmentDoubleOre && doubleOreRandomRoll() != 0){
-                player.sendMessage("Congratulations, the double ore enchantment just worked");
+                player.sendMessage("§aCongratulations, the double ore enchantment just worked");
                 amountOfOreDropped = amountOfOreDropped*2;
             }
 
             if (tripleOreRandomRoll() <= enchantmentTripleOre && tripleOreRandomRoll() != 0){
-                player.sendMessage("Congratulations, the triple ore enchantment just worked");
+                player.sendMessage("§aCongratulations, the triple ore enchantment just worked");
                 amountOfOreDropped = amountOfOreDropped*3;
             }
 
             if (gemFindRandomRollForEnchantment() <= enchantmentGemFind && gemFindRandomRollForEnchantment() != 0) {
-                int intGem = gemFindRandomRollForGems()/tierGemFindAdaptation;
+                int intGem = pickGemFindValueByTierEnum.getRandomValueByTier(2);
                 ItemStack gems = new ItemStack(Material.EMERALD, intGem);
                 if (player.getInventory().firstEmpty() >= 0) {
                     player.getInventory().addItem(gems);
@@ -222,7 +224,7 @@ public class MiningEvents implements Listener {
                     Location dropLocation = player.getLocation();
                     player.getWorld().dropItemNaturally(dropLocation, gems);
                 }
-                player.sendMessage("You have found " + intGem + " gems");
+                player.sendMessage("§aYou have found " + intGem + " gems");
             }
 
             if (treasureFindRandomRoll() <= enchantmentTreasureFind && treasureFindRandomRoll() != 0){
@@ -234,7 +236,7 @@ public class MiningEvents implements Listener {
                     Location dropLocation = player.getLocation();
                     player.getWorld().dropItemNaturally(dropLocation, treasure);
                 }
-                player.sendMessage("You have found " + intGem + " gems");
+                player.sendMessage("§aYou have found " + intGem + " gems");
             }
 
             ItemStack emeraldResult = new ItemStack(Material.EMERALD_ORE, amountOfOreDropped);
@@ -244,10 +246,10 @@ public class MiningEvents implements Listener {
             } else {
                 Location dropLocation = player.getLocation();
                 player.getWorld().dropItemNaturally(dropLocation, emeraldResult);
-                player.sendMessage(ChatColor.RED + "You don't have enough slots, the item[s] have been dropped on the ground");
+                player.sendMessage(ChatColor.RED + "§cYou don't have enough slots, the item[s] have been dropped on the ground");
             }
 
-            player.sendMessage("Successfully mined an emerald ore");
+            player.sendMessage("§aSuccessfully mined an emerald ore");
             player.sendMessage("You got " + amountOfOreDropped + " ores");
             player.sendMessage("+" + XPGained + " XP gained");
 
@@ -256,17 +258,17 @@ public class MiningEvents implements Listener {
             XPGained = pickRollExperienceEnum.getRandomValueByTier(3);
 
             if (doubleOreRandomRoll() <= enchantmentDoubleOre && doubleOreRandomRoll() != 0){
-                player.sendMessage("Congratulations, the double ore enchantment just worked");
+                player.sendMessage("§aCongratulations, the double ore enchantment just worked");
                 amountOfOreDropped = amountOfOreDropped*2;
             }
 
             if (tripleOreRandomRoll() <= enchantmentTripleOre && tripleOreRandomRoll() != 0){
-                player.sendMessage("Congratulations, the triple ore enchantment just worked");
+                player.sendMessage("§aCongratulations, the triple ore enchantment just worked");
                 amountOfOreDropped = amountOfOreDropped*3;
             }
 
             if (gemFindRandomRollForEnchantment() <= enchantmentGemFind && gemFindRandomRollForEnchantment() != 0) {
-                int intGem = gemFindRandomRollForGems()/tierGemFindAdaptation;
+                int intGem = pickGemFindValueByTierEnum.getRandomValueByTier(3);
                 ItemStack gems = new ItemStack(Material.EMERALD, intGem);
                 if (player.getInventory().firstEmpty() >= 0) {
                     player.getInventory().addItem(gems);
@@ -274,7 +276,7 @@ public class MiningEvents implements Listener {
                     Location dropLocation = player.getLocation();
                     player.getWorld().dropItemNaturally(dropLocation, gems);
                 }
-                player.sendMessage("You have found " + intGem + " gems");
+                player.sendMessage("§aYou have found " + intGem + " gems");
             }
 
             if (treasureFindRandomRoll() <= enchantmentTreasureFind && treasureFindRandomRoll() != 0){
@@ -286,7 +288,7 @@ public class MiningEvents implements Listener {
                     Location dropLocation = player.getLocation();
                     player.getWorld().dropItemNaturally(dropLocation, treasure);
                 }
-                player.sendMessage("You have found " + intGem + " gems");
+                player.sendMessage("§aYou have found " + intGem + " gems");
             }
 
             ItemStack ironResult = new ItemStack(Material.IRON_ORE, amountOfOreDropped);
@@ -296,10 +298,10 @@ public class MiningEvents implements Listener {
             } else {
                 Location dropLocation = player.getLocation();
                 player.getWorld().dropItemNaturally(dropLocation, ironResult);
-                player.sendMessage(ChatColor.RED + "You don't have enough slots, the item[s] have been dropped on the ground");
+                player.sendMessage(ChatColor.RED + "§cYou don't have enough slots, the item[s] have been dropped on the ground");
             }
 
-            player.sendMessage("Successfully mined an iron ore");
+            player.sendMessage("§aSuccessfully mined an iron ore");
             player.sendMessage("You got " + amountOfOreDropped + " ores");
             player.sendMessage("+" + XPGained + " XP gained");
 
@@ -308,17 +310,17 @@ public class MiningEvents implements Listener {
             XPGained = pickRollExperienceEnum.getRandomValueByTier(4);
 
             if (doubleOreRandomRoll() <= enchantmentDoubleOre && doubleOreRandomRoll() != 0){
-                player.sendMessage("Congratulations, the double ore enchantment just worked");
+                player.sendMessage("§aCongratulations, the double ore enchantment just worked");
                 amountOfOreDropped = amountOfOreDropped*2;
             }
 
             if (tripleOreRandomRoll() <= enchantmentTripleOre && tripleOreRandomRoll() != 0){
-                player.sendMessage("Congratulations, the triple ore enchantment just worked");
+                player.sendMessage("§aCongratulations, the triple ore enchantment just worked");
                 amountOfOreDropped = amountOfOreDropped*3;
             }
 
             if (gemFindRandomRollForEnchantment() <= enchantmentGemFind && gemFindRandomRollForEnchantment() != 0) {
-                int intGem = gemFindRandomRollForGems()/tierGemFindAdaptation;
+                int intGem = pickGemFindValueByTierEnum.getRandomValueByTier(4);
                 ItemStack gems = new ItemStack(Material.EMERALD, intGem);
                 if (player.getInventory().firstEmpty() >= 0) {
                     player.getInventory().addItem(gems);
@@ -326,7 +328,7 @@ public class MiningEvents implements Listener {
                     Location dropLocation = player.getLocation();
                     player.getWorld().dropItemNaturally(dropLocation, gems);
                 }
-                player.sendMessage("You have found " + intGem + " gems");
+                player.sendMessage("§aYou have found " + intGem + " gems");
             }
 
             if (treasureFindRandomRoll() <= enchantmentTreasureFind && treasureFindRandomRoll() != 0){
@@ -338,7 +340,7 @@ public class MiningEvents implements Listener {
                     Location dropLocation = player.getLocation();
                     player.getWorld().dropItemNaturally(dropLocation, treasure);
                 }
-                player.sendMessage("You have found " + intGem + " gems");
+                player.sendMessage("§aYou have found " + intGem + " gems");
             }
 
             ItemStack diamondResult = new ItemStack(Material.DIAMOND_ORE, amountOfOreDropped);
@@ -348,10 +350,10 @@ public class MiningEvents implements Listener {
             } else {
                 Location dropLocation = player.getLocation();
                 player.getWorld().dropItemNaturally(dropLocation, diamondResult);
-                player.sendMessage(ChatColor.RED + "You don't have enough slots, the item[s] have been dropped on the ground");
+                player.sendMessage(ChatColor.RED + "§cYou don't have enough slots, the item[s] have been dropped on the ground");
             }
 
-            player.sendMessage("Successfully mined a diamond ore");
+            player.sendMessage("§aSuccessfully mined a diamond ore");
             player.sendMessage("You got " + amountOfOreDropped + " ores");
             player.sendMessage("+" + XPGained + " XP gained");
 
@@ -360,17 +362,17 @@ public class MiningEvents implements Listener {
             XPGained = pickRollExperienceEnum.getRandomValueByTier(5);
 
             if (doubleOreRandomRoll() <= enchantmentDoubleOre && doubleOreRandomRoll() != 0){
-                player.sendMessage("Congratulations, the double ore enchantment just worked");
+                player.sendMessage("§aCongratulations, the double ore enchantment just worked");
                 amountOfOreDropped = amountOfOreDropped*2;
             }
 
             if (tripleOreRandomRoll() <= enchantmentTripleOre && tripleOreRandomRoll() != 0){
-                player.sendMessage("Congratulations, the triple ore enchantment just worked");
+                player.sendMessage("§aCongratulations, the triple ore enchantment just worked");
                 amountOfOreDropped = amountOfOreDropped*3;
             }
 
             if (gemFindRandomRollForEnchantment() <= enchantmentGemFind && gemFindRandomRollForEnchantment() != 0) {
-                int intGem = gemFindRandomRollForGems()/tierGemFindAdaptation;
+                int intGem = pickGemFindValueByTierEnum.getRandomValueByTier(5);
                 ItemStack gems = new ItemStack(Material.EMERALD, intGem);
                 if (player.getInventory().firstEmpty() >= 0) {
                     player.getInventory().addItem(gems);
@@ -378,7 +380,7 @@ public class MiningEvents implements Listener {
                     Location dropLocation = player.getLocation();
                     player.getWorld().dropItemNaturally(dropLocation, gems);
                 }
-                player.sendMessage("You have found " + intGem + " gems");
+                player.sendMessage("§aYou have found " + intGem + " gems");
             }
 
             if (treasureFindRandomRoll() <= enchantmentTreasureFind && treasureFindRandomRoll() != 0){
@@ -390,7 +392,7 @@ public class MiningEvents implements Listener {
                     Location dropLocation = player.getLocation();
                     player.getWorld().dropItemNaturally(dropLocation, treasure);
                 }
-                player.sendMessage("You have found " + intGem + " gems");
+                player.sendMessage("§aYou have found " + intGem + " gems");
             }
 
             ItemStack goldResult = new ItemStack(Material.GOLD_ORE, amountOfOreDropped);
@@ -400,16 +402,16 @@ public class MiningEvents implements Listener {
             } else {
                 Location dropLocation = player.getLocation();
                 player.getWorld().dropItemNaturally(dropLocation, goldResult);
-                player.sendMessage(ChatColor.RED + "You don't have enough slots, the item[s] have been dropped on the ground");
+                player.sendMessage(ChatColor.RED + "§cYou don't have enough slots, the item[s] have been dropped on the ground");
             }
 
-            player.sendMessage("Successfully mined a gold ore");
+            player.sendMessage("§aSuccessfully mined a gold ore");
             player.sendMessage("You got " + amountOfOreDropped + " ores");
             player.sendMessage("+" + XPGained + " XP gained");
 
         }
         int newCurrentXP = nbtItem.getInteger("currentXP") + XPGained;
-        modifyItemLore(player, 1, "§7XP: §6" + newCurrentXP + "/" + currentLevel*300);
+        modifyItemLore(player, 1, "§7XP: §6" + newCurrentXP + "/" + XPToLevelUpRequiredMethod(player.getInventory().getItemInMainHand()));
 
         NBTItem nbti = new NBTItem(player.getInventory().getItemInMainHand());
         nbti.setInteger("currentXP", newCurrentXP);
@@ -488,7 +490,7 @@ public class MiningEvents implements Listener {
             int newXP = currentXP - requiredXP;
 
             String newLevelString = "§7Level: §6" + newLevel;
-            String newXPString = "§7XP: §6" + newXP + "/" + newLevel*300;
+            String newXPString = "§7XP: §6" + newXP + "/" + XPToLevelUpRequiredMethod(player.getInventory().getItemInMainHand());
             modifyItemLore(player, 0, newLevelString);
             modifyItemLore(player, 1, newXPString);
 

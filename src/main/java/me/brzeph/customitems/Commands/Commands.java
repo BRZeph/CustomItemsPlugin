@@ -10,6 +10,9 @@ import org.bukkit.inventory.ItemStack;
 import de.tr7zw.nbtapi.NBTItem;
 import org.jetbrains.annotations.NotNull;
 
+import static me.brzeph.customitems.MiningEvents.Methods.UpdateLoreEnchantment.updateLoreForNewEnchantment;
+import static me.brzeph.customitems.MiningEvents.Methods.UpgradeTier.upgradeTier;
+
 public class Commands implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] strings) {
@@ -46,6 +49,7 @@ public class Commands implements CommandExecutor {
             player.sendMessage(ChatColor.GREEN + "the nbt tags on your item are: " + "\n" + nbtTags);
             return true;
         }
+
         if (cmd.getName().equalsIgnoreCase("pick")) {
             ItemStack customPickaxeT1 = CustomPickaxe.create_dr_wooden_pickaxe();
             ItemStack customPickaxeT2 = CustomPickaxe.create_dr_stone_pickaxe();
@@ -73,6 +77,8 @@ public class Commands implements CommandExecutor {
                     player.sendMessage("the tag value is " + nbtValue);
                     nbti.setInteger(nbtKey, nbtValue);
                     player.getInventory().setItemInMainHand(nbti.getItem());
+
+                    updateLoreForNewEnchantment(player);
 
                     player.sendMessage("Successfully changed the NBT tag " + nbtKey + "'s value to " + nbtValue);
                 } else {

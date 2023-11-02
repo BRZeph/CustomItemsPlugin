@@ -26,57 +26,57 @@ public class rollPickaxeEnchantOnTierChange {
 
             if (choosingEnchantment == 1){ //double ore
                 int rollValue = pickDoubleOreEnum.getRandomValueByTier(currentTier);
-                player.sendMessage("rolled: double ore");
                 if (rollValue > currentDoubleOreValue) {
                     nbtItem.setInteger("enchantmentDoubleOre", rollValue);
                     player.getInventory().setItemInMainHand(nbtItem.getItem());
+                    player.sendMessage("§aNew enchantment: double ore " + rollValue);
                     definedNewEnchantment = true;
                 }
 
             }if (choosingEnchantment == 2){ //triple ore
                 int rollValue = pickTripleOreEnum.getRandomValueByTier(currentTier);
-                player.sendMessage("rolled: triple ore");
                 if (rollValue > currentTripleOreValue){
                     nbtItem.setInteger("enchantmentTripleOre", rollValue);
                     player.getInventory().setItemInMainHand(nbtItem.getItem());
+                    player.sendMessage("§aNew enchantment: triple ore " + rollValue);
                     definedNewEnchantment = true;
                 }
 
             }if (choosingEnchantment == 3){ //mining success
                 int rollValue = pickMiningSuccessEnum.getRandomValueByTier(currentTier);
-                player.sendMessage("rolled: mining success");
                 if (rollValue > currentMiningSuccessValue){
                     nbtItem.setInteger("enchantmentMiningSuccess", rollValue);
                     player.getInventory().setItemInMainHand(nbtItem.getItem());
+                    player.sendMessage("§aNew enchantment: mining success " + rollValue);
                     definedNewEnchantment = true;
                 }
 
             }if (choosingEnchantment == 4){ //gem find
                 int rollValue = pickGemFindEnum.getRandomValueByTier(currentTier);
-                player.sendMessage("rolled: gem find");
                 if (rollValue > currentGemFindValue){
                     nbtItem.setInteger("enchantmentGemFind", rollValue);
                     player.getInventory().setItemInMainHand(nbtItem.getItem());
+                    player.sendMessage("§aNew enchantment: gem find " + rollValue);
                     definedNewEnchantment = true;
                 }
 
             }if (choosingEnchantment == 5){ //treasure find
                 if (currentTier >= 3) {
                     int rollValue = pickTreasureFindEnum.getRandomValueByTier(currentTier);
-                    player.sendMessage("rolled: treasure find");
                     if (rollValue > currentTreasureFindValue) {
                         nbtItem.setInteger("enchantmentTreasureFind", rollValue);
                         player.getInventory().setItemInMainHand(nbtItem.getItem());
+                        player.sendMessage("§aNew enchantment: treasure find " + rollValue);
                         definedNewEnchantment = true;
                     }
                 }
 
             }if (choosingEnchantment == 6){ //durability
                 int rollValue = pickDurabilityEnum.getRandomValueByTier(currentTier);
-                player.sendMessage("rolled: durability");
                 if (rollValue > currentDurabilityValue){
                     nbtItem.setInteger("enchantmentDurability", rollValue);
                     player.getInventory().setItemInMainHand(nbtItem.getItem());
+                    player.sendMessage("§aNew enchantment: durability " + rollValue);
                     definedNewEnchantment = true;
                 }
 

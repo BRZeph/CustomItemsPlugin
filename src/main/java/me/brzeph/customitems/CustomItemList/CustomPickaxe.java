@@ -2,7 +2,6 @@ package me.brzeph.customitems.CustomItemList;
 
 import de.tr7zw.nbtapi.NBTItem;
 import me.brzeph.customitems.MiningEvents.BaseEnchantmentValues;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -45,7 +44,7 @@ public class CustomPickaxe {
         lore.add("§6Pickaxe tier §f1");
         lore.add("§6Can only break the following ores: coal");
         lore.add("");
-        lore.add("§cMining success enchantment: 5");
+        lore.add("§cMining success: 5");
         //sets a random id to each created item [helps to locate duping]
 
         itemMeta.setLore(lore);
@@ -86,7 +85,7 @@ public class CustomPickaxe {
         lore.add("§6Pickaxe tier §f2");
         lore.add("§6Can only break the following ores: coal and emerald");
         lore.add("");
-        lore.add("§cMining success enchantment: 5");
+        lore.add("§cMining success: 5");
 
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
@@ -125,7 +124,7 @@ public class CustomPickaxe {
         lore.add("§6Pickaxe tier §f3");
         lore.add("§6Can only break the following ores: coal, emerald and iron");
         lore.add("");
-        lore.add("§cMining success enchantment: 5");
+        lore.add("§cMining success: 5");
 
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
@@ -164,7 +163,7 @@ public class CustomPickaxe {
         lore.add("§6Pickaxe tier §f4");
         lore.add("§6Can only break the following ores: coal, emerald, iron and diamond");
         lore.add("");
-        lore.add("§cMining success enchantment: 5");
+        lore.add("§cMining success: 5");
 
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
@@ -193,7 +192,7 @@ public class CustomPickaxe {
         }
         ItemStack itemStack = nbtItem.getItem();
         ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName("§fCustom T5 pickaxe");
+        itemMeta.setDisplayName("Custom T5 pickaxe");
 
         List<String> lore = new ArrayList<>();
         lore.add("§7Level: §6" + currentLevel);
@@ -203,7 +202,7 @@ public class CustomPickaxe {
         lore.add("§6Pickaxe tier §f5");
         lore.add("§6Can only break the following ores: coal, emerald, iron, diamond and gold");
         lore.add("");
-        lore.add("§cMining success enchantment: 5");
+        lore.add("§cMining success: 5");
 
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
