@@ -42,6 +42,7 @@ public class CustomPickaxe {
         lore.add("§5Unique identifier: " + uniqueItemID);
         lore.add("§aCurrent XP: §6" + currentXP);
         lore.add("§aCurrent level: §6" + currentLevel);
+        lore.add("Mining success enchantment = 5");
         //sets a random id to each created item [helps to locate duping]
 
         itemMeta.setLore(lore);
@@ -79,6 +80,7 @@ public class CustomPickaxe {
         lore.add("§5Unique identifier: " + uniqueItemID);
         lore.add("§aCurrent XP: §6" + currentXP);
         lore.add("§aCurrent level: §6" + currentLevel);
+        lore.add("Mining success enchantment = 5");
         //sets a random id to each created item [helps to locate duping]
 
         itemMeta.setLore(lore);
@@ -115,6 +117,7 @@ public class CustomPickaxe {
         lore.add("§5Unique identifier: " + uniqueItemID);
         lore.add("§aCurrent XP: §6" + currentXP);
         lore.add("§aCurrent level: §6" + currentLevel);
+        lore.add("Mining success enchantment = 5");
         //sets a random id to each created item [helps to locate duping]
 
         itemMeta.setLore(lore);
@@ -151,6 +154,7 @@ public class CustomPickaxe {
         lore.add("§5Unique identifier: " + uniqueItemID);
         lore.add("§aCurrent XP: §6" + currentXP);
         lore.add("§aCurrent level: §6" + currentLevel);
+        lore.add("Mining success enchantment = 5");
         //sets a random id to each created item [helps to locate duping]
 
         itemMeta.setLore(lore);
@@ -187,6 +191,7 @@ public class CustomPickaxe {
         lore.add("§5Unique identifier: " + uniqueItemID);
         lore.add("§aCurrent XP: §6" + currentXP);
         lore.add("§aCurrent level: §6" + currentLevel);
+        lore.add("Mining success enchantment = 5");
         //sets a random id to each created item [helps to locate duping]
 
         itemMeta.setLore(lore);
