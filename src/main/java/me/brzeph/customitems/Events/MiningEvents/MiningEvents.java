@@ -14,6 +14,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import static me.brzeph.customitems.Events.MiningEvents.Methods.ModifyItemLore.modifyItemLore;
 import static me.brzeph.customitems.Events.MiningEvents.Methods.UpdateProgressBar.updateProgressBar;
 import static me.brzeph.customitems.Events.MiningEvents.Methods.UpgradeTier.upgradeTier;
@@ -30,33 +33,43 @@ public class MiningEvents implements Listener {
 
         if (player.getGameMode() == GameMode.CREATIVE) {
         } else {
-            if (isCustomPickaxe(itemInHand)) {
-                if (pickaxeCanBreakOre(itemInHand, blockBroken)) {
-                    if (didBlockBreak(itemInHand, blockBroken, player)) {
-                        event.setDropItems(false);
-                        blockBrokenResult(itemInHand, blockBroken, player);
-                        didPickLevelUp(player);
-                        didPickChangeTier(player);
-                        oreRespawnMechanic(blockBroken);
-                        updateProgressBar(player);
+            Set<Material> validMaterials = new HashSet<>();
+            validMaterials.add(Material.COAL_ORE);
+            validMaterials.add(Material.EMERALD_ORE);
+            validMaterials.add(Material.IRON_ORE);
+            validMaterials.add(Material.DIAMOND_ORE);
+            validMaterials.add(Material.GOLD_ORE);
+            if (validMaterials.contains(blockBroken.getType())) {
+                if (isCustomPickaxe(itemInHand)) {
+                    if (pickaxeCanBreakOre(itemInHand, blockBroken)) {
+                        if (didBlockBreak(itemInHand, blockBroken, player)) {
+                            event.setDropItems(false);
+                            blockBrokenResult(itemInHand, blockBroken, player);
+                            didPickLevelUp(player);
+                            didPickChangeTier(player);
+                            oreRespawnMechanic(blockBroken);
+                            updateProgressBar(player);
 
-                        if (didPickaxeLoseDurability(itemInHand, player)){
+                            if (didPickaxeLoseDurability(itemInHand, player)) {
+                                event.setCancelled(true);
+                            }
+                        } else {
+                            player.sendMessage("§cFailed to break the ore!");
+                            oreRespawnMechanic(blockBroken);
                             event.setCancelled(true);
                         }
-                    } else{
-                        player.sendMessage("§cFailed to break the ore");
-                        oreRespawnMechanic(blockBroken);
+                    } else {
+                        player.sendMessage("Your pickaxe tier is not great enough to break this ore!");
                         event.setCancelled(true);
                     }
                 } else {
-                    player.sendMessage("Your pickaxe tier is not great enough to break this ore");
-                    event.setCancelled(true);
+                    player.sendMessage("You are not using a custom pickaxe!");
+                    event.setCancelled(true);//any custom item used to break a block different from pickaxes will not work
                 }
-            } else {
-                // Cancel the block break event to prevent it from breaking
-                player.sendMessage("You are not using a custom pickaxe");
+            }else {
+                player.sendMessage("You can not break this block!");
                 event.setCancelled(true);
-            } //any custom item used to break a block different from pickaxes will not work
+            }
         }
     }//to add new custom items add a ''if'' after the last ''else'' and create the item there
 
