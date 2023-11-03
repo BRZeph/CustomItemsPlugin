@@ -1,4 +1,4 @@
-package me.brzeph.customitems.MiningEvents.enchantmentEnums;
+package me.brzeph.customitems.Events.MiningEvents.enchantmentEnums;
 
 public enum OreRespawnCooldown {
     T1(5),     //numbers in seconds please, not in ticks

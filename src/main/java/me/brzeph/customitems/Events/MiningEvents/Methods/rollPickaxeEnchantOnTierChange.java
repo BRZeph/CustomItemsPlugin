@@ -1,11 +1,11 @@
-package me.brzeph.customitems.MiningEvents.Methods;
+package me.brzeph.customitems.Events.MiningEvents.Methods;
 
 import de.tr7zw.nbtapi.NBTItem;
-import me.brzeph.customitems.MiningEvents.enchantmentEnums.*;
+import me.brzeph.customitems.Events.MiningEvents.enchantmentEnums.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import static me.brzeph.customitems.MiningEvents.RandomValueGenerators.randomlyChoosingNewEnchantment;
+import static me.brzeph.customitems.Events.MiningEvents.RandomValueGenerators.randomlyChoosingNewEnchantment;
 
 public class rollPickaxeEnchantOnTierChange {
     public static void rollPickaxeEnchantmentOnLevelUp (Player player){
@@ -82,6 +82,5 @@ public class rollPickaxeEnchantOnTierChange {
 
             }
         }
-
     }
 }

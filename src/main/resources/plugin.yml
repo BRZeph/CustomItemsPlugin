@@ -12,6 +12,10 @@ commands:
     description: changes the nbt tags of an item
     usage: /<command>
 
+  skilltrainer:
+    description: opens the skilltrainer GUI
+    usage: /<command>
+
   pick:
     description: gives the player all custom picks
     usage: /<command>

@@ -1,11 +1,11 @@
-package me.brzeph.customitems.MiningEvents.Methods;
+package me.brzeph.customitems.Events.MiningEvents.Methods;
 
 import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import static me.brzeph.customitems.MiningEvents.Methods.ModifyItemLore.modifyItemLore;
-import static me.brzeph.customitems.MiningEvents.MiningXPLevelsTable.XPToLevelUpRequiredMethod;
+import static me.brzeph.customitems.Events.MiningEvents.Methods.ModifyItemLore.modifyItemLore;
+import static me.brzeph.customitems.Events.MiningEvents.MiningXPLevelsTable.XPToLevelUpRequiredMethod;
 
 public class UpdateProgressBar {
     public static void updateProgressBar(Player player){

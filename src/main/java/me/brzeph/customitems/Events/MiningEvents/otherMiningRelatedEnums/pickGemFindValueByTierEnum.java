@@ -1,4 +1,4 @@
-package me.brzeph.customitems.MiningEvents.otherMiningRelatedEnums;
+package me.brzeph.customitems.Events.MiningEvents.otherMiningRelatedEnums;
 
 import java.util.Random;
 

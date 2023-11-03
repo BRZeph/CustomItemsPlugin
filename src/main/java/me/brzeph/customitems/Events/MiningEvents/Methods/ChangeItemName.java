@@ -1,4 +1,4 @@
-package me.brzeph.customitems.MiningEvents.Methods;
+package me.brzeph.customitems.Events.MiningEvents.Methods;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

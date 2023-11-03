@@ -10,8 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import de.tr7zw.nbtapi.NBTItem;
 import org.jetbrains.annotations.NotNull;
 
-import static me.brzeph.customitems.MiningEvents.Methods.UpdateLoreEnchantment.updateLoreForNewEnchantment;
-import static me.brzeph.customitems.MiningEvents.Methods.UpgradeTier.upgradeTier;
+import static me.brzeph.customitems.Events.MiningEvents.Methods.UpdateLoreEnchantment.updateLoreForNewEnchantment;
 
 public class Commands implements CommandExecutor {
     @Override

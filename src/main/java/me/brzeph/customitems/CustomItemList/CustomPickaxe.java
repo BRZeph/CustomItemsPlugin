@@ -1,7 +1,7 @@
 package me.brzeph.customitems.CustomItemList;
 
 import de.tr7zw.nbtapi.NBTItem;
-import me.brzeph.customitems.MiningEvents.BaseEnchantmentValues;
+import me.brzeph.customitems.Events.MiningEvents.BaseEnchantmentValues;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;

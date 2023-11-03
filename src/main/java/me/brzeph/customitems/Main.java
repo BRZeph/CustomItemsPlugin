@@ -11,7 +11,9 @@ package me.brzeph.customitems;
 
 
 import me.brzeph.customitems.Commands.Commands;
-import me.brzeph.customitems.MiningEvents.MiningEvents;
+import me.brzeph.customitems.Commands.NPCCommands;
+import me.brzeph.customitems.Events.MiningEvents.MiningEvents;
+import me.brzeph.customitems.Events.NPCEvents.SkillTrainerEvents;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Main extends JavaPlugin {
@@ -25,11 +27,13 @@ public final class Main extends JavaPlugin {
         // Plugin startup logic
         getServer().getConsoleSender().sendMessage("[CustomItems] plugin is now active");
         getServer().getPluginManager().registerEvents(new MiningEvents(), this);
+        getServer().getPluginManager().registerEvents(new SkillTrainerEvents(), this);
 
         String[] commands = {"nbtTags", "nbt", "t1pick", "t2pick", "t3pick", "t4pick", "t5pick", "pick"};
         for (String command : commands) {
             this.getCommand(command).setExecutor(new Commands());
         }
+        this.getCommand("skilltrainer").setExecutor(new NPCCommands());
         instance = this;
     }
 

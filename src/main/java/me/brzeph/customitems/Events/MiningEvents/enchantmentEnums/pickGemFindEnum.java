@@ -1,15 +1,15 @@
-package me.brzeph.customitems.MiningEvents.enchantmentEnums;
+package me.brzeph.customitems.Events.MiningEvents.enchantmentEnums;
 
 import java.util.Random;
 
-public enum pickDurabilityEnum {
+public enum pickGemFindEnum {
     T1(5,8),
     T2(5,10),
     T3(5,13),
     T4(5,18),
     T5(8,22);
 
-    pickDurabilityEnum(int min, int max) {
+    pickGemFindEnum(int min, int max) {
         this.min = min;
         this.max = max;
     }

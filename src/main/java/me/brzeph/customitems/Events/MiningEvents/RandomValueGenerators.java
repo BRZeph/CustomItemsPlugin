@@ -1,4 +1,4 @@
-package me.brzeph.customitems.MiningEvents;
+package me.brzeph.customitems.Events.MiningEvents;
 
 
 import java.util.Random;

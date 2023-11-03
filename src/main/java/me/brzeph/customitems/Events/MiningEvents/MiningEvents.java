@@ -1,10 +1,10 @@
-package me.brzeph.customitems.MiningEvents;
+package me.brzeph.customitems.Events.MiningEvents;
 
 import de.tr7zw.nbtapi.NBTItem;
 import me.brzeph.customitems.Main;
-import me.brzeph.customitems.MiningEvents.enchantmentEnums.OreRespawnCooldown;
-import me.brzeph.customitems.MiningEvents.otherMiningRelatedEnums.pickGemFindValueByTierEnum;
-import me.brzeph.customitems.MiningEvents.otherMiningRelatedEnums.pickRollExperienceEnum;
+import me.brzeph.customitems.Events.MiningEvents.enchantmentEnums.OreRespawnCooldown;
+import me.brzeph.customitems.Events.MiningEvents.otherMiningRelatedEnums.pickGemFindValueByTierEnum;
+import me.brzeph.customitems.Events.MiningEvents.otherMiningRelatedEnums.pickRollExperienceEnum;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -14,12 +14,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
-import static me.brzeph.customitems.MiningEvents.Methods.ModifyItemLore.modifyItemLore;
-import static me.brzeph.customitems.MiningEvents.Methods.UpdateProgressBar.updateProgressBar;
-import static me.brzeph.customitems.MiningEvents.Methods.UpgradeTier.upgradeTier;
-import static me.brzeph.customitems.MiningEvents.Methods.UpdateLoreEnchantment.updateLoreForNewEnchantment;
-import static me.brzeph.customitems.MiningEvents.MiningXPLevelsTable.XPToLevelUpRequiredMethod;
-import static me.brzeph.customitems.MiningEvents.RandomValueGenerators.*;
+import static me.brzeph.customitems.Events.MiningEvents.Methods.ModifyItemLore.modifyItemLore;
+import static me.brzeph.customitems.Events.MiningEvents.Methods.UpdateProgressBar.updateProgressBar;
+import static me.brzeph.customitems.Events.MiningEvents.Methods.UpgradeTier.upgradeTier;
+import static me.brzeph.customitems.Events.MiningEvents.Methods.UpdateLoreEnchantment.updateLoreForNewEnchantment;
+import static me.brzeph.customitems.Events.MiningEvents.MiningXPLevelsTable.XPToLevelUpRequiredMethod;
+import static me.brzeph.customitems.Events.MiningEvents.RandomValueGenerators.*;
 
 public class MiningEvents implements Listener {
     @EventHandler

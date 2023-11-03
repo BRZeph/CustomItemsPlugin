@@ -1,14 +1,14 @@
-package me.brzeph.customitems.MiningEvents.Methods;
+package me.brzeph.customitems.Events.MiningEvents.Methods;
 
 import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import static me.brzeph.customitems.MiningEvents.Methods.ChangeItemName.changeHoldingItemName;
-import static me.brzeph.customitems.MiningEvents.Methods.ModifyItemLore.modifyItemLore;
-import static me.brzeph.customitems.MiningEvents.Methods.PickaxeReachedLevel100.pickaxeReachedLevel100;
-import static me.brzeph.customitems.MiningEvents.Methods.rollPickaxeEnchantOnTierChange.rollPickaxeEnchantmentOnLevelUp;
+import static me.brzeph.customitems.Events.MiningEvents.Methods.ChangeItemName.changeHoldingItemName;
+import static me.brzeph.customitems.Events.MiningEvents.Methods.ModifyItemLore.modifyItemLore;
+import static me.brzeph.customitems.Events.MiningEvents.Methods.PickaxeReachedLevel100.pickaxeReachedLevel100;
+import static me.brzeph.customitems.Events.MiningEvents.Methods.rollPickaxeEnchantOnTierChange.rollPickaxeEnchantmentOnLevelUp;
 
 public class UpgradeTier {
     public static void upgradeTier(Player player){
