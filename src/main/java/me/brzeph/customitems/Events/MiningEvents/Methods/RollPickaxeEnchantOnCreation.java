@@ -10,7 +10,7 @@ public class RollPickaxeEnchantOnCreation {
     public static NBTItem RollPickaxeEnchantmentOnCreation (NBTItem nbtItem){
 
         NBTItem nbtItem1 = new NBTItem(nbtItem.getItem());
-        int currentTier = nbtItem1.getInteger("tier");
+        int currentTier = nbtItem1.getInteger("tier") - 1; //prevents generating a t5 pick with enchants that you can only get on level 100
         int currentDoubleOreValue = nbtItem1.getInteger("enchantmentDoubleOre");
         int currentTripleOreValue = nbtItem1.getInteger("enchantmentTripleOre");
         int currentMiningSuccessValue = nbtItem1.getInteger("enchantmentMiningSuccess");

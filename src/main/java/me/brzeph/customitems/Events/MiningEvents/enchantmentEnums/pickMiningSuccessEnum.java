@@ -4,10 +4,10 @@ import java.util.Random;
 
 public enum pickMiningSuccessEnum {
     T1(5,8),
-    T2(5,10),
-    T3(5,13),
-    T4(5,18),
-    T5(8,22);
+    T2(7,10),
+    T3(8,13),
+    T4(10,18),
+    T5(13,22);
 
     pickMiningSuccessEnum(int min, int max) {
         this.min = min;

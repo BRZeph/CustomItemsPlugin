@@ -11,7 +11,7 @@ public class rollPickaxeEnchantOnTierChange {
     public static void rollPickaxeEnchantmentOnLevelUp (Player player){
         ItemStack itemHeld = new ItemStack(player.getInventory().getItemInMainHand());
         NBTItem nbtItem = new NBTItem(itemHeld);
-        int currentTier = nbtItem.getInteger("tier");
+        int currentTier = nbtItem.getInteger("tier") - 1; //prevents upgrading to t5 without rolling enchants that you can only get on level 100
         int currentDoubleOreValue = nbtItem.getInteger("enchantmentDoubleOre");
         int currentTripleOreValue = nbtItem.getInteger("enchantmentTripleOre");
         int currentMiningSuccessValue = nbtItem.getInteger("enchantmentMiningSuccess");

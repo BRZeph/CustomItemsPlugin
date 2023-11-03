@@ -53,7 +53,7 @@ public class CustomPickaxe {
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
 
-        return nbtItem.getItem();
+        return new ItemStack(updateLoreForNewEnchantmentItemStack(itemStack));
     }
 
     public static ItemStack create_dr_stone_pickaxe() {
@@ -76,7 +76,10 @@ public class CustomPickaxe {
                 }
             }
         }
-        ItemStack itemStack = nbtItem.getItem();
+
+        NBTItem nbtItem1 = new NBTItem(RollPickaxeEnchantmentOnCreation(nbtItem).getItem());
+
+        ItemStack itemStack = new ItemStack(nbtItem1.getItem());
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName("Custom T2 pickaxe");
 
@@ -93,7 +96,7 @@ public class CustomPickaxe {
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
 
-        return nbtItem.getItem();
+        return new ItemStack(updateLoreForNewEnchantmentItemStack(itemStack));
     }
     public static ItemStack create_dr_iron_pickaxe() {
         NBTItem nbtItem = new NBTItem(new ItemStack(Material.IRON_PICKAXE, 1));
@@ -115,7 +118,11 @@ public class CustomPickaxe {
                 }
             }
         }
-        ItemStack itemStack = nbtItem.getItem();
+
+        NBTItem nbtItem1 = new NBTItem(RollPickaxeEnchantmentOnCreation(nbtItem).getItem());
+        NBTItem nbtItem2 = new NBTItem(RollPickaxeEnchantmentOnCreation(nbtItem1).getItem());
+
+        ItemStack itemStack = new ItemStack(nbtItem2.getItem());
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName("Custom T3 pickaxe");
 
@@ -132,7 +139,7 @@ public class CustomPickaxe {
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
 
-        return nbtItem.getItem();
+        return new ItemStack(updateLoreForNewEnchantmentItemStack(itemStack));
     }
     public static ItemStack create_dr_diamond_pickaxe() {
         NBTItem nbtItem = new NBTItem(new ItemStack(Material.DIAMOND_PICKAXE, 1));
@@ -154,7 +161,12 @@ public class CustomPickaxe {
                 }
             }
         }
-        ItemStack itemStack = nbtItem.getItem();
+
+        NBTItem nbtItem1 = new NBTItem(RollPickaxeEnchantmentOnCreation(nbtItem).getItem());
+        NBTItem nbtItem2 = new NBTItem(RollPickaxeEnchantmentOnCreation(nbtItem1).getItem());
+        NBTItem nbtItem3 = new NBTItem(RollPickaxeEnchantmentOnCreation(nbtItem2).getItem());
+
+        ItemStack itemStack = new ItemStack(nbtItem3.getItem());
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName("Custom T4 pickaxe");
 
@@ -171,7 +183,7 @@ public class CustomPickaxe {
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
 
-        return itemStack;
+        return new ItemStack(updateLoreForNewEnchantmentItemStack(itemStack));
     }
     public static ItemStack create_dr_gold_pickaxe() {
         NBTItem nbtItem = new NBTItem(new ItemStack(Material.GOLDEN_PICKAXE, 1));
