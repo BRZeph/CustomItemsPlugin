@@ -1,7 +1,7 @@
 package me.brzeph.customitems.Events.MiningEvents.Methods;
 
 import de.tr7zw.nbtapi.NBTItem;
-import me.brzeph.customitems.Events.MiningEvents.enchantmentEnums.*;
+import me.brzeph.customitems.Events.MiningEvents.Enums.enchantmentEnums.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 

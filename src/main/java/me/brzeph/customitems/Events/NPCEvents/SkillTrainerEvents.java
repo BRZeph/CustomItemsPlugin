@@ -23,15 +23,19 @@ public class SkillTrainerEvents implements Listener {
                 if (event.getCurrentItem().getType() == Material.WOODEN_PICKAXE){
                     getServer().getConsoleSender().sendMessage("[DEBUG]: clicked on wooden pickaxe");
                     vendingT1PickaxeOnSkillTrainer(player);
+
                 } else if (event.getCurrentItem().getType() == Material.STONE_PICKAXE){
                     getServer().getConsoleSender().sendMessage("[DEBUG]: clicked on stone pickaxe");
                     vendingT2PickaxeOnSkillTrainer(player);
+
                 } else if (event.getCurrentItem().getType() == Material.IRON_PICKAXE) {
                     getServer().getConsoleSender().sendMessage("[DEBUG]: clicked on iron pickaxe");
                     vendingT3PickaxeOnSkillTrainer(player);
+
                 } else if (event.getCurrentItem().getType() == Material.DIAMOND_PICKAXE){
                     getServer().getConsoleSender().sendMessage("[DEBUG]: clicked on diamond pickaxe");
                     vendingT4PickaxeOnSkillTrainer(player);
+
                 } else if (event.getCurrentItem().getType() == Material.GOLDEN_PICKAXE){
                     getServer().getConsoleSender().sendMessage("[DEBUG]: clicked on gold pickaxe");
                     vendingT5PickaxeOnSkillTrainer(player);

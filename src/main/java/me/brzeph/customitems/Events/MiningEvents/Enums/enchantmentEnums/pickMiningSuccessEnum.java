@@ -1,15 +1,15 @@
-package me.brzeph.customitems.Events.MiningEvents.otherMiningRelatedEnums;
+package me.brzeph.customitems.Events.MiningEvents.Enums.enchantmentEnums;
 
 import java.util.Random;
 
-public enum pickGemFindValueByTierEnum {
-    T1(10,30),
-    T2(30,80),
-    T3(80,150),
-    T4(150,250),
-    T5(250,400);
+public enum pickMiningSuccessEnum {
+    T1(5,8),
+    T2(7,10),
+    T3(8,13),
+    T4(10,18),
+    T5(13,22);
 
-    pickGemFindValueByTierEnum(int min, int max) {
+    pickMiningSuccessEnum(int min, int max) {
         this.min = min;
         this.max = max;
     }

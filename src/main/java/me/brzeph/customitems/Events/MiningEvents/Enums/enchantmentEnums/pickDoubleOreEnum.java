@@ -1,15 +1,15 @@
-package me.brzeph.customitems.Events.MiningEvents.enchantmentEnums;
+package me.brzeph.customitems.Events.MiningEvents.Enums.enchantmentEnums;
 
 import java.util.Random;
 
-public enum pickTreasureFindEnum {
-    T1(0,0),
-    T2(0,0),
-    T3(4,5),
-    T4(5,7),
-    T5(8,10);
+public enum pickDoubleOreEnum {
+    T1(2,6),
+    T2(4,9),
+    T3(6,12),
+    T4(8,15),
+    T5(10,15);
 
-    pickTreasureFindEnum(int min, int max) {
+    pickDoubleOreEnum(int min, int max) {
         this.min = min;
         this.max = max;
     }
@@ -32,5 +32,4 @@ public enum pickTreasureFindEnum {
         }
         throw new RuntimeException();
     }
-
 }

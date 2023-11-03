@@ -1,15 +1,15 @@
-package me.brzeph.customitems.Events.MiningEvents.otherMiningRelatedEnums;
+package me.brzeph.customitems.Events.MiningEvents.Enums.enchantmentEnums;
 
 import java.util.Random;
 
-public enum pickRollExperienceEnum {
-    T1(80,150),
-    T2(1600,3000),
-    T3(3200,6000),
-    T4(4800,9000),
-    T5(6400,12000);
+public enum pickGemFindEnum {
+    T1(5,8),
+    T2(5,10),
+    T3(5,13),
+    T4(5,18),
+    T5(8,22);
 
-    pickRollExperienceEnum(int min, int max) {
+    pickGemFindEnum(int min, int max) {
         this.min = min;
         this.max = max;
     }

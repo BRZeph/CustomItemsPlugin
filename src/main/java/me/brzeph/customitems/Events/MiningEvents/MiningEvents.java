@@ -2,9 +2,9 @@ package me.brzeph.customitems.Events.MiningEvents;
 
 import de.tr7zw.nbtapi.NBTItem;
 import me.brzeph.customitems.Main;
-import me.brzeph.customitems.Events.MiningEvents.enchantmentEnums.OreRespawnCooldown;
-import me.brzeph.customitems.Events.MiningEvents.otherMiningRelatedEnums.pickGemFindValueByTierEnum;
-import me.brzeph.customitems.Events.MiningEvents.otherMiningRelatedEnums.pickRollExperienceEnum;
+import me.brzeph.customitems.Events.MiningEvents.Enums.enchantmentEnums.OreRespawnCooldown;
+import me.brzeph.customitems.Events.MiningEvents.Enums.otherMiningRelatedEnums.pickGemFindValueByTierEnum;
+import me.brzeph.customitems.Events.MiningEvents.Enums.otherMiningRelatedEnums.pickRollExperienceEnum;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -44,6 +44,7 @@ public class MiningEvents implements Listener {
                     if (pickaxeCanBreakOre(itemInHand, blockBroken)) {
                         if (didBlockBreak(itemInHand, blockBroken, player)) {
                             event.setDropItems(false);
+                            event.setExpToDrop(0);
                             blockBrokenResult(itemInHand, blockBroken, player);
                             didPickLevelUp(player);
                             didPickChangeTier(player);
@@ -156,7 +157,6 @@ public class MiningEvents implements Listener {
         int XPGained = 0;
         int amountOfOreDropped = 1;
         int tierGemFindAdaptation = 0;
-        int currentLevel = nbtItem.getInteger("currentLevel");
         int enchantmentDoubleOre = nbtItem.getInteger("enchantmentDoubleOre");
         int enchantmentTripleOre = nbtItem.getInteger("enchantmentTripleOre");  //the mining success enchantment does not need to be here for it's already being
         int enchantmentGemFind = nbtItem.getInteger("enchantmentGemFind");      //check in the previous method of ''didBlockBreak''

@@ -1,8 +1,7 @@
 package me.brzeph.customitems.Events.MiningEvents.Methods;
 
 import de.tr7zw.nbtapi.NBTItem;
-import me.brzeph.customitems.Events.MiningEvents.enchantmentEnums.*;
-import org.bukkit.inventory.ItemStack;
+import me.brzeph.customitems.Events.MiningEvents.Enums.enchantmentEnums.*;
 
 import static me.brzeph.customitems.Events.MiningEvents.RandomValueGenerators.randomlyChoosingNewEnchantment;
 

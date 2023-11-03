@@ -1,15 +1,15 @@
-package me.brzeph.customitems.Events.MiningEvents.enchantmentEnums;
+package me.brzeph.customitems.Events.MiningEvents.Enums.otherMiningRelatedEnums;
 
 import java.util.Random;
 
-public enum pickDoubleOreEnum {
-    T1(2,6),
-    T2(4,9),
-    T3(6,12),
-    T4(8,15),
-    T5(10,15);
+public enum pickGemFindValueByTierEnum {
+    T1(10,30),
+    T2(30,80),
+    T3(80,150),
+    T4(150,250),
+    T5(250,400);
 
-    pickDoubleOreEnum(int min, int max) {
+    pickGemFindValueByTierEnum(int min, int max) {
         this.min = min;
         this.max = max;
     }
@@ -32,4 +32,5 @@ public enum pickDoubleOreEnum {
         }
         throw new RuntimeException();
     }
+
 }

@@ -1,7 +1,7 @@
 package me.brzeph.customitems.Events.NPCEvents.VendingMethods;
 
 public enum pickaxeVendingCost {
-    T1(100),     //numbers in seconds please, not in ticks
+    T1(100),
     T2(500),
     T3(800),
     T4(1200),
