@@ -19,7 +19,6 @@ public class rollPickaxeEnchantOnTierChange {
         int currentTreasureFindValue = nbtItem.getInteger("enchantmentTreasureFind");
         int currentDurabilityValue = nbtItem.getInteger("enchantmentDurability");
 
-
         boolean definedNewEnchantment = false;
         while (!definedNewEnchantment){
             int choosingEnchantment = randomlyChoosingNewEnchantment();
@@ -79,7 +78,6 @@ public class rollPickaxeEnchantOnTierChange {
                     player.sendMessage("§aNew enchantment: durability " + rollValue);
                     definedNewEnchantment = true;
                 }
-
             }
         }
     }

@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static me.brzeph.customitems.Events.MiningEvents.Methods.RollPickaxeEnchantOnCreation.RollPickaxeEnchantmentOnCreation;
+import static me.brzeph.customitems.Events.MiningEvents.Methods.UpdateLoreEnchantment.updateLoreForNewEnchantmentItemStack;
+
 public class CustomPickaxe {
     public static ItemStack create_dr_wooden_pickaxe() {
         NBTItem nbtItem = new NBTItem(new ItemStack(Material.WOODEN_PICKAXE, 1));
@@ -168,7 +171,7 @@ public class CustomPickaxe {
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
 
-        return nbtItem.getItem();
+        return itemStack;
     }
     public static ItemStack create_dr_gold_pickaxe() {
         NBTItem nbtItem = new NBTItem(new ItemStack(Material.GOLDEN_PICKAXE, 1));
@@ -190,7 +193,13 @@ public class CustomPickaxe {
                 }
             }
         }
-        ItemStack itemStack = nbtItem.getItem();
+
+        NBTItem nbtItem1 = new NBTItem(RollPickaxeEnchantmentOnCreation(nbtItem).getItem());
+        NBTItem nbtItem2 = new NBTItem(RollPickaxeEnchantmentOnCreation(nbtItem1).getItem());
+        NBTItem nbtItem3 = new NBTItem(RollPickaxeEnchantmentOnCreation(nbtItem2).getItem());
+        NBTItem nbtItem4 = new NBTItem(RollPickaxeEnchantmentOnCreation(nbtItem3).getItem());
+
+        ItemStack itemStack = new ItemStack(nbtItem4.getItem());
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName("Custom T5 pickaxe");
 
@@ -207,6 +216,6 @@ public class CustomPickaxe {
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
 
-        return nbtItem.getItem();
+        return new ItemStack(updateLoreForNewEnchantmentItemStack(itemStack));
     }
 }
