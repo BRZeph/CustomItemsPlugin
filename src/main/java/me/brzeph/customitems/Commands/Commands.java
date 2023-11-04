@@ -129,8 +129,6 @@ public class Commands implements CommandExecutor {
                     int nbtValue = Integer.parseInt(strings[1]);
 
                     NBTItem nbti = new NBTItem(heldItem);
-                    player.sendMessage("the tag is " + nbtKey);
-                    player.sendMessage("the tag value is " + nbtValue);
                     nbti.setInteger(nbtKey, nbtValue);
                     player.getInventory().setItemInMainHand(nbti.getItem());
 

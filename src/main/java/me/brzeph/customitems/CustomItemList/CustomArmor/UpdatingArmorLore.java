@@ -54,9 +54,10 @@ public class UpdatingArmorLore {
                 lore2.add("§cArmor: " + bonusArmor);
             }
         }
+        lore2.add("");
         if (nbti.hasKey("armorStatsVitality")) {
             if (armorStatsVitality > 0) {
-                lore2.add("\n" + "§cVitality: " + armorStatsVitality);
+                lore2.add("§cVitality: " + armorStatsVitality);
             }
         }
         if (nbti.hasKey("armorStatsDexterity")) {
