@@ -15,6 +15,7 @@ public class UpdateLoreEnchantment {
         int startLine = 7;
         ItemMeta itemMeta = itemHeld.getItemMeta();
         List<String> lore = itemMeta.getLore();
+        lore.add(".");
 
         for (i = lore.size() - 1; i >= startLine; i--){
             lore.remove(i);

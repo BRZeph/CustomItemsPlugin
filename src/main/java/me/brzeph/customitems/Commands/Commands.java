@@ -1,7 +1,10 @@
 package me.brzeph.customitems.Commands;
 
+import de.tr7zw.nbtapi.NBTCompound;
+import de.tr7zw.nbtapi.NBTEntity;
 import me.brzeph.customitems.CustomItemList.CustomPickaxe;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -10,6 +13,10 @@ import org.bukkit.inventory.ItemStack;
 import de.tr7zw.nbtapi.NBTItem;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import static me.brzeph.customitems.CustomItemList.CustomArmor.UpdatingArmorLore.upgradingArmorLore;
 import static me.brzeph.customitems.Events.MiningEvents.Methods.UpdateLoreEnchantment.updateLoreForNewEnchantment;
 
 public class Commands implements CommandExecutor {
@@ -21,31 +28,81 @@ public class Commands implements CommandExecutor {
         Player player = (Player) sender;
 
 
+        Set<Material> validMaterialsPickaxe = new HashSet<>();
+        validMaterialsPickaxe.add(Material.WOODEN_PICKAXE);
+        validMaterialsPickaxe.add(Material.STONE_PICKAXE);
+        validMaterialsPickaxe.add(Material.IRON_PICKAXE);
+        validMaterialsPickaxe.add(Material.DIAMOND_PICKAXE);
+        validMaterialsPickaxe.add(Material.GOLDEN_PICKAXE);
+
         //creates /nbt command
         if (cmd.getName().equalsIgnoreCase("nbtTags")) {
             NBTItem heldItem = new NBTItem(player.getInventory().getItemInMainHand());
+            if (validMaterialsPickaxe.contains(heldItem.getItem().getType())) {
+                String[] desiredOrderPickaxe = {
+                        "uniqueItemID",
+                        "tier",
+                        "currentXP",
+                        "currentLevel",
+                        "enchantmentDoubleOre",
+                        "enchantmentTripleOre",
+                        "enchantmentMiningSuccess",
+                        "enchantmentGemFind",
+                        "enchantmentTreasureFind",
+                        "enchantmentDurability"
+                };
+                StringBuilder nbtTags = new StringBuilder();
+                for (String key : desiredOrderPickaxe) {
+                    if (heldItem.hasKey(key)) {
+                        String tagName = heldItem.getString(key);
+                        int tagValue = heldItem.getInteger(key);
+                        nbtTags.append(key).append(": ").append(tagName).append(tagValue).append("\n");
+                    }
+                }
+                player.sendMessage("§aThe nbt tags on your pickaxe are: " + "\n" + nbtTags);
+                return true;
+            }else{
+                String[] desiredOrderArmor ={
+                        "tier",
+                        "bonusHealth",
+                        "armorStatsVitality",
+                        "armorStatsDexterity",
+                        "armorStatsStrength",
+                        "armorStatsAgility",
+                        "armorStatsDodge",
+                        "armorStatsBlock",
+                        "armorStatsReflect"
+                };
+                StringBuilder nbtTags = new StringBuilder();
+                for (String key : desiredOrderArmor){
+                    if (heldItem.hasKey(key)){
+                        String tagName = heldItem.getString(key);
+                        int tagValue = heldItem.getInteger(key);
+                        nbtTags.append(key).append(": ").append(tagName).append(tagValue).append("\n");
+                    }
+                }
+                player.sendMessage("§aThe nbt tags on your armor are: " + "\n" + nbtTags);
+                return true;
+            }
+        }
 
+        if (cmd.getName().equalsIgnoreCase("nbtplayer")) {
+            NBTEntity nbtEntity = new NBTEntity(player);
+            NBTCompound playerData = nbtEntity.getPersistentDataContainer();
             String[] desiredOrder = {
-                    "uniqueItemID",
-                    "tier",
-                    "currentXP",
-                    "currentLevel",
-                    "enchantmentDoubleOre",
-                    "enchantmentTripleOre",
-                    "enchantmentMiningSuccess",
-                    "enchantmentGemFind",
-                    "enchantmentTreasureFind",
-                    "enchantmentDurability"
+                    "baseHealth",
+                    "baseDamage",
+                    "baseArmor",
+                    "baseDPS"
             };
             StringBuilder nbtTags = new StringBuilder();
             for (String key : desiredOrder) {
-                if (heldItem.hasKey(key)) {
-                    String tagName = heldItem.getString(key);
-                    int tagValue = heldItem.getInteger(key);
-                    nbtTags.append(key).append(": ").append(tagName).append(tagValue).append("\n");
+                if (playerData.hasKey(key)) {
+                    int tagValue = playerData.getInteger(key);
+                    nbtTags.append(key).append(": ").append(tagValue).append("\n"); // Add spaces here
                 }
             }
-            player.sendMessage(ChatColor.GREEN + "the nbt tags on your item are: " + "\n" + nbtTags);
+            player.sendMessage("§aThe NBT tags are: \n" + nbtTags);
             return true;
         }
 
@@ -77,8 +134,11 @@ public class Commands implements CommandExecutor {
                     nbti.setInteger(nbtKey, nbtValue);
                     player.getInventory().setItemInMainHand(nbti.getItem());
 
-                    updateLoreForNewEnchantment(player);
-
+                    if (validMaterialsPickaxe.contains(player.getInventory().getItemInMainHand().getType())) {
+                        updateLoreForNewEnchantment(player);
+                    } else{
+                        player.getInventory().setItemInMainHand(upgradingArmorLore(player.getInventory().getItemInMainHand()));
+                    }
                     player.sendMessage("Successfully changed the NBT tag " + nbtKey + "'s value to " + nbtValue);
                 } else {
                     player.sendMessage("That is an invalid input, ask upper staff how to use this command");

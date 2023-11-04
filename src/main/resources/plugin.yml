@@ -11,9 +11,16 @@ commands:
   nbt:
     description: changes the nbt tags of an item
     usage: /<command>
+  nbtplayer:
+    description: gives the tags of the player
+    usage: /<command>
 
   skilltrainer:
     description: opens the skilltrainer GUI
+    usage: /<command>
+
+  t1helmet:
+    description: gives the player a t1 helmet
     usage: /<command>
 
   pick:
