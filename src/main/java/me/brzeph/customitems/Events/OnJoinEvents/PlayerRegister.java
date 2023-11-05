@@ -7,6 +7,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import static me.brzeph.customitems.CustomItemList.CustomArmor.UpdatingPlayerHealth.updatingPlayerHealth;
+
 public class PlayerRegister implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event){
@@ -14,10 +16,13 @@ public class PlayerRegister implements Listener {
         Player player = event.getPlayer();
         NBTEntity nbtEntity = new NBTEntity(player);
         NBTCompound playerData = nbtEntity.getPersistentDataContainer();
-        playerData.setInteger("baseHealth", 50);
+        playerData.setFloat("baseHealth", 50F);
+        playerData.setFloat("bonusHealth", 0F);
+        playerData.setFloat("currentMaxHealth", 50F);
         playerData.setInteger("baseDamage", 0);
         playerData.setInteger("baseArmor", 5);
         playerData.setInteger("baseDPS", 5);
         nbtEntity.mergeCompound(playerData);
+        updatingPlayerHealth(player);
     }
 }

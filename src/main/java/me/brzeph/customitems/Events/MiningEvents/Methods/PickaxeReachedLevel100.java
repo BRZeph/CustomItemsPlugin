@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 
 import static me.brzeph.customitems.Events.MiningEvents.Methods.ChangeItemName.changeHoldingItemName;
 import static me.brzeph.customitems.Events.MiningEvents.Methods.ModifyItemLore.modifyItemLore;
+import static me.brzeph.customitems.Events.MiningEvents.Methods.UpdateProgressBar.updateProgressBar;
 import static me.brzeph.customitems.Events.MiningEvents.Methods.rollPickaxeEnchantOnTierChange.rollPickaxeEnchantmentOnLevelUp;
 
 public class PickaxeReachedLevel100 {
@@ -29,8 +30,17 @@ public class PickaxeReachedLevel100 {
             ItemStack upgradingVisual = new ItemStack(player.getInventory().getItemInMainHand());
             upgradingVisual.setType(Material.WOODEN_PICKAXE);
             player.getInventory().setItemInMainHand(upgradingVisual);
-
             changeHoldingItemName(player, "Custom T1 pickaxe");
+
+            NBTItem nbtItem1 = new NBTItem(player.getInventory().getItemInMainHand());
+            nbtItem1.setInteger("currentLevel", 1);
+            nbtItem1.setInteger("currentXP", 0);
+            int currentLevel = nbtItem1.getInteger("currentLevel");
+            int currentXP = nbtItem1.getInteger("currentXP");
+            player.getInventory().setItemInMainHand(nbtItem1.getItem());
+            modifyItemLore(player, 0, "§7Level: §6" + currentLevel);
+            modifyItemLore(player, 1, "§7XP: §6" + currentXP + "/" + currentLevel*300);
+            updateProgressBar(player);
         }
     }
 }

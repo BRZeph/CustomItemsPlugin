@@ -91,6 +91,8 @@ public class Commands implements CommandExecutor {
             NBTCompound playerData = nbtEntity.getPersistentDataContainer();
             String[] desiredOrder = {
                     "baseHealth",
+                    "bonusHealth",
+                    "currentMaxHealth",
                     "baseDamage",
                     "baseArmor",
                     "baseDPS"

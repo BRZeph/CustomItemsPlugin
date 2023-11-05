@@ -8,6 +8,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 
+import static me.brzeph.customitems.Events.MiningEvents.Methods.ModifyItemLore.modifyItemLore;
+import static me.brzeph.customitems.Events.MiningEvents.Methods.UpdateProgressBar.updateProgressBar;
+
 public class UpdateLoreEnchantment {
     public static void updateLoreForNewEnchantment(Player player){
         ItemStack itemHeld = player.getInventory().getItemInMainHand();
@@ -64,8 +67,12 @@ public class UpdateLoreEnchantment {
         ItemMeta itemMeta2 = itemHeld2.getItemMeta();
         itemMeta2.setLore(lore2);
         itemHeld2.setItemMeta(itemMeta2);
-
-        player.getInventory().setItemInMainHand(itemHeld2);
+        NBTItem nbtItem = new NBTItem(itemHeld2);
+        int currentLevel = nbtItem.getInteger("currentLevel");
+        int currentXP = nbtItem.getInteger("currentXP");
+        modifyItemLore(player, 0, "§7Level: §6" + currentLevel);
+        modifyItemLore(player, 1, "§7XP: §6" + currentXP + "/" + currentLevel*300);
+        updateProgressBar(player);
     }
     public static ItemStack updateLoreForNewEnchantmentItemStack(ItemStack itemStack){
         int i;
