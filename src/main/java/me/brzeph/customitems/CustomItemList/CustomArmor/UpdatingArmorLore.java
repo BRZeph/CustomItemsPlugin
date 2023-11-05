@@ -11,6 +11,7 @@ public class UpdatingArmorLore {
     public static ItemStack upgradingArmorLore(ItemStack itemStack){
         NBTItem nbtItem = new NBTItem(itemStack);
         String armorType = nbtItem.getString("armorType");
+        String rarity = nbtItem.getString("rarity");
         int tier = nbtItem.getInteger("tier");
         int bonusHealth = nbtItem.getInteger("bonusHealth");
         int bonusArmor  = nbtItem.getInteger("bonusArmor");
@@ -89,6 +90,12 @@ public class UpdatingArmorLore {
         if (nbti.hasKey("armorStatsReflect")) {
             if (armorStatsReflect > 0) {
                 lore2.add("§cReflect: " + armorStatsReflect);
+            }
+        }
+        if (nbti.hasKey("rarity")){
+            if (rarity != null){
+                lore2.add("");
+                lore2.add(rarity);
             }
         }
         ItemStack itemStack2 = new ItemStack(nbti.getItem());

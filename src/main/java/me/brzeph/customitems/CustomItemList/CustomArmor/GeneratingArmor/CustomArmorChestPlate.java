@@ -1,8 +1,7 @@
 package me.brzeph.customitems.CustomItemList.CustomArmor.GeneratingArmor;
 
 import de.tr7zw.nbtapi.NBTItem;
-import me.brzeph.customitems.CustomItemList.CustomArmor.ArmorEnums.ArmorArmorEnum;
-import me.brzeph.customitems.CustomItemList.CustomArmor.ArmorEnums.ArmorHPEnum;
+import me.brzeph.customitems.CustomItemList.CustomArmor.ArmorEnums.*;
 import me.brzeph.customitems.CustomItemList.CustomArmor.BaseArmorStats;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -12,12 +11,17 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import static me.brzeph.customitems.CustomItemList.CustomArmor.GeneratingArmor.CalculatingRarity.calculatingRarity;
+import static me.brzeph.customitems.CustomItemList.CustomArmor.GeneratingArmor.CalculatingRarity.rarityToString;
+
 public class CustomArmorChestPlate {
     public static ItemStack createT1ChestPlate(){
         NBTItem nbtItem = new NBTItem(new ItemStack(Material.LEATHER_CHESTPLATE, 1));
+        int rarity = calculatingRarity();
+        nbtItem.setString("rarity", rarityToString(rarity));
         nbtItem.setString("armorType", "chestplate");
         nbtItem.setInteger("tier", 1);
-        nbtItem.setInteger("bonusHealth", ArmorHPEnum.getRandomValueByTier(1));
+        nbtItem.setInteger("bonusHealth", ArmorT1HPEnum.getRandomValueByRarity(rarity));
         nbtItem.setInteger("bonusArmor", ArmorArmorEnum.getRandomValueByTier(1));
         Field[] fields = BaseArmorStats.class.getDeclaredFields();
         for (Field field : fields){
@@ -44,9 +48,11 @@ public class CustomArmorChestPlate {
     }
     public static ItemStack createT2ChestPlate(){
         NBTItem nbtItem = new NBTItem(new ItemStack(Material.CHAINMAIL_CHESTPLATE, 1));
+        int rarity = calculatingRarity();
+        nbtItem.setString("rarity", rarityToString(rarity));
         nbtItem.setString("armorType", "chestplate");
         nbtItem.setInteger("tier", 2);
-        nbtItem.setInteger("bonusHealth", ArmorHPEnum.getRandomValueByTier(2));
+        nbtItem.setInteger("bonusHealth", ArmorT2HPEnum.getRandomValueByRarity(rarity));
         nbtItem.setInteger("bonusArmor", ArmorArmorEnum.getRandomValueByTier(2));
         Field[] fields = BaseArmorStats.class.getDeclaredFields();
         for (Field field : fields){
@@ -73,9 +79,11 @@ public class CustomArmorChestPlate {
     }
     public static ItemStack createT3ChestPlate(){
         NBTItem nbtItem = new NBTItem(new ItemStack(Material.IRON_CHESTPLATE, 1));
+        int rarity = calculatingRarity();
+        nbtItem.setString("rarity", rarityToString(rarity));
         nbtItem.setString("armorType", "chestplate");
         nbtItem.setInteger("tier", 3);
-        nbtItem.setInteger("bonusHealth", ArmorHPEnum.getRandomValueByTier(3));
+        nbtItem.setInteger("bonusHealth", ArmorT3HPEnum.getRandomValueByRarity(rarity));
         nbtItem.setInteger("bonusArmor", ArmorArmorEnum.getRandomValueByTier(3));
         Field[] fields = BaseArmorStats.class.getDeclaredFields();
         for (Field field : fields){
@@ -102,9 +110,11 @@ public class CustomArmorChestPlate {
     }
     public static ItemStack createT4ChestPlate(){
         NBTItem nbtItem = new NBTItem(new ItemStack(Material.DIAMOND_CHESTPLATE, 1));
+        int rarity = calculatingRarity();
+        nbtItem.setString("rarity", rarityToString(rarity));
         nbtItem.setString("armorType", "chestplate");
         nbtItem.setInteger("tier", 4);
-        nbtItem.setInteger("bonusHealth", ArmorHPEnum.getRandomValueByTier(4));
+        nbtItem.setInteger("bonusHealth", ArmorT4HPEnum.getRandomValueByRarity(rarity));
         nbtItem.setInteger("bonusArmor", ArmorArmorEnum.getRandomValueByTier(4));
         Field[] fields = BaseArmorStats.class.getDeclaredFields();
         for (Field field : fields){
@@ -131,9 +141,11 @@ public class CustomArmorChestPlate {
     }
     public static ItemStack createT5ChestPlate(){
         NBTItem nbtItem = new NBTItem(new ItemStack(Material.GOLDEN_CHESTPLATE, 1));
+        int rarity = calculatingRarity();
+        nbtItem.setString("rarity", rarityToString(rarity));
         nbtItem.setString("armorType", "chestplate");
         nbtItem.setInteger("tier", 5);
-        nbtItem.setInteger("bonusHealth", ArmorHPEnum.getRandomValueByTier(5));
+        nbtItem.setInteger("bonusHealth", ArmorT5HPEnum.getRandomValueByRarity(rarity));
         nbtItem.setInteger("bonusArmor", ArmorArmorEnum.getRandomValueByTier(5));
         Field[] fields = BaseArmorStats.class.getDeclaredFields();
         for (Field field : fields){
