@@ -10,6 +10,7 @@ import java.util.List;
 public class UpdatingArmorLore {
     public static ItemStack upgradingArmorLore(ItemStack itemStack){
         NBTItem nbtItem = new NBTItem(itemStack);
+        String armorType = nbtItem.getString("armorType");
         int tier = nbtItem.getInteger("tier");
         int bonusHealth = nbtItem.getInteger("bonusHealth");
         int bonusArmor  = nbtItem.getInteger("bonusArmor");
@@ -23,7 +24,7 @@ public class UpdatingArmorLore {
 
         ItemStack itemStack1 = new ItemStack(nbtItem.getItem());
         ItemMeta itemMeta = itemStack1.getItemMeta();
-        itemMeta.setDisplayName("§fCustom T" + tier + " helmet");
+        itemMeta.setDisplayName("§fCustom T" + tier + " " + armorType);
         List<String> lore = itemMeta.getLore();
         lore.add(".");
         lore.add(".");

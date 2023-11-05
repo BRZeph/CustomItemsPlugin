@@ -10,6 +10,7 @@ import me.brzeph.customitems.Commands.NPCCommands;
 import me.brzeph.customitems.Events.MiningEvents.MiningEvents;
 import me.brzeph.customitems.Events.NPCEvents.SkillTrainerEvents;
 import me.brzeph.customitems.Events.OnJoinEvents.PlayerRegister;
+import me.brzeph.customitems.Events.PlayerStatsRelatedEvents.OnArmorEquip;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Main extends JavaPlugin {
@@ -26,12 +27,16 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new MiningEvents(), this);
         getServer().getPluginManager().registerEvents(new SkillTrainerEvents(), this);
         getServer().getPluginManager().registerEvents(new PlayerRegister(), this);
+        getServer().getPluginManager().registerEvents(new OnArmorEquip(), this);
 
         String[] commands = {"nbtTags", "nbtplayer", "nbt", "t1pick", "t2pick", "t3pick", "t4pick", "t5pick", "pick"};
         for (String command : commands) {
             this.getCommand(command).setExecutor(new Commands());
         }
-        String[] armorCommands = {"t1helmet"};
+
+        String[] armorCommands = {"t1helmet", "t2helmet", "t3helmet", "t4helmet", "t5helmet", "t1chestplate", "t2chestplate", "t3chestplate", "t4chestplate"
+                , "t5chestplate", "t1leggings", "t2leggings", "t3leggings", "t4leggings", "t5leggings", "t1boots", "t2boots", "t3boots", "t4boots", "t5boots"
+                , "t1armor", "t2armor", "t3armor", "t4armor", "t5armor"};
         for (String command: armorCommands){
             this.getCommand(command).setExecutor(new CreateArmorCommands());
         }

@@ -1,15 +1,15 @@
-package me.brzeph.customitems.Events.MiningEvents.Enums.enchantmentEnums;
+package me.brzeph.customitems.CustomItemList.CustomArmor.ArmorEnums;
 
 import java.util.Random;
 
-public enum pickDurabilityEnum {
-    T1(6,8),
-    T2(7,10),
-    T3(10,13),
-    T4(12,18),
-    T5(15,22);
+public enum ArmorArmorEnum {
+    T1(1,2),
+    T2(1,3),
+    T3(2,4),
+    T4(2,5),
+    T5(3,6);
 
-    pickDurabilityEnum(int min, int max) {
+    ArmorArmorEnum(int min, int max) {
         this.min = min;
         this.max = max;
     }
@@ -32,5 +32,4 @@ public enum pickDurabilityEnum {
         }
         throw new RuntimeException();
     }
-
 }

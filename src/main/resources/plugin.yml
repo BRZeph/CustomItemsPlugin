@@ -19,8 +19,84 @@ commands:
     description: opens the skilltrainer GUI
     usage: /<command>
 
+  t1armor:
+    description: gives the player a full set of t1 armor
+    usage: /<command>
+  t2armor:
+    description: gives the player a full set of t2 armor
+    usage: /<command>
+  t3armor:
+    description: gives the player a full set of t3 armor
+    usage: /<command>
+  t4armor:
+    description: gives the player a full set of t4 armor
+    usage: /<command>
+  t5armor:
+    description: gives the player a full set of t5 armor
+    usage: /<command>
+
   t1helmet:
     description: gives the player a t1 helmet
+    usage: /<command>
+  t2helmet:
+    description: gives the player a t2 helmet
+    usage: /<command>
+  t3helmet:
+    description: gives the player a t3 helmet
+    usage: /<command>
+  t4helmet:
+    description: gives the player a t4 helmet
+    usage: /<command>
+  t5helmet:
+    description: gives the player a t5 helmet
+    usage: /<command>
+
+  t1chestplate:
+    description: gives the player a t1 chestplate
+    usage: /<command>
+  t2chestplate:
+    description: gives the player a t2 chestplate
+    usage: /<command>
+  t3chestplate:
+    description: gives the player a t3 chestplate
+    usage: /<command>
+  t4chestplate:
+    description: gives the player a t4 chestplate
+    usage: /<command>
+  t5chestplate:
+    description: gives the player a t5 chestplate
+    usage: /<command>
+
+  t1leggings:
+    description: gives the player a t1 leggings
+    usage: /<command>
+  t2leggings:
+    description: gives the player a t2 leggings
+    usage: /<command>
+  t3leggings:
+    description: gives the player a t3 leggings
+    usage: /<command>
+  t4leggings:
+    description: gives the player a t4 leggings
+    usage: /<command>
+  t5leggings:
+    description: gives the player a t5 leggings
+    usage: /<command>
+
+  t1boots:
+    description: gives the player a t1 boots
+    usage: /<command>
+  t2boots:
+    description: gives the player a t2 boots
+    usage: /<command>
+  t3boots:
+    description: gives the player a t3 boots
+    usage: /<command>
+  t4boots:
+    description: gives the player a t4 boots
+    usage: /<command>
+  t5boots:
+    description: gives the player a t5 boots
     usage: /<command>
 
   pick:
