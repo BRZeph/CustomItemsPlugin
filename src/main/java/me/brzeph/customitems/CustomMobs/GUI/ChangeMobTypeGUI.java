@@ -72,6 +72,6 @@ public class ChangeMobTypeGUI implements Listener {
         } else {
             mob = s;
         }
-        player.sendMessage("§aUpdated the mob type to " + mob);
+        player.sendMessage("§aUpdated the mob type to §c" + mob);
     }
 }

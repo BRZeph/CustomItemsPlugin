@@ -13,7 +13,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 
+import static me.brzeph.customitems.CustomMobs.GUI.ChangeMaxAmountOfMobsGUI.changeMaxAmountOfMobsOpenGui;
 import static me.brzeph.customitems.CustomMobs.GUI.ChangeMobTypeGUI.changeMobTypeOpenGUI;
+import static me.brzeph.customitems.CustomMobs.GUI.ChangeRespawnRateGUI.changeRespawnRateOpenGUIPage1;
 import static me.brzeph.customitems.CustomMobs.GUI.ChangeTierGUI.changeTierOpenGUI;
 import static org.bukkit.Bukkit.getServer;
 
@@ -88,6 +90,14 @@ public class SpawnerGUI implements Listener {
             if (event.getCurrentItem().getItemMeta().getDisplayName().equals("Change mob type")){
                 getServer().getConsoleSender().sendMessage("[DEBUG]: clicked on change mob type");
                 changeMobTypeOpenGUI(player);
+            }
+            if (event.getCurrentItem().getItemMeta().getDisplayName().equals("Change respawn rate")){
+                getServer().getConsoleSender().sendMessage("[DEBUG]: clicked on change respawn rate");
+                changeRespawnRateOpenGUIPage1(player);
+            }
+            if (event.getCurrentItem().getItemMeta().getDisplayName().equals("Change max amount of mobs")){
+                getServer().getConsoleSender().sendMessage("[DEBUG]: clicked on change max amount of mobs");
+                changeMaxAmountOfMobsOpenGui(player);
             }
             event.setCancelled(true);
         }

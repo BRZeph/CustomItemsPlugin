@@ -18,12 +18,12 @@ public class RightClickSpawnerEvent implements Listener {
 
 
             //DEBUG
-            //NBTTileEntity nbtTileEntity = new NBTTileEntity(event.getClickedBlock().getState());
-            //event.getPlayer().sendMessage("[DEBUG]: " + "\n" +
-            //nbtTileEntity.getPersistentDataContainer().getInteger("tier") + "\n" +
-            //nbtTileEntity.getPersistentDataContainer().getInteger("mobType") + "\n" +
-            //nbtTileEntity.getPersistentDataContainer().getInteger("respawnRate")+ "\n" +
-            //nbtTileEntity.getPersistentDataContainer().getInteger("maxAmountOfMobs"));
+            NBTTileEntity nbtTileEntity = new NBTTileEntity(event.getClickedBlock().getState());
+            event.getPlayer().sendMessage("[DEBUG]: " + "\n" +
+            nbtTileEntity.getPersistentDataContainer().getInteger("tier") + "\n" +
+            nbtTileEntity.getPersistentDataContainer().getInteger("mobType") + "\n" +
+            nbtTileEntity.getPersistentDataContainer().getInteger("respawnRate")+ "\n" +
+            nbtTileEntity.getPersistentDataContainer().getInteger("maxAmountOfMobs"));
         }
     }
 }

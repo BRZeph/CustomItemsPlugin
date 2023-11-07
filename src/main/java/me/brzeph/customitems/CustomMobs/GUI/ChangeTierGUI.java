@@ -100,6 +100,6 @@ public class ChangeTierGUI implements Listener {
             nbt.setInteger("tier", tier);
         });
         player.closeInventory();
-        player.sendMessage("§aUpdated the tier to " + tier);
+        player.sendMessage("§aUpdated the tier to §c" + tier);
     }
 }
