@@ -51,7 +51,7 @@ public class ChangeRespawnRateGUI implements Listener {
         if (event.getView().getTitle().equalsIgnoreCase("§0Choose respawn rate GUI page 1")) {
             int i;
             if (event.getCurrentItem() != null) {
-                if (event.getCurrentItem().getType() == Material.SPAWNER) {
+                if (event.getCurrentItem().getType() == Material.CLOCK) {
                     for (i = 0; i <= 52; i++) {
                         if (event.getCurrentItem().getItemMeta().getDisplayName().equals("Change the respawn Rate to §c" + 5 * i + "§f seconds")) {
                             spawnerChangeRespawnRate(i, player);
@@ -89,7 +89,7 @@ public class ChangeRespawnRateGUI implements Listener {
         if (event.getView().getTitle().equalsIgnoreCase("§0Choose respawn rate GUI page 2")) {
             int i;
             if (event.getCurrentItem() != null) {
-                if (event.getCurrentItem().getType() == Material.SPAWNER) {
+                if (event.getCurrentItem().getType() == Material.CLOCK) {
                     for (i = 0; i <= 53; i++) {
                         if (event.getCurrentItem().getItemMeta().getDisplayName().equals("Change the respawn Rate to §c" + 5 * (i + 53) + "§f seconds")) {
                             spawnerChangeRespawnRate((i + 53), player);

@@ -15,8 +15,7 @@ public class RightClickSpawnerEvent implements Listener {
         if (event.getAction().isRightClick() && event.getClickedBlock() != null && event.getClickedBlock().getType() == Material.SPAWNER) {
             spawnerOpenGUI(event.getPlayer());
             SharedData.callingBlock.put(event.getPlayer(), event.getClickedBlock());
-
-
+            event.setCancelled(true);
             //DEBUG
             NBTTileEntity nbtTileEntity = new NBTTileEntity(event.getClickedBlock().getState());
             event.getPlayer().sendMessage("[DEBUG]: " + "\n" +
