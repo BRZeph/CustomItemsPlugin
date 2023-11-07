@@ -12,7 +12,6 @@ import static me.brzeph.customitems.CustomItemList.CustomArmor.UpdatingPlayerHea
 public class PlayerRegister implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event){
-        event.getPlayer().sendMessage("[DEBUG]: onplayerjoin is working");
         Player player = event.getPlayer();
         NBTEntity nbtEntity = new NBTEntity(player);
         NBTCompound playerData = nbtEntity.getPersistentDataContainer();

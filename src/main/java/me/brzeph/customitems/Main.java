@@ -3,10 +3,15 @@ package me.brzeph.customitems;
 // TODO: implement new treasure find list on mining events
 // TODO: create the method soldado mentioned to create items from nbt tags
 
-
 import me.brzeph.customitems.Commands.Commands;
 import me.brzeph.customitems.Commands.CreateArmorCommands;
+import me.brzeph.customitems.Commands.CustomMobsCommands;
 import me.brzeph.customitems.Commands.NPCCommands;
+import me.brzeph.customitems.CustomMobs.GUI.ChangeMobTypeGUI;
+import me.brzeph.customitems.CustomMobs.GUI.ChangeTierGUI;
+import me.brzeph.customitems.CustomMobs.GUI.SpawnerGUI;
+import me.brzeph.customitems.CustomMobs.RightClickSpawnerEvent;
+import me.brzeph.customitems.CustomMobs.SpawnerPlaceEvent;
 import me.brzeph.customitems.Events.MiningEvents.MiningEvents;
 import me.brzeph.customitems.Events.NPCEvents.SkillTrainerEvents;
 import me.brzeph.customitems.Events.OnJoinEvents.PlayerRegister;
@@ -28,6 +33,11 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new SkillTrainerEvents(), this);
         getServer().getPluginManager().registerEvents(new PlayerRegister(), this);
         getServer().getPluginManager().registerEvents(new OnArmorEquip(), this);
+        getServer().getPluginManager().registerEvents(new SpawnerPlaceEvent(), this);
+        getServer().getPluginManager().registerEvents(new RightClickSpawnerEvent(), this);
+        getServer().getPluginManager().registerEvents(new SpawnerGUI(), this);
+        getServer().getPluginManager().registerEvents(new ChangeTierGUI(), this);
+        getServer().getPluginManager().registerEvents(new ChangeMobTypeGUI(), this);
 
         String[] commands = {"nbtTags", "nbtplayer", "nbt", "t1pick", "t2pick", "t3pick", "t4pick", "t5pick", "pick"};
         for (String command : commands) {
@@ -42,6 +52,7 @@ public final class Main extends JavaPlugin {
         }
 
         this.getCommand("skilltrainer").setExecutor(new NPCCommands());
+        this.getCommand("spawner").setExecutor(new CustomMobsCommands());
         instance = this;
     }
 

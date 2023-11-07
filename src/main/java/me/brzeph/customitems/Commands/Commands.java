@@ -38,6 +38,26 @@ public class Commands implements CommandExecutor {
         //creates /nbt command
         if (cmd.getName().equalsIgnoreCase("nbtTags")) {
             NBTItem heldItem = new NBTItem(player.getInventory().getItemInMainHand());
+            if (player.getInventory().getItemInMainHand().getType() == Material.SPAWNER){
+                String[] desiredOrderPickaxe = {
+                        "customBlock",
+                        "tier",
+                        "mobType",
+                        "respawnRate",
+                        "maxAmountOfMobs"
+                };
+                StringBuilder nbtTags = new StringBuilder();
+                for (String key : desiredOrderPickaxe) {
+                    if (heldItem.hasKey(key)) {
+                        String tagName = heldItem.getString(key);
+                        int tagValue = heldItem.getInteger(key);
+                        nbtTags.append(key).append(": ").append(tagName).append(tagValue).append("\n");
+                    }
+                }
+                player.sendMessage("§aThe nbt tags on your pickaxe are: " + "\n" + nbtTags);
+                return true;
+            }
+
             if (validMaterialsPickaxe.contains(heldItem.getItem().getType())) {
                 String[] desiredOrderPickaxe = {
                         "uniqueItemID",
