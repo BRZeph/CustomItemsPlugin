@@ -19,12 +19,27 @@ public class ChangeRespawnRateGUI implements Listener {
     public static void changeRespawnRateOpenGUIPage1(Player player){
         Inventory inventory = Bukkit.createInventory(player, 54, "§0Choose respawn rate GUI page 1");
         int i;
-        for (i = 0; i <= 52; i++) {
+        inventory.setItem(0, changeRespawnRateTo_1());
+        for (i = 1; i <= 52; i++) {
             inventory.setItem(i, changeRespawnRateTo(i));
         }
         inventory.setItem(53, goToSecondPage());
         player.openInventory(inventory);
     }
+
+    private static ItemStack changeRespawnRateTo_1() {
+        ItemStack itemStack = new ItemStack(Material.CLOCK);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        double m =(double)1/12;
+        String mFormatted = String.format("%.2f", m);
+        itemMeta.setDisplayName("Change the respawn Rate to §c1§f seconds");
+        List<String> lore = new ArrayList<>();
+        lore.add("§fTime in minutes: §c" + mFormatted);
+        itemMeta.setLore(lore);
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
+    }
+
     private static ItemStack changeRespawnRateTo(int i) {
         ItemStack itemStack = new ItemStack(Material.CLOCK);
         ItemMeta itemMeta = itemStack.getItemMeta();
@@ -52,7 +67,10 @@ public class ChangeRespawnRateGUI implements Listener {
             int i;
             if (event.getCurrentItem() != null) {
                 if (event.getCurrentItem().getType() == Material.CLOCK) {
-                    for (i = 0; i <= 52; i++) {
+                    if (event.getCurrentItem().getItemMeta().getDisplayName().equals("Change the respawn Rate to §c1§f seconds")) {
+                        spawnerChangeRespawnRateTo_1(player);
+                    }
+                    for (i = 1; i <= 52; i++) {
                         if (event.getCurrentItem().getItemMeta().getDisplayName().equals("Change the respawn Rate to §c" + 5 * i + "§f seconds")) {
                             spawnerChangeRespawnRate(i, player);
                         }
@@ -67,6 +85,16 @@ public class ChangeRespawnRateGUI implements Listener {
             event.setCancelled(true);
         }
     }
+
+    private void spawnerChangeRespawnRateTo_1(Player player) {
+        Block block = SharedData.callingBlock.get(player);
+        NBT.modifyPersistentData(block.getState(), nbt -> {
+            nbt.setInteger("respawnRate", 1);
+        });
+        player.closeInventory();
+        player.sendMessage("§aUpdated respawn rate to §c" + 1 + "§a seconds");
+    }
+
     private void spawnerChangeRespawnRate(int i, Player player) {
         Block block = SharedData.callingBlock.get(player);
         NBT.modifyPersistentData(block.getState(), nbt -> {

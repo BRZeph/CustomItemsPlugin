@@ -22,14 +22,16 @@ public class GeneratingSpawner {
         NBTItem nbtItem = new NBTItem(spawner);
         int tier = 1;
         int respawnRate = 10; //units in seconds, please
-        int maxAmountOfMobs = 5;
+        int mobCap = 5;
         int mobType = 1; //mobType{1,2,...} == {zombie,skeleton,...}
+        int size = 3;
 
         nbtItem.setInteger("customBlock", 1);
         nbtItem.setInteger("tier", tier);
         nbtItem.setInteger("mobType", mobType);
         nbtItem.setInteger("respawnRate", respawnRate);
-        nbtItem.setInteger("maxAmountOfMobs", maxAmountOfMobs);
+        nbtItem.setInteger("maxAmountOfMobs", mobCap);
+        nbtItem.setInteger("size", size);
         return nbtItem.getItem();
     }
 }

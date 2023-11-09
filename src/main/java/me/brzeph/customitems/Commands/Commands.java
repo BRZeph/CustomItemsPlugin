@@ -3,6 +3,7 @@ package me.brzeph.customitems.Commands;
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTEntity;
 import me.brzeph.customitems.CustomItemList.CustomPickaxe;
+import me.brzeph.customitems.CustomMobs.GUI.SpawnerGUI;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -27,7 +28,6 @@ public class Commands implements CommandExecutor {
         }
         Player player = (Player) sender;
 
-
         Set<Material> validMaterialsPickaxe = new HashSet<>();
         validMaterialsPickaxe.add(Material.WOODEN_PICKAXE);
         validMaterialsPickaxe.add(Material.STONE_PICKAXE);
@@ -44,7 +44,8 @@ public class Commands implements CommandExecutor {
                         "tier",
                         "mobType",
                         "respawnRate",
-                        "maxAmountOfMobs"
+                        "maxAmountOfMobs",
+                        "size"
                 };
                 StringBuilder nbtTags = new StringBuilder();
                 for (String key : desiredOrderPickaxe) {
@@ -156,7 +157,9 @@ public class Commands implements CommandExecutor {
 
                     if (validMaterialsPickaxe.contains(player.getInventory().getItemInMainHand().getType())) {
                         updateLoreForNewEnchantment(player);
-                    } else{
+                    } else if (player.getInventory().getItemInMainHand().getType() == Material.SPAWNER) {
+
+                    } else {
                         player.getInventory().setItemInMainHand(upgradingArmorLore(player.getInventory().getItemInMainHand()));
                     }
                     player.sendMessage("Successfully changed the NBT tag " + nbtKey + "'s value to " + nbtValue);

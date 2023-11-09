@@ -101,5 +101,6 @@ public class ChangeTierGUI implements Listener {
         });
         player.closeInventory();
         player.sendMessage("§aUpdated the tier to §c" + tier);
+        SharedData.callingBlock.clear();
     }
 }
