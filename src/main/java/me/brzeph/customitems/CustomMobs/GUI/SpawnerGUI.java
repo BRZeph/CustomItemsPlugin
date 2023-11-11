@@ -1,18 +1,15 @@
 package me.brzeph.customitems.CustomMobs.GUI;
 
 import de.tr7zw.nbtapi.NBT;
+import de.tr7zw.nbtapi.NBTEntity;
 import de.tr7zw.nbtapi.NBTTileEntity;
 import me.brzeph.customitems.CustomMobs.CustomMobsListEnum;
-import me.brzeph.customitems.CustomMobs.SpawnerRegistry;
 import me.brzeph.customitems.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -26,8 +23,6 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
 
-import static me.brzeph.customitems.CustomItemList.CustomArmor.GeneratingArmor.CustomArmorBoots.createT1Boots;
-import static me.brzeph.customitems.CustomItemList.CustomArmor.UpdatingArmorLore.upgradingArmorLore;
 import static me.brzeph.customitems.CustomMobs.GUI.ChangeMaxAmountOfMobsGUI.changeMaxAmountOfMobsOpenGui;
 import static me.brzeph.customitems.CustomMobs.GUI.ChangeMobTypeGUI.changeMobTypeOpenGUI;
 import static me.brzeph.customitems.CustomMobs.GUI.ChangeRespawnRateGUI.changeRespawnRateOpenGUIPage1;
@@ -44,7 +39,16 @@ public class SpawnerGUI implements Listener {
         inventory.setItem(3, changeMaxAmountOfMobs());
         inventory.setItem(5, initializedSpawner());
         inventory.setItem(6, stopSpawner());
+        inventory.setItem(8, registerspawner());
         player.openInventory(inventory);
+    }
+
+    private static ItemStack registerspawner() {
+        ItemStack itemStack = new ItemStack(Material.CYAN_WOOL);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setDisplayName("register spawner");
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
     }
 
     private static ItemStack stopSpawner() {
@@ -111,6 +115,7 @@ public class SpawnerGUI implements Listener {
     @EventHandler
     public void onMenuTierClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
+        Block block = SharedData.callingBlock.get(player);
         if (event.getView().getTitle().equalsIgnoreCase("§0Mob Spawner GUI")) {
             if (event.getCurrentItem() == null) {
                 getServer().getConsoleSender().sendMessage("[DEBUG]: clicked on null");
@@ -135,78 +140,126 @@ public class SpawnerGUI implements Listener {
             }
             if (event.getCurrentItem().getItemMeta().getDisplayName().equals("Initialize the spawner")){
                 getServer().getConsoleSender().sendMessage("[DEBUG]: clicked on change initialize spawner");
-                Block block = SharedData.callingBlock.get(player);
-                Location location = block.getLocation();
-                Block block1 = SpawnerRegistry.spawnerList.get(location);
-                NBTTileEntity nbtTileEntity = new NBTTileEntity(block1.getState());
-                int tier = nbtTileEntity.getPersistentDataContainer().getInteger("tier");
-                int spawnTime = nbtTileEntity.getPersistentDataContainer().getInteger("respawnRate");
-                int mobCap = nbtTileEntity.getPersistentDataContainer().getInteger("maxAmountOfMobs");
-                int size = nbtTileEntity.getPersistentDataContainer().getInteger("size");
-                spawnMobs(size, mobCap, spawnTime, tier, location);
+                spawnMobs();
                 player.closeInventory();
             }
             if (event.getCurrentItem().getItemMeta().getDisplayName().equals("Stop the spawner")){
                 getServer().getConsoleSender().sendMessage("[DEBUG]: clicked on stop spawner");
-                stoppingTask();
+
+
+
+
                 player.closeInventory();
             }
+            if (event.getCurrentItem().getItemMeta().getDisplayName().equals("register spawner")){
+                getServer().getConsoleSender().sendMessage("[DEBUG]: clicked on register spawner");
+                registerSpawner(block);
+                player.closeInventory();
+
+            }
+
+
+
+
             event.setCancelled(true);
         }
     }
-    public BukkitTask task;
     public Map<Entity, CustomMobsListEnum> entities = new HashMap<>();
-    public void spawnMobs(int size, int mobCap, int spawnTime, int tier, Location spawnerLocation){
-        CustomMobsListEnum[] mobTypes = CustomMobsListEnum.values();
-        task = new BukkitRunnable(){
-            Set<Entity> spawned = entities.keySet();
-            List<Entity> removal = new ArrayList<>();
+    public HashMap<Location, Block> spawnerList = new HashMap<>();
+    public Map<Location, Set<Entity>> entitiesMap = new HashMap<>();
+    public Map<Location, List<Entity>> removalMap = new HashMap<>();
+    public Map<Location, Integer> tickCount = new HashMap<>();
+    BukkitTask task;
+    public void registerSpawner(Block spawner){
+        spawnerList.put(spawner.getLocation(), spawner);
+        entitiesMap.put(spawner.getLocation(), new HashSet<>());
+        removalMap.put(spawner.getLocation(), new ArrayList<>());
+        tickCount.put(spawner.getLocation(), 1);
+    }
+
+    public void spawnMobs() {
+        task = new BukkitRunnable() {
             @Override
-            public void run() { //spawning algorithm
-                for (Entity entity : spawned){
-                    if (!entity.isValid() || entity.isDead()) removal.add(entity);
-                } //this handles tracking dead mobs for the mob cap
-                spawned.removeAll(removal);
-//TODO: make the spawner require the input of ''block'', then get all of the other information from the block and put them here, after the run()
-                //TODO: create a hashmap that tracks taskID and block spawner
-                //TODO: make everything related to mob spawning be based of the block spawner that will be grabbed from taskID maybe put a uniqueID on the block
-                int missingMobs = mobCap - entities.size();
-                if (missingMobs <= 0) return;
-                int spawnAmount = (int) (Math.random()*(missingMobs + 1)), count = 0;
-                getServer().getConsoleSender().sendMessage("[DEBUG]: spawn amount value: " + spawnAmount);
-                while (count <= spawnAmount){
-                    count++;
-                    int randomX = (int) (getRandomWithNegative(size) + spawnerLocation.getX());
-                    int randomZ = (int) (getRandomWithNegative(size) + spawnerLocation.getZ());
-                    Block block = Main.getInstance().world.getHighestBlockAt(randomX, randomZ);
-                    double xOffset = randomOffset();
-                    double zOffset = randomOffset();
-                    Location location = block.getLocation().clone().add(xOffset,1,zOffset);
-                    if (!isSpawnable(location)) continue;
-                    double random = Math.random()*101, previous = 0;
-                    CustomMobsListEnum typeToSpawn = mobTypes[0];
-                    for (CustomMobsListEnum type : mobTypes){
-                        previous += type.getSpawnChance();
-                        if (random <= previous){ //48:10 on the video
-                            typeToSpawn = type;
-                            break;
-                        }
+            public void run() {
+                for (Location spawnerLocation : spawnerList.keySet()) {
+                    Set<Entity> spawned = entitiesMap.get(spawnerLocation);
+                    List<Entity> removal = removalMap.get(spawnerLocation);
+                    NBTTileEntity nbtTileEntity = new NBTTileEntity(spawnerLocation.getBlock().getState());
+                    UUID uuid = nbtTileEntity.getPersistentDataContainer().getUUID("randomID");
+                    getServer().getConsoleSender().sendMessage("[DEBUG]: spawner uuid-> " + uuid);
+                    int mobCap = nbtTileEntity.getPersistentDataContainer().getInteger("maxAmountOfMobs");
+                    int size = nbtTileEntity.getPersistentDataContainer().getInteger("size");
+                    int i = nbtTileEntity.getPersistentDataContainer().getInteger("respawnRate");
+
+                    getServer().getConsoleSender().sendMessage("[DEBUG1]: " + tickCount.get(spawnerLocation));
+
+                    CustomMobsListEnum[] mobTypes = CustomMobsListEnum.values();
+
+                    // Handle tracking dead mobs for the mob cap
+                    List<Entity> deadEntities = new ArrayList<>();
+                    for (Entity entity : spawned) {
+                        if (!entity.isValid() || entity.isDead()) {
+                            removal.add(entity);
+                            deadEntities.add(entity);
+                        } //this seems to be useless
                     }
-                    entities.put(typeToSpawn.spawn(location), typeToSpawn); //this handles the mob cap
+                    spawned.removeAll(deadEntities);
+                    int missingMobs = mobCap - spawned.size();
+                    if (missingMobs <= 0) continue;
+
+                    if (tickCount.get(spawnerLocation) < i){
+                        tickCount.put(spawnerLocation, tickCount.get(spawnerLocation) + 1);
+                        return;
+                    }
+
+                    getServer().getConsoleSender().sendMessage("[DEBUG2]");
+
+                    int count = 0;
+
+                    while (count < missingMobs) {
+                        count++;
+                        int randomX = (int) (getRandomWithNegative(size) + spawnerLocation.getX());
+                        int randomZ = (int) (getRandomWithNegative(size) + spawnerLocation.getZ());
+                        Block block = Main.getInstance().world.getHighestBlockAt(randomX, randomZ);
+                        double xOffset = randomOffset();
+                        double zOffset = randomOffset();
+                        Location location1 = block.getLocation().clone().add(xOffset,1,zOffset);
+                        if (!isSpawnable(location1)) continue;
+                        getServer().getConsoleSender().sendMessage("[DEBUG3]");
+
+                        double random = Math.random() * 101, previous = 0;
+                        CustomMobsListEnum typeToSpawn = mobTypes[0];
+
+                        for (CustomMobsListEnum type : mobTypes) {
+                            previous += type.getSpawnChance();
+                            if (random <= previous) {
+                                typeToSpawn = type;
+                                break;
+                            }
+                        }
+                        getServer().getConsoleSender().sendMessage("[DEBUG4]");
+                        // Spawn the mob and add it to the set of spawned entities
+                        Entity spawnedEntity = typeToSpawn.spawn(location1);
+                        NBT.modifyPersistentData(spawnedEntity, nbt -> {
+                            nbt.setUUID("randomID", uuid);
+                        });
+                        spawned.add(spawnedEntity);
+
+                        // This handles the mob cap
+                        if (spawned.size() >= mobCap) break;
+                    }
+                    getServer().getConsoleSender().sendMessage("[DEBUG5]");
+                    tickCount.put(spawnerLocation, 1);
                 }
             }
-        }.runTaskTimer(Main.getInstance(), 0L, spawnTime); //every [spawnTime] seconds will spawn 0 ~ [mobCap] mobs in random amounts
+        }.runTaskTimer(Main.getInstance(), 0L, 20);
     }
+
     public void stoppingTask(){
-        task.cancel();
+            getServer().getConsoleSender().sendMessage("[DEBUG]: if there's an error here, update code");
     }
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event) {
-        if (!entities.containsKey(event.getEntity())) return;
-        event.setDroppedExp(0);
-        event.getDrops().clear();
-        entities.remove(event.getEntity());
-        event.getDrops().add(upgradingArmorLore(createT1Boots()));
     }
     @EventHandler
     public void onEntityDamage(EntityDamageEvent event){

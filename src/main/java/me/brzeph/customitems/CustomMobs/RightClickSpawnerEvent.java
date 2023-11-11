@@ -23,7 +23,9 @@ public class RightClickSpawnerEvent implements Listener {
             nbtTileEntity.getPersistentDataContainer().getInteger("mobType") + "\n" + "respawnRate" +
             nbtTileEntity.getPersistentDataContainer().getInteger("respawnRate")+ "\n" + "mobCap" +
             nbtTileEntity.getPersistentDataContainer().getInteger("maxAmountOfMobs") + "\n" + "size" +
-            nbtTileEntity.getPersistentDataContainer().getInteger("size"));
+            nbtTileEntity.getPersistentDataContainer().getInteger("size") + "\n" + "UUID" +
+            nbtTileEntity.getPersistentDataContainer().getUUID("randomID")
+            );
         }
     }
 }

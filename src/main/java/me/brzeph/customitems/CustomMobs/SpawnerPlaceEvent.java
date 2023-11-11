@@ -3,6 +3,7 @@ package me.brzeph.customitems.CustomMobs;
 import de.tr7zw.nbtapi.NBT;
 import de.tr7zw.nbtapi.NBTItem;
 import me.brzeph.customitems.Main;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -10,6 +11,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.UUID;
 
 public class SpawnerPlaceEvent implements Listener {
     @EventHandler
@@ -25,6 +30,7 @@ public class SpawnerPlaceEvent implements Listener {
             int respawnRate = nbtItem.getInteger("respawnRate");
             int maxAmountOfMobs = nbtItem.getInteger("maxAmountOfMobs");
             int size = nbtItem.getInteger("size");
+            UUID uuid = UUID.randomUUID();
             placedBlock.setType(Material.SPAWNER);
             NBT.modifyPersistentData(placedBlock.getState(), nbt -> {
                 nbt.setInteger("customBlock", customBlock);
@@ -33,8 +39,8 @@ public class SpawnerPlaceEvent implements Listener {
                 nbt.setInteger("respawnRate", respawnRate);
                 nbt.setInteger("maxAmountOfMobs", maxAmountOfMobs);
                 nbt.setInteger("size", size);
+                nbt.setUUID("randomID", uuid);
             });
-            SpawnerRegistry.spawnerList.put(placedBlock.getLocation(), placedBlock);
         }
     }
 }

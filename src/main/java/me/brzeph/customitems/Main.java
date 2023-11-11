@@ -91,9 +91,4 @@ public final class Main extends JavaPlugin implements Listener {
     public void onDisable() {
         // Plugin shutdown logic
     }
-    private double randomOffset(){
-        double random =Math.random();
-        if (Math.random() > 0.5 ) random *= -1;
-        return random;
-    }
 }
