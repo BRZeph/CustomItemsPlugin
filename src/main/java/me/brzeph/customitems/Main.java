@@ -10,6 +10,7 @@ import me.brzeph.customitems.Commands.CustomMobsCommands;
 import me.brzeph.customitems.Commands.NPCCommands;
 import me.brzeph.customitems.CustomMobs.GUI.*;
 import me.brzeph.customitems.CustomMobs.RightClickSpawnerEvent;
+import me.brzeph.customitems.CustomMobs.SpawnerFunctionality;
 import me.brzeph.customitems.CustomMobs.SpawnerPlaceEvent;
 import me.brzeph.customitems.Events.MiningEvents.MiningEvents;
 import me.brzeph.customitems.Events.NPCEvents.SkillTrainerEvents;
@@ -18,14 +19,13 @@ import me.brzeph.customitems.Events.PlayerStatsRelatedEvents.OnArmorEquip;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.DecimalFormat;
 import java.util.*;
 
-public final class Main extends JavaPlugin implements Listener {
+public final class Main extends JavaPlugin{
     public World world;
     public DecimalFormat formatter = new DecimalFormat("#.##");
     public Map<Entity, Integer> indicators = new HashMap<>();
@@ -48,7 +48,7 @@ public final class Main extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(new ChangeMobTypeGUI(), this);
         getServer().getPluginManager().registerEvents(new ChangeRespawnRateGUI(), this);
         getServer().getPluginManager().registerEvents(new ChangeMaxAmountOfMobsGUI(), this);
-        getServer().getPluginManager().registerEvents(this, this);
+        getServer().getPluginManager().registerEvents(new SpawnerFunctionality(), this);
         world = Bukkit.getWorld("world");
 
         String[] commands = {"nbtTags", "nbtplayer", "nbt", "t1pick", "t2pick", "t3pick", "t4pick", "t5pick", "pick"};
