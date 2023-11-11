@@ -1,5 +1,6 @@
 package me.brzeph.customitems.CustomMobs;
 
+import me.brzeph.customitems.CustomItemList.CustomCombatItems.GeneratingCombatItems.CreateTXArmor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
@@ -12,14 +13,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static me.brzeph.customitems.CustomItemList.CustomArmor.GeneratingArmor.CustomArmorBoots.createT1Boots;
-import static me.brzeph.customitems.CustomItemList.CustomArmor.UpdatingArmorLore.upgradingArmorLore;
+import static me.brzeph.customitems.CustomItemList.CustomCombatItems.UpdatingArmorLore.upgradingArmorLore;
 
 public enum CustomMobsListEnum { //IMPORTANT: all the mobs spawn chance summed must add up to 100
     //TODO: remove the drops from the ''firstMob'' and put on entityDeathEvent
     FirstMob("First Mob", 80, 100, EntityType.ZOMBIE, new ItemStack(Material.WOODEN_SWORD),
             makeArmorSet(new ItemStack(Material.LEATHER_HELMET), new ItemStack(Material.LEATHER_CHESTPLATE), new ItemStack(Material.LEATHER_LEGGINGS),
-                    new ItemStack(Material.LEATHER_BOOTS)), new LootDrops(upgradingArmorLore(createT1Boots()), 1, 1, 99));
+                    new ItemStack(Material.LEATHER_BOOTS)), new LootDrops(upgradingArmorLore(CreateTXArmor.createTXBoots(1)), 1, 1, 99));
     private String name;
     private double maxHealth, spawnChance;
     private EntityType type;
@@ -40,9 +40,10 @@ public enum CustomMobsListEnum { //IMPORTANT: all the mobs spawn chance summed m
     public LivingEntity spawn(Location location){
         LivingEntity entity = (LivingEntity) location.getWorld().spawnEntity(location, type);
         entity.setCustomNameVisible(true);
-        entity.setCustomName(name + (int) maxHealth + "/" + (int) maxHealth + "♥");
+        entity.setCustomName(name + " ♥ " +(int) maxHealth + "/" + (int) maxHealth + "♥");
         entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(maxHealth);
         entity.setHealth(maxHealth);
+
         EntityEquipment inv = entity.getEquipment();
         if (armor != null) inv.setArmorContents(armor);
         inv.setHelmetDropChance(0F);

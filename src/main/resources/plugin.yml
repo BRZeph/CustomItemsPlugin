@@ -23,6 +23,67 @@ commands:
     description: opens the skilltrainer GUI
     usage: /<command>
 
+  t1axe:
+    description: gives the player a t1 axe
+    usage: /<command>
+  t2axe:
+    description: gives the player a t2 axe
+    usage: /<command>
+  t3axe:
+    description: gives the player a t3 axe
+    usage: /<command>
+  t4axe:
+    description: gives the player a t4 axe
+    usage: /<command>
+  t5axe:
+    description: gives the player a t5 axe
+    usage: /<command>
+  t1sword:
+    description: gives the player a t1 sword
+    usage: /<command>
+  t2sword:
+    description: gives the player a t2 sword
+    usage: /<command>
+  t3sword:
+    description: gives the player a t3 sword
+    usage: /<command>
+  t4sword:
+    description: gives the player a t4 sword
+    usage: /<command>
+  t5sword:
+    description: gives the player a t5 sword
+    usage: /<command>
+  t1shovel:
+    description: gives the player a t1 shovel
+    usage: /<command>
+  t2shovel:
+    description: gives the player a t2 shovel
+    usage: /<command>
+  t3shovel:
+    description: gives the player a t3 shovel
+    usage: /<command>
+  t4shovel:
+    description: gives the player a t4 shovel
+    usage: /<command>
+  t5shovel:
+    description: gives the player a t5 shovel
+    usage: /<command>
+  t1hoe:
+    description: gives the player a t1 hoe
+    usage: /<command>
+  t2hoe:
+    description: gives the player a t2 hoe
+    usage: /<command>
+  t3hoe:
+    description: gives the player a t3 hoe
+    usage: /<command>
+  t4hoe:
+    description: gives the player a t4 hoe
+    usage: /<command>
+  t5hoe:
+    description: gives the player a t5 hoe
+    usage: /<command>
+
   t1armor:
     description: gives the player a full set of t1 armor
     usage: /<command>

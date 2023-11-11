@@ -1,4 +1,4 @@
-package me.brzeph.customitems.CustomItemList.CustomArmor.GeneratingArmor;
+package me.brzeph.customitems.CustomItemList.CustomCombatItems.GeneratingCombatItems;
 
 import java.util.Random;
 

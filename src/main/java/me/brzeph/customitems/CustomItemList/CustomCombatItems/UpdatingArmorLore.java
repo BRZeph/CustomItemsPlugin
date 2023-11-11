@@ -1,4 +1,4 @@
-package me.brzeph.customitems.CustomItemList.CustomArmor;
+package me.brzeph.customitems.CustomItemList.CustomCombatItems;
 
 import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.inventory.ItemStack;

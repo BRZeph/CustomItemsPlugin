@@ -1,4 +1,4 @@
-package me.brzeph.customitems.CustomItemList.CustomArmor.ArmorEnums;
+package me.brzeph.customitems.CustomItemList.CustomCombatItems.ComatItemsEnums;
 
 import java.util.Random;
 

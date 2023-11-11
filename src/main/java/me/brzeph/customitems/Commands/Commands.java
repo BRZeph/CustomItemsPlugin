@@ -3,7 +3,6 @@ package me.brzeph.customitems.Commands;
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTEntity;
 import me.brzeph.customitems.CustomItemList.CustomPickaxe;
-import me.brzeph.customitems.CustomMobs.GUI.SpawnerGUI;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -17,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
-import static me.brzeph.customitems.CustomItemList.CustomArmor.UpdatingArmorLore.upgradingArmorLore;
+import static me.brzeph.customitems.CustomItemList.CustomCombatItems.UpdatingArmorLore.upgradingArmorLore;
 import static me.brzeph.customitems.Events.MiningEvents.Methods.UpdateLoreEnchantment.updateLoreForNewEnchantment;
 
 public class Commands implements CommandExecutor {

@@ -6,7 +6,7 @@ import de.tr7zw.nbtapi.NBTEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-import static me.brzeph.customitems.CustomItemList.CustomArmor.UpdatingPlayerHealth.updatingPlayerHealth;
+import static me.brzeph.customitems.CustomItemList.CustomCombatItems.UpdatingPlayerHealth.updatingPlayerHealth;
 
 public class OnArmorEquip implements Listener {
     @EventHandler

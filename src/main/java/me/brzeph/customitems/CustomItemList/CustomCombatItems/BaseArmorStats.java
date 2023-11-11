@@ -1,4 +1,4 @@
-package me.brzeph.customitems.CustomItemList.CustomArmor;
+package me.brzeph.customitems.CustomItemList.CustomCombatItems;
 
 public class BaseArmorStats {
     public static int armorStatsVitality = 0;

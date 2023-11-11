@@ -7,7 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import static me.brzeph.customitems.CustomItemList.CustomArmor.UpdatingPlayerHealth.updatingPlayerHealth;
+import static me.brzeph.customitems.CustomItemList.CustomCombatItems.UpdatingPlayerHealth.updatingPlayerHealth;
 
 public class PlayerRegister implements Listener {
     @EventHandler

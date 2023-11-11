@@ -1,12 +1,15 @@
 package me.brzeph.customitems.CustomMobs;
 
 import de.tr7zw.nbtapi.NBT;
+import de.tr7zw.nbtapi.NBTEntity;
 import de.tr7zw.nbtapi.NBTTileEntity;
+import me.brzeph.customitems.CustomItemList.CustomCombatItems.GeneratingCombatItems.CreateTXArmor;
 import me.brzeph.customitems.Main;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,14 +21,12 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
 
-import static me.brzeph.customitems.CustomItemList.CustomArmor.GeneratingArmor.CustomArmorBoots.createT1Boots;
-import static me.brzeph.customitems.CustomItemList.CustomArmor.UpdatingArmorLore.upgradingArmorLore;
+import static me.brzeph.customitems.CustomItemList.CustomCombatItems.UpdatingArmorLore.upgradingArmorLore;
 import static org.bukkit.Bukkit.getServer;
 
 public class SpawnerFunctionality implements Listener {
     public static SpawnerFunctionality getInstance() {return instance;}
     public static SpawnerFunctionality instance;
-    public Map<Entity, CustomMobsListEnum> entities = new HashMap<>();
     public Map<Location, Set<Entity>> entitiesMap = new HashMap<>();
     public Map<Location, Integer> tickCount = new HashMap<>();
     public HashMap<Location, Block> spawnerList = new HashMap<>();
@@ -98,6 +99,7 @@ public class SpawnerFunctionality implements Listener {
                             Entity spawnedEntity = typeToSpawn.spawn(location1);
                             NBT.modifyPersistentData(spawnedEntity, nbt -> {
                                 nbt.setUUID("randomID", uuid);
+                                nbt.setString("customMob", "yes");
                             });
                             spawned.add(spawnedEntity);
 
@@ -138,31 +140,31 @@ public class SpawnerFunctionality implements Listener {
         if (entity.customName() == null) return;
         event.setDroppedExp(0);
         event.getDrops().clear();
-        entities.remove(event.getEntity());
-        event.getDrops().add(upgradingArmorLore(createT1Boots()));
+        event.getDrops().add(upgradingArmorLore(CreateTXArmor.createTXBoots(1)));
     }
     @EventHandler
-    public void onEntityDamage(EntityDamageEvent event){
+    public void onEntityDamage(EntityDamageEvent event) {
         Entity rawEntity = event.getEntity();
-        if (!entities.containsKey(rawEntity)) return;
-        CustomMobsListEnum mob = entities.get(rawEntity);
-        LivingEntity entity = (LivingEntity) rawEntity;
-        double damage = event.getFinalDamage();
-        double health = entity.getHealth() + entity.getAbsorptionAmount();
-        if (health > damage){ //checks if the entity survived
-            health -= damage;
-            entity.setCustomName(mob.getName() + " " + (int) health + "/" + (int) mob.getMaxHealth() + "♥");
+        if (new NBTEntity(rawEntity).getPersistentDataContainer().getString("customMob").equals("yes")) {
+            LivingEntity entity = (LivingEntity) rawEntity;
+            double damage = event.getFinalDamage();
+            double health = entity.getHealth() + entity.getAbsorptionAmount();
+            String name = entity.getName();
+            String nameWithoutHealth = name.split(" ♥ ")[0].trim();
+            if (health > damage) { //checks if the entity survived
+                health -= damage;
+                entity.setCustomName(nameWithoutHealth + " ♥ " + (int) health + "/" + (int) entity.getMaxHealth() + "♥");
+            }
+            Location loc = entity.getLocation().clone().add(randomOffset(), 1, randomOffset());
+            Main.getInstance().world.spawn(loc, ArmorStand.class, armorStand -> {
+                armorStand.setMarker(true);
+                armorStand.setVisible(false);
+                armorStand.setGravity(false);
+                armorStand.setSmall(true);
+                armorStand.setCustomNameVisible(true);
+                armorStand.setCustomName("&c" + Main.getInstance().formatter.format(damage));
+                Main.getInstance().indicators.put(armorStand, 20 * 2); //armorStand will last 2 seconds
+            });
         }
-        Location loc = entity.getLocation().clone().add(randomOffset(), 1, randomOffset());
-        Main.getInstance().world.spawn(loc, ArmorStand.class, armorStand -> {
-            armorStand.setMarker(true);
-            armorStand.setVisible(false);
-            armorStand.setGravity(false);
-            armorStand.setSmall(true);
-            armorStand.setCustomNameVisible(true);
-            armorStand.setCustomName("&c" + Main.getInstance().formatter.format(damage));
-            Main.getInstance().indicators.put(armorStand, 20*2); //armorStand will last 2 seconds
-        });
-
     }
 }
