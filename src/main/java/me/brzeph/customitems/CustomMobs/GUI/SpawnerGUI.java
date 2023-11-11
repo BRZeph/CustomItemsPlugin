@@ -1,26 +1,16 @@
 package me.brzeph.customitems.CustomMobs.GUI;
 
-import de.tr7zw.nbtapi.NBT;
-import de.tr7zw.nbtapi.NBTTileEntity;
-import me.brzeph.customitems.CustomMobs.CustomMobsListEnum;
 import me.brzeph.customitems.CustomMobs.SpawnerFunctionality;
-import me.brzeph.customitems.Main;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.server.ServerLoadEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
 
@@ -28,7 +18,6 @@ import static me.brzeph.customitems.CustomMobs.GUI.ChangeMaxAmountOfMobsGUI.chan
 import static me.brzeph.customitems.CustomMobs.GUI.ChangeMobTypeGUI.changeMobTypeOpenGUI;
 import static me.brzeph.customitems.CustomMobs.GUI.ChangeRespawnRateGUI.changeRespawnRateOpenGUIPage1;
 import static me.brzeph.customitems.CustomMobs.GUI.ChangeTierGUI.changeTierOpenGUI;
-import static org.bukkit.Bukkit.getServer;
 
 public class SpawnerGUI implements Listener {
     public static void spawnerOpenGUI(Player player){
@@ -108,7 +97,6 @@ public class SpawnerGUI implements Listener {
     public void onMenuTierClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
         Block block = SharedData.callingBlock.get(player);
-        SpawnerFunctionality spawnerFunctionality = new SpawnerFunctionality();
         if (event.getView().getTitle().equalsIgnoreCase("§0Mob Spawner GUI")) {
             if (event.getCurrentItem() == null) {
                 return;
@@ -126,11 +114,11 @@ public class SpawnerGUI implements Listener {
                 changeMaxAmountOfMobsOpenGui(player);
             }
             if (event.getCurrentItem().getItemMeta().getDisplayName().equals("Unregister the spawner")){
-                spawnerFunctionality.unRegisterSpawner(block);
+                SpawnerFunctionality.getInstance().unRegisterSpawner(block);
                 player.closeInventory();
             }
             if (event.getCurrentItem().getItemMeta().getDisplayName().equals("register spawner")){
-                spawnerFunctionality.registerSpawner(block);
+                SpawnerFunctionality.getInstance().registerSpawner(block);
                 player.closeInventory();
             }
             event.setCancelled(true);

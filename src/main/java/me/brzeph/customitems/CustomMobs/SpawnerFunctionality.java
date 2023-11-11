@@ -23,28 +23,31 @@ import static me.brzeph.customitems.CustomItemList.CustomArmor.UpdatingArmorLore
 import static org.bukkit.Bukkit.getServer;
 
 public class SpawnerFunctionality implements Listener {
+    public static SpawnerFunctionality getInstance() {return instance;}
+    public static SpawnerFunctionality instance;
     public Map<Entity, CustomMobsListEnum> entities = new HashMap<>();
-    public HashMap<Location, Block> spawnerList = new HashMap<>();
     public Map<Location, Set<Entity>> entitiesMap = new HashMap<>();
-    public Map<Location, List<Entity>> removalMap = new HashMap<>();
     public Map<Location, Integer> tickCount = new HashMap<>();
+    public HashMap<Location, Block> spawnerList = new HashMap<>();
     public void registerSpawner(Block spawner){
         spawnerList.put(spawner.getLocation(), spawner);
         entitiesMap.put(spawner.getLocation(), new HashSet<>());
-        removalMap.put(spawner.getLocation(), new ArrayList<>());
         tickCount.put(spawner.getLocation(), 1);
+        getServer().getConsoleSender().sendMessage("[DEBUG] spawner uuid: " + new NBTTileEntity(spawner.getState()).getPersistentDataContainer()
+                .getUUID("randomID"));
     }
     public void unRegisterSpawner(Block block) {
         spawnerList.remove(block.getLocation(), block);
     }
     BukkitTask task;
     public void spawnMobs() {
+        instance = this;
         task = new BukkitRunnable() {
             @Override
             public void run() {
+                getServer().getConsoleSender().sendMessage("[DEBUG] list size: " + spawnerList.size());
                 for (Location spawnerLocation : spawnerList.keySet()) {
                     Set<Entity> spawned = entitiesMap.get(spawnerLocation);
-                    List<Entity> removal = removalMap.get(spawnerLocation);
                     NBTTileEntity nbtTileEntity = new NBTTileEntity(spawnerLocation.getBlock().getState());
                     UUID uuid = nbtTileEntity.getPersistentDataContainer().getUUID("randomID");
                     int mobCap = nbtTileEntity.getPersistentDataContainer().getInteger("maxAmountOfMobs");
@@ -59,11 +62,10 @@ public class SpawnerFunctionality implements Listener {
                     List<Entity> deadEntities = new ArrayList<>();
                     for (Entity entity : spawned) {
                         if (!entity.isValid() || entity.isDead()) {
-                            removal.add(entity);
                             deadEntities.add(entity);
                         } //this seems to be useless
                     }
-                    spawned.removeAll(deadEntities);
+                    deadEntities.forEach(spawned::remove);
                     int missingMobs = mobCap - spawned.size();
                     if (missingMobs <= 0) continue;
 
