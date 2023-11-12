@@ -17,23 +17,23 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChangeMaxAmountOfMobsGUI implements Listener {
-    public static void changeMaxAmountOfMobsOpenGui(Player player){
+public class ChangeSpawnRadiusGUI implements Listener {
+    public static void changeSpawnerRadiusOpenGUI(Player player){
         Block block = SharedData.callingBlock.get(player);
-        Inventory inventory = Bukkit.createInventory(player, 18, "§0Choose max amount of mobs GUI");
-        inventory.setItem(1, decreaseMobCapAmountBy_i(5, block));
-        inventory.setItem(2, decreaseMobCapAmountBy_i(3, block));
-        inventory.setItem(3, decreaseMobCapAmountBy_i(1, block));
+        Inventory inventory = Bukkit.createInventory(player, 18, "§0Choose spawner radius GUI");
+        inventory.setItem(1, decreaseRadiusAmountBy_i(5, block));
+        inventory.setItem(2, decreaseRadiusAmountBy_i(3, block));
+        inventory.setItem(3, decreaseRadiusAmountBy_i(1, block));
         inventory.setItem(4, glass());
-        inventory.setItem(5, increaseMobCapAmountBy_i(1, block));
-        inventory.setItem(6, increaseMobCapAmountBy_i(3, block));
-        inventory.setItem(7, increaseMobCapAmountBy_i(5, block));
+        inventory.setItem(5, increaseRadiusAmountBy_i(1, block));
+        inventory.setItem(6, increaseRadiusAmountBy_i(3, block));
+        inventory.setItem(7, increaseRadiusAmountBy_i(5, block));
 
-        inventory.setItem(11, setMobCapValueTo(1, block));
-        inventory.setItem(12, setMobCapValueTo(5, block));
-        inventory.setItem(13, setMobCapValueTo(10, block));
-        inventory.setItem(14, setMobCapValueTo(15, block));
-        inventory.setItem(15, setMobCapValueTo(20, block));
+        inventory.setItem(11, setRadiusValueTo(1, block));
+        inventory.setItem(12, setRadiusValueTo(5, block));
+        inventory.setItem(13, setRadiusValueTo(10, block));
+        inventory.setItem(14, setRadiusValueTo(15, block));
+        inventory.setItem(15, setRadiusValueTo(20, block));
         player.openInventory(inventory);
     }
     private static ItemStack glass() {
@@ -44,16 +44,16 @@ public class ChangeMaxAmountOfMobsGUI implements Listener {
         return itemStack;
     }
 
-    private static ItemStack decreaseMobCapAmountBy_i(int i, Block block) {
+    private static ItemStack decreaseRadiusAmountBy_i(int i, Block block) {
         NBTTileEntity nbtTileEntity = new NBTTileEntity(block.getState());
-        int currentAmountMobs = nbtTileEntity.getPersistentDataContainer().getInteger("maxAmountOfMobs");
+        int size = nbtTileEntity.getPersistentDataContainer().getInteger("size");
         ItemStack itemStack = new ItemStack(Material.RED_WOOL, i);
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName("Decrease amount by " + i);
         List<String> lore = new ArrayList<>();
         lore.add("");
-        lore.add("§8Set value to: §a" + (currentAmountMobs - i));
-        lore.add("§8Current value: §c" + currentAmountMobs);
+        lore.add("§8Set value to: §a" + (size - i));
+        lore.add("§8Current value: §c" + size);
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
         NBTItem nbtItem = new NBTItem(itemStack);
@@ -61,32 +61,32 @@ public class ChangeMaxAmountOfMobsGUI implements Listener {
         return nbtItem.getItem();
     }
 
-    private static ItemStack increaseMobCapAmountBy_i(int i, Block block) {
+    private static ItemStack increaseRadiusAmountBy_i(int i, Block block) {
         NBTTileEntity nbtTileEntity = new NBTTileEntity(block.getState());
-        int currentAmountMobs = nbtTileEntity.getPersistentDataContainer().getInteger("maxAmountOfMobs");
+        int radius = nbtTileEntity.getPersistentDataContainer().getInteger("size");
         ItemStack itemStack = new ItemStack(Material.GREEN_WOOL, i);
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName("Increase amount by " + i);
         List<String> lore = new ArrayList<>();
         lore.add("");
-        lore.add("§8Set value to: §a" + (currentAmountMobs + i));
-        lore.add("§8Current value: §c" + currentAmountMobs);
+        lore.add("§8Set value to: §a" + (radius + i));
+        lore.add("§8Current value: §c" + radius);
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
         NBTItem nbtItem = new NBTItem(itemStack);
         nbtItem.setInteger("changeValueBy", i);
         return nbtItem.getItem();
     }
-    private static ItemStack setMobCapValueTo(int i, Block block) {
+    private static ItemStack setRadiusValueTo(int i, Block block) {
         NBTTileEntity nbtTileEntity = new NBTTileEntity(block.getState());
-        int currentAmountMobs = nbtTileEntity.getPersistentDataContainer().getInteger("maxAmountOfMobs");
+        int size = nbtTileEntity.getPersistentDataContainer().getInteger("size");
         ItemStack itemStack = new ItemStack(Material.WHITE_WOOL, i);
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName("Set amount to " + i);
         List<String> lore = new ArrayList<>();
         lore.add("");
         lore.add("§8Set value to: §a" + i);
-        lore.add("§8Current value: §c" + currentAmountMobs);
+        lore.add("§8Current value: §c" + size);
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
         NBTItem nbtItem = new NBTItem(itemStack);
@@ -96,19 +96,19 @@ public class ChangeMaxAmountOfMobsGUI implements Listener {
     @EventHandler
     public void onMenuClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
-        if (event.getView().getTitle().equalsIgnoreCase("§0Choose max amount of mobs GUI")) {
+        if (event.getView().getTitle().equalsIgnoreCase("§0Choose spawner radius GUI")) {
             if (event.getCurrentItem() != null){
                 if (event.getCurrentItem().getType() == Material.RED_WOOL || event.getCurrentItem().getType() == Material.GREEN_WOOL){
                     ItemStack clickedItem = event.getCurrentItem();
                     NBTItem nbtItem = new NBTItem(clickedItem);
                     int changeValueBy = nbtItem.getInteger("changeValueBy");
-                    changeMaxAmountOfMobsTo(changeValueBy, player);
+                    changeRadiusValueTo(changeValueBy, player);
                 }
                 if (event.getCurrentItem().getType() == Material.WHITE_WOOL){
                     ItemStack clickedItem = event.getCurrentItem();
                     NBTItem nbtItem = new NBTItem(clickedItem);
                     int setValueTo = nbtItem.getInteger("setValueTo");
-                    setMaxAmountOfMobsTo(setValueTo, player);
+                    setRadiusValueTo(setValueTo, player);
                 }
                 event.setCancelled(true);
             }
@@ -116,23 +116,23 @@ public class ChangeMaxAmountOfMobsGUI implements Listener {
         }
     }
 
-    private void setMaxAmountOfMobsTo(int setValueTo, Player player) {
+    private void setRadiusValueTo(int setValueTo, Player player) {
         Block block = SharedData.callingBlock.get(player);
         NBT.modifyPersistentData(block.getState(), nbt -> {
-            nbt.setInteger("maxAmountOfMobs", setValueTo);
+            nbt.setInteger("size", setValueTo);
         });
         player.closeInventory();
-        player.sendMessage("§aUpdated max amount of mobs to §c" + setValueTo);
+        player.sendMessage("§aUpdated spawner radius to §c" + setValueTo);
     }
 
-    private void changeMaxAmountOfMobsTo(int changeValueBy, Player player) {
+    private void changeRadiusValueTo(int changeValueBy, Player player) {
         Block block = SharedData.callingBlock.get(player);
         NBTTileEntity nbtTileEntity = new NBTTileEntity(block.getState());
-        int newValue = nbtTileEntity.getPersistentDataContainer().getInteger("maxAmountOfMobs") + changeValueBy;
+        int newValue = nbtTileEntity.getPersistentDataContainer().getInteger("size") + changeValueBy;
         NBT.modifyPersistentData(block.getState(), nbt -> {
-            nbt.setInteger("maxAmountOfMobs", newValue);
+            nbt.setInteger("size", newValue);
         });
         player.closeInventory();
-        player.sendMessage("§aUpdated max amount of mobs to §c" + newValue);
+        player.sendMessage("§aUpdated spawner radius to §c" + newValue);
     }
 }

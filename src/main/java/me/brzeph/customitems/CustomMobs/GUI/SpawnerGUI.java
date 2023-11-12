@@ -1,5 +1,9 @@
 package me.brzeph.customitems.CustomMobs.GUI;
 
+import de.tr7zw.nbtapi.NBT;
+import de.tr7zw.nbtapi.NBTItem;
+import de.tr7zw.nbtapi.NBTTileEntity;
+import me.brzeph.customitems.CustomMobs.CustomMobsListEnum2;
 import me.brzeph.customitems.CustomMobs.SpawnerFunctionality;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -17,7 +21,9 @@ import java.util.*;
 import static me.brzeph.customitems.CustomMobs.GUI.ChangeMaxAmountOfMobsGUI.changeMaxAmountOfMobsOpenGui;
 import static me.brzeph.customitems.CustomMobs.GUI.ChangeMobTypeGUI.changeMobTypeOpenGUI;
 import static me.brzeph.customitems.CustomMobs.GUI.ChangeRespawnRateGUI.changeRespawnRateOpenGUIPage1;
+import static me.brzeph.customitems.CustomMobs.GUI.ChangeSpawnRadiusGUI.changeSpawnerRadiusOpenGUI;
 import static me.brzeph.customitems.CustomMobs.GUI.ChangeTierGUI.changeTierOpenGUI;
+import static org.bukkit.Bukkit.getServer;
 
 public class SpawnerGUI implements Listener {
     public static void spawnerOpenGUI(Player player){
@@ -27,15 +33,66 @@ public class SpawnerGUI implements Listener {
         inventory.setItem(1, changeMobType());               //not implemented yet
         inventory.setItem(2, changeRespawnRate());           //working
         inventory.setItem(3, changeMaxAmountOfMobs());       //working
+        inventory.setItem(4, changeSpawnRadius());       //working
+        inventory.setItem(5, spawnerInfo(player));       //working
         inventory.setItem(7, registerSpawner());             //working
         inventory.setItem(8, unRegisterSpawner());           //working
         player.openInventory(inventory);
     }
 
-    private static ItemStack registerSpawner() {
-        ItemStack itemStack = new ItemStack(Material.CYAN_WOOL);
+    private static ItemStack changeSpawnRadius() {
+        ItemStack itemStack = new ItemStack(Material.GOLD_BLOCK);
         ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName("register spawner");
+        itemMeta.setDisplayName("Change spawner spawn radius");
+        List<String> lore = new ArrayList<>();
+        lore.add("");
+        lore.add("§4No value limits");
+        itemMeta.setLore(lore);
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
+    }
+
+    private static ItemStack spawnerInfo(Player player) {
+        Block block = SharedData.callingBlock.get(player);
+        NBTTileEntity nbtTileEntity = new NBTTileEntity(block.getState());
+        int tier = nbtTileEntity.getPersistentDataContainer().getInteger("tier");
+        int respawnRate = nbtTileEntity.getPersistentDataContainer().getInteger("respawnRate");
+        int maxAmountOfMobs = nbtTileEntity.getPersistentDataContainer().getInteger("maxAmountOfMobs");
+        int size = nbtTileEntity.getPersistentDataContainer().getInteger("size");
+
+        ItemStack itemStack = new ItemStack(Material.WHITE_WOOL);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setDisplayName("Spawner info");
+        List<String> lore = new ArrayList<>();
+        lore.add("");
+        lore.add("§fSpawner tier: " + tier);
+        lore.add("§fSpawner cooldown to spawn: " + respawnRate + " seconds");
+        lore.add("§fSpawner mob cap: " + maxAmountOfMobs);
+        lore.add("§fSpawner radius: " + size);
+        lore.add("");
+        lore.add("§6Spawner mob list: ");
+
+        int i = 1;
+        for (i = 1; i <= CustomMobsListEnum2.values().length; i++){
+            int k = nbtTileEntity.getPersistentDataContainer().getInteger(String.valueOf(i));
+            if (k != 0){
+                for (CustomMobsListEnum2 mob : CustomMobsListEnum2.values()) {
+                    if (mob.getUniqueMobID() == i) {
+                        lore.add(mob.getName() + " " + k + "%");
+                    }
+                }
+            }
+        }
+
+        itemMeta.setLore(lore);
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
+    }
+
+    private static ItemStack registerSpawner() {
+        ItemStack itemStack = new ItemStack(Material.GREEN_WOOL);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setDisplayName("Register spawner");
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }
@@ -60,7 +117,7 @@ public class SpawnerGUI implements Listener {
         return itemStack;
     }
     private static ItemStack changeMobType() {
-        ItemStack itemStack = new ItemStack(Material.GOLD_BLOCK);
+        ItemStack itemStack = new ItemStack(Material.CREEPER_HEAD);
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName("Change mob type");
         List<String> lore = new ArrayList<>();
@@ -117,9 +174,12 @@ public class SpawnerGUI implements Listener {
                 SpawnerFunctionality.getInstance().unRegisterSpawner(block);
                 player.closeInventory();
             }
-            if (event.getCurrentItem().getItemMeta().getDisplayName().equals("register spawner")){
+            if (event.getCurrentItem().getItemMeta().getDisplayName().equals("Register spawner")){
                 SpawnerFunctionality.getInstance().registerSpawner(block);
                 player.closeInventory();
+            }
+            if (event.getCurrentItem().getItemMeta().getDisplayName().equals("Change spawner spawn radius")){
+                changeSpawnerRadiusOpenGUI(player);
             }
             event.setCancelled(true);
         }

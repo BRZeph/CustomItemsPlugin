@@ -13,8 +13,8 @@ public class RightClickSpawnerEvent implements Listener {
     @EventHandler
     public void onSpawnerRightClick(PlayerInteractEvent event){
         if (event.getAction().isRightClick() && event.getClickedBlock() != null && event.getClickedBlock().getType() == Material.SPAWNER) {
-            spawnerOpenGUI(event.getPlayer());
             SharedData.callingBlock.put(event.getPlayer(), event.getClickedBlock());
+            spawnerOpenGUI(event.getPlayer());
             event.setCancelled(true);
             //DEBUG
             NBTTileEntity nbtTileEntity = new NBTTileEntity(event.getClickedBlock().getState());
@@ -24,7 +24,14 @@ public class RightClickSpawnerEvent implements Listener {
             nbtTileEntity.getPersistentDataContainer().getInteger("respawnRate")+ "\n" + "mobCap " +
             nbtTileEntity.getPersistentDataContainer().getInteger("maxAmountOfMobs") + "\n" + "size " +
             nbtTileEntity.getPersistentDataContainer().getInteger("size") + "\n" + "UUID " +
-            nbtTileEntity.getPersistentDataContainer().getUUID("randomID")
+            nbtTileEntity.getPersistentDataContainer().getUUID("randomID") + "\n" +
+            nbtTileEntity.getPersistentDataContainer().getInteger("1") + "\n" +
+            nbtTileEntity.getPersistentDataContainer().getInteger("2") + "\n" +
+            nbtTileEntity.getPersistentDataContainer().getInteger("3") + "\n" +
+            nbtTileEntity.getPersistentDataContainer().getInteger("4") + "\n" +
+            nbtTileEntity.getPersistentDataContainer().getInteger("5") + "\n" +
+            nbtTileEntity.getPersistentDataContainer().getInteger("6") + "\n" +
+            nbtTileEntity.getPersistentDataContainer().getInteger("7")
             );
         }
     }

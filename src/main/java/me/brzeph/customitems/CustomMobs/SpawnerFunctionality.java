@@ -46,16 +46,17 @@ public class SpawnerFunctionality implements Listener {
         task = new BukkitRunnable() {
             @Override
             public void run() {
-                getServer().getConsoleSender().sendMessage("[DEBUG] list size: " + spawnerList.size());
                 for (Location spawnerLocation : spawnerList.keySet()) {
                     Set<Entity> spawned = entitiesMap.get(spawnerLocation);
                     NBTTileEntity nbtTileEntity = new NBTTileEntity(spawnerLocation.getBlock().getState());
-                    UUID uuid = nbtTileEntity.getPersistentDataContainer().getUUID("randomID");
+                    int tier = nbtTileEntity.getPersistentDataContainer().getInteger("tier");
+                    int mobType = nbtTileEntity.getPersistentDataContainer().getInteger("mobType");
+                    int respawnRate = nbtTileEntity.getPersistentDataContainer().getInteger("respawnRate");
                     int mobCap = nbtTileEntity.getPersistentDataContainer().getInteger("maxAmountOfMobs");
                     int size = nbtTileEntity.getPersistentDataContainer().getInteger("size");
-                    int i = nbtTileEntity.getPersistentDataContainer().getInteger("respawnRate");
-
-                    getServer().getConsoleSender().sendMessage("[DEBUG1]: " + tickCount.get(spawnerLocation) + "/" + i);
+                    UUID uuid = nbtTileEntity.getPersistentDataContainer().getUUID("randomID");
+//TODO: create the GUI for the spawner to choose the mobs
+                    getServer().getConsoleSender().sendMessage("[DEBUG1]: " + tickCount.get(spawnerLocation) + "/" + respawnRate);
 
                     CustomMobsListEnum[] mobTypes = CustomMobsListEnum.values();
 
@@ -70,7 +71,7 @@ public class SpawnerFunctionality implements Listener {
                     int missingMobs = mobCap - spawned.size();
                     if (missingMobs <= 0) continue;
 
-                    if (tickCount.get(spawnerLocation) >= i){
+                    if (tickCount.get(spawnerLocation) >= respawnRate){
                         tickCount.put(spawnerLocation, 1);
 
                         int count = 0;

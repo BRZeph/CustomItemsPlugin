@@ -49,6 +49,9 @@ public final class Main extends JavaPlugin{
         getServer().getPluginManager().registerEvents(new ChangeRespawnRateGUI(), this);
         getServer().getPluginManager().registerEvents(new ChangeMaxAmountOfMobsGUI(), this);
         getServer().getPluginManager().registerEvents(new SpawnerFunctionality(), this);
+        getServer().getPluginManager().registerEvents(new ChangeSpawnRadiusGUI(), this);
+        getServer().getPluginManager().registerEvents(new ChangeMobTypeGUI(), this);
+        getServer().getPluginManager().registerEvents(new RegisterMobToSpawnGUI(), this);
         world = Bukkit.getWorld("world");
 
         String[] commands = {"nbtTags", "nbtplayer", "nbt", "t1pick", "t2pick", "t3pick", "t4pick", "t5pick", "pick"};

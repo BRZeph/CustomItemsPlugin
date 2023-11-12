@@ -12,6 +12,38 @@ public enum ArmorTXHPEnum {
         this.min = min;
         this.max = max;
     }
+    public static int getMaxHealthValueTier(int tier){
+        if (tier <= 0 || tier > 5){
+            throw new IllegalArgumentException("Tier must be between 1 and 5 (inclusive).");
+        }
+        if (tier == 1){
+            return T1Legendary.max;
+        } else if (tier == 2){
+            return T2Legendary.max;
+        } else if (tier == 3){
+            return T3Legendary.max;
+        } else if (tier == 4){
+            return T4Legendary.max;
+        } else {
+            return T5Legendary.max;
+        }
+    }
+    public static int getMinHealthValueTier(int tier){
+        if (tier <= 0 || tier > 5){
+            throw new IllegalArgumentException("Tier must be between 1 and 5 (inclusive).");
+        }
+        if (tier == 1){
+            return T1Common.min;
+        } else if (tier == 2){
+            return T2Common.min;
+        } else if (tier == 3){
+            return T3Common.min;
+        } else if (tier == 4){
+            return T4Common.min;
+        } else {
+            return T5Common.min;
+        }
+    }
 
     private final int min;
     private final int max;
