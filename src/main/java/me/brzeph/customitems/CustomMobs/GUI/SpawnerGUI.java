@@ -1,7 +1,6 @@
 package me.brzeph.customitems.CustomMobs.GUI;
 
 import de.tr7zw.nbtapi.NBT;
-import de.tr7zw.nbtapi.NBTItem;
 import de.tr7zw.nbtapi.NBTTileEntity;
 import me.brzeph.customitems.CustomMobs.CustomMobsListEnum2;
 import me.brzeph.customitems.CustomMobs.SpawnerFunctionality;
@@ -35,9 +34,22 @@ public class SpawnerGUI implements Listener {
         inventory.setItem(3, changeMaxAmountOfMobs());       //working
         inventory.setItem(4, changeSpawnRadius());       //working
         inventory.setItem(5, spawnerInfo(player));       //working
+        inventory.setItem(6, deleteCurrentSpawnerData());       //working
         inventory.setItem(7, registerSpawner());             //working
         inventory.setItem(8, unRegisterSpawner());           //working
         player.openInventory(inventory);
+    }
+
+    private static ItemStack deleteCurrentSpawnerData() {
+        ItemStack itemStack = new ItemStack(Material.REDSTONE_BLOCK);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setDisplayName("§aRemove current spawner data");
+        List<String> lore = new ArrayList<>();
+        lore.add("");
+        lore.add("§cSpawner needs to be unregistered before deleting the data");
+        itemMeta.setLore(lore);
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
     }
 
     private static ItemStack changeSpawnRadius() {
@@ -181,7 +193,33 @@ public class SpawnerGUI implements Listener {
             if (event.getCurrentItem().getItemMeta().getDisplayName().equals("Change spawner spawn radius")){
                 changeSpawnerRadiusOpenGUI(player);
             }
+            if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§aRemove current spawner data")){
+                deleteSpawnerData(block);
+                player.closeInventory();
+            }
             event.setCancelled(true);
         }
+    }
+
+    private void deleteSpawnerData(Block block) {
+        NBT.modifyPersistentData(block.getState(), nbt ->{
+            nbt.setInteger("tier", 1);
+            nbt.setInteger("mobType", 1);
+            nbt.setInteger("respawnRate", 5);
+            nbt.setInteger("maxAmountOfMobs", 5);
+            nbt.setInteger("size", 1);
+        });
+        resetMobsToSpawn(block);
+    }
+    public void resetMobsToSpawn(Block block){
+        NBT.modifyPersistentData(block.getState(), nbt ->{
+            int i;
+            for (i = 1; i <= CustomMobsListEnum2.values().length; i++){
+                if (nbt.getInteger("" + i) != 0){
+                    nbt.setInteger("" + i, 0);
+                }
+            }
+        });
+
     }
 }

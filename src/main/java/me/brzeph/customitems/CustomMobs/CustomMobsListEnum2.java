@@ -1,8 +1,17 @@
 package me.brzeph.customitems.CustomMobs;
 
+import de.tr7zw.nbtapi.NBTItem;
 import me.brzeph.customitems.CustomItemList.CustomCombatItems.GeneratingCombatItems.CreateTXArmor;
 import me.brzeph.customitems.CustomItemList.CustomCombatItems.GeneratingCombatItems.CreateTXWeapon;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
+
+import static me.brzeph.customitems.CustomItemList.CustomCombatItems.GeneratingCombatItems.CreateTXWeapon.*;
 
 public enum CustomMobsListEnum2 {
     T1BanditZombieAxe(1,"Leather wearer Bandit1", 1, 1, true, "axe", mobWeaponAxe(1)
@@ -101,5 +110,62 @@ public enum CustomMobsListEnum2 {
 
     public String getItemMainHandMaterial() {
         return itemMainHandMaterial;
+    }
+    public LivingEntity spawnWithRandomStats(Location location){
+
+        LivingEntity entity = (LivingEntity) location.getWorld().spawnEntity(location, returnMobTypeToEntityType(getMobType()));
+        EntityEquipment inv = entity.getEquipment();
+        inv.clear();
+        inv.setArmorContents(createArmorSet(tier));
+        inv.setItemInMainHand(itemInMainHand(tier, getItemMainHandMaterial()));
+        inv.setHelmetDropChance(0F);
+        inv.setChestplateDropChance(0F);
+        inv.setLeggingsDropChance(0F);
+        inv.setBootsDropChance(0F);
+        inv.setItemInMainHandDropChance(0F);
+
+        entity.setCustomNameVisible(true);
+        entity.setCustomName(name + " ♥ " + returnMobMaxHP(entity) + "/" + returnMobMaxHP(entity) + "♥");
+        entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(returnMobMaxHP(entity));
+        entity.setHealth(returnMobMaxHP(entity));
+        return entity;
+    }
+
+    private ItemStack itemInMainHand(int tier, String weaponMaterial) {
+        ItemStack itemStack;
+        if (weaponMaterial.equalsIgnoreCase("axe")) return createTXWeaponAxe(tier);
+        if (weaponMaterial.equalsIgnoreCase("sword")) return createTXWeaponSword(tier);
+        if (weaponMaterial.equalsIgnoreCase("shovel")) return createTXWeaponShovel(tier);
+        if (weaponMaterial.equalsIgnoreCase("hoe")) return createTXWeaponHoe(tier);
+        if (weaponMaterial.equalsIgnoreCase("random")) return createTXWeaponRandomType(tier);
+        itemStack = new ItemStack(Material.REDSTONE_BLOCK);
+        if (itemStack.getType() == Material.REDSTONE_BLOCK){
+            throw new IllegalStateException("Incorrectly defined weapon type.");
+        }
+        return null;
+    }
+
+    public int returnMobMaxHP(LivingEntity entity){
+        EntityEquipment inv = entity.getEquipment();
+        int helmetHP = 0;
+        int chestPlateHP = 0;
+        int leggingsHP = 0;
+        int bootsHP = 0;
+        if (armor != null){
+            helmetHP = new NBTItem(inv.getHelmet()).getInteger("bonusHealth");
+            chestPlateHP = new NBTItem(inv.getChestplate()).getInteger("bonusHealth");
+            leggingsHP = new NBTItem(inv.getLeggings()).getInteger("bonusHealth");
+            bootsHP = new NBTItem(inv.getBoots()).getInteger("bonusHealth");
+        }
+        int totalArmorHP = helmetHP + chestPlateHP + leggingsHP + bootsHP;
+        return totalArmorHP;
+    }
+    public EntityType returnMobTypeToEntityType(int mobType){
+        EntityType mobTypeToEntityType = EntityType.MINECART_MOB_SPAWNER;
+        return switch (mobType) {
+            case 1 -> mobTypeToEntityType = EntityType.ZOMBIE;
+            case 2 -> mobTypeToEntityType = EntityType.SKELETON;
+            default -> throw new IllegalArgumentException("Unregistered mobType: " + mobType);
+        };
     }
 }

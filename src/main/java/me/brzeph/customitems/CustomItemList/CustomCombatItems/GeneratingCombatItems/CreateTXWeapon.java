@@ -70,7 +70,8 @@ public class CreateTXWeapon {
         itemMeta.setDisplayName("Custom T" + tier + " sword");
 
         List<String> lore = new ArrayList<>();
-        lore.add("Damage: " + minDamage + " -> " + maxDamage);
+        lore.add("");
+        lore.add("§cDamage: " + minDamage + " -> " + maxDamage);
 
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
@@ -101,7 +102,8 @@ public class CreateTXWeapon {
         itemMeta.setDisplayName("Custom T" + tier + " shovel");
 
         List<String> lore = new ArrayList<>();
-        lore.add("Damage: " + minDamage + " -> " + maxDamage);
+        lore.add("");
+        lore.add("§cDamage: " + minDamage + " -> " + maxDamage);
 
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
@@ -132,7 +134,8 @@ public class CreateTXWeapon {
         itemMeta.setDisplayName("Custom T" + tier + " hoe");
 
         List<String> lore = new ArrayList<>();
-        lore.add("Damage: " + minDamage + " -> " + maxDamage);
+        lore.add("");
+        lore.add("§cDamage: " + minDamage + " -> " + maxDamage);
 
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
@@ -163,14 +166,15 @@ public class CreateTXWeapon {
         itemMeta.setDisplayName("Custom T" + tier + " " + new ItemStack(nbtItem.getItem()).getType());
 
         List<String> lore = new ArrayList<>();
-        lore.add("Damage: " + minDamage + " -> " + maxDamage);
+        lore.add("");
+        lore.add("§cDamage: " + minDamage + " -> " + maxDamage);
 
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
 
         return itemStack;
     }
-    private static Material getAxeMaterial(int tier) {
+    public static Material getAxeMaterial(int tier) {
         switch(tier){
             case 1:
                 return Material.WOODEN_AXE;
@@ -185,7 +189,7 @@ public class CreateTXWeapon {
         }
         throw new RuntimeException();
     }
-    private static Material getSwordMaterial(int tier) {
+    public static Material getSwordMaterial(int tier) {
         switch(tier){
             case 1:
                 return Material.WOODEN_SWORD;
@@ -200,7 +204,7 @@ public class CreateTXWeapon {
         }
         throw new RuntimeException();
     }
-    private static Material getShovelMaterial(int tier) {
+    public static Material getShovelMaterial(int tier) {
         switch(tier){
             case 1:
                 return Material.WOODEN_SHOVEL;
@@ -215,7 +219,7 @@ public class CreateTXWeapon {
         }
         throw new RuntimeException();
     }
-    private static Material getHoeMaterial(int tier) {
+    public static Material getHoeMaterial(int tier) {
         switch(tier){
             case 1:
                 return Material.WOODEN_HOE;

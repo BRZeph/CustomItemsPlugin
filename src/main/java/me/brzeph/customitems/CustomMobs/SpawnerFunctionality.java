@@ -7,10 +7,7 @@ import me.brzeph.customitems.CustomItemList.CustomCombatItems.GeneratingCombatIt
 import me.brzeph.customitems.Main;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -49,23 +46,19 @@ public class SpawnerFunctionality implements Listener {
                 for (Location spawnerLocation : spawnerList.keySet()) {
                     Set<Entity> spawned = entitiesMap.get(spawnerLocation);
                     NBTTileEntity nbtTileEntity = new NBTTileEntity(spawnerLocation.getBlock().getState());
-                    int tier = nbtTileEntity.getPersistentDataContainer().getInteger("tier");
-                    int mobType = nbtTileEntity.getPersistentDataContainer().getInteger("mobType");
                     int respawnRate = nbtTileEntity.getPersistentDataContainer().getInteger("respawnRate");
                     int mobCap = nbtTileEntity.getPersistentDataContainer().getInteger("maxAmountOfMobs");
                     int size = nbtTileEntity.getPersistentDataContainer().getInteger("size");
                     UUID uuid = nbtTileEntity.getPersistentDataContainer().getUUID("randomID");
-//TODO: create the GUI for the spawner to choose the mobs
-                    getServer().getConsoleSender().sendMessage("[DEBUG1]: " + tickCount.get(spawnerLocation) + "/" + respawnRate);
 
-                    CustomMobsListEnum[] mobTypes = CustomMobsListEnum.values();
+                    getServer().getConsoleSender().sendMessage("[DEBUG1]: " + tickCount.get(spawnerLocation) + "/" + respawnRate);
 
                     // Handle tracking dead mobs for the mob cap
                     List<Entity> deadEntities = new ArrayList<>();
                     for (Entity entity : spawned) {
                         if (!entity.isValid() || entity.isDead()) {
                             deadEntities.add(entity);
-                        } //this seems to be useless
+                        }
                     }
                     deadEntities.forEach(spawned::remove);
                     int missingMobs = mobCap - spawned.size();
@@ -83,29 +76,23 @@ public class SpawnerFunctionality implements Listener {
                             Block block = Main.getInstance().world.getHighestBlockAt(randomX, randomZ);
                             double xOffset = randomOffset();
                             double zOffset = randomOffset();
-                            Location location1 = block.getLocation().clone().add(xOffset,1,zOffset);
+                            Location location1 = block.getLocation().clone().add(xOffset, 1, zOffset);
                             if (!isSpawnable(location1)) continue;
 
-                            double random = Math.random() * 101, previous = 0;
-                            CustomMobsListEnum typeToSpawn = mobTypes[0];
+                            CustomMobsListEnum2 checkForFail = choseMobToSpawn(spawnerLocation.getBlock());
+                            if (checkForFail == null) {
+                                throw new IllegalStateException("Could not find a mob.");
+                            } else {
+                                Entity spawnedEntity = checkForFail.spawnWithRandomStats(location1);
+                                NBT.modifyPersistentData(spawnedEntity, nbt -> {
+                                    nbt.setUUID("randomID", uuid);
+                                    nbt.setString("customMob", "yes");
+                                });
+                                spawned.add(spawnedEntity);
 
-                            for (CustomMobsListEnum type : mobTypes) {
-                                previous += type.getSpawnChance();
-                                if (random <= previous) {
-                                    typeToSpawn = type;
-                                    break;
-                                }
+                                // This handles the mob cap
+                                if (spawned.size() >= mobCap) break;
                             }
-                            // Spawn the mob and add it to the set of spawned entities
-                            Entity spawnedEntity = typeToSpawn.spawn(location1);
-                            NBT.modifyPersistentData(spawnedEntity, nbt -> {
-                                nbt.setUUID("randomID", uuid);
-                                nbt.setString("customMob", "yes");
-                            });
-                            spawned.add(spawnedEntity);
-
-                            // This handles the mob cap
-                            if (spawned.size() >= mobCap) break;
                         }
                     } else {
                         tickCount.put(spawnerLocation, tickCount.get(spawnerLocation) + 1);
@@ -114,6 +101,37 @@ public class SpawnerFunctionality implements Listener {
             }
         }.runTaskTimer(Main.getInstance(), 0L, 20);
     }
+
+    private CustomMobsListEnum2 choseMobToSpawn(Block block) {
+        HashMap<Integer, Integer> mobToSpawnList = new HashMap<>();
+        NBTTileEntity nbtTileEntity = new NBTTileEntity(block.getState());
+        int i;
+        for ( i = 1; i <= CustomMobsListEnum2.values().length; i++){
+            if (nbtTileEntity.getPersistentDataContainer().getInteger("" + i) != 0){
+                mobToSpawnList.put(i, nbtTileEntity.getPersistentDataContainer().getInteger("" + i));
+            }
+        }
+        int selectedKey = selectKey(mobToSpawnList, getRandomValue(100, 1));
+        for (CustomMobsListEnum2 mob : CustomMobsListEnum2.values()){
+            if (mob.getUniqueMobID() == selectedKey){
+                return mob;
+            }
+        }
+        return null;
+    }
+
+    private static int selectKey(Map<Integer, Integer> map, int randomValue) {
+        int cumulative = 0;
+
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            cumulative += entry.getValue();
+            if (randomValue <= cumulative) {
+                return entry.getKey();
+            }
+        }
+        throw new IllegalStateException("The mob spawn percentage values do not add to 100%.");
+    }
+
     private boolean isSpawnable(Location location){
         Block feetBlock = location.getBlock();
         Block headBlock = location.clone().add(0,2,0).getBlock();
@@ -130,6 +148,9 @@ public class SpawnerFunctionality implements Listener {
         double random =Math.random();
         if (Math.random() > 0.5 ) random *= -1;
         return random;
+    }
+    private static int getRandomValue(int maxValue, int minValue) {
+        return new Random().nextInt(maxValue - minValue + 1) + minValue;
     }
     @EventHandler
     public void onServerStart(ServerLoadEvent event){

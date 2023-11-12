@@ -68,7 +68,7 @@ public enum ArmorTXHPEnum {
             case 2:
                 switch (rarityRoll) {
                     case 1:
-                        return random.nextInt(T2Common.max - T1Common.min + 1) + T1Common.min;
+                        return random.nextInt(T2Common.max - T2Common.min + 1) + T2Common.min;
                     case 2:
                         return random.nextInt(T2Uncommon.max - T2Uncommon.min + 1) + T2Uncommon.min;
                     case 3:
