@@ -1,17 +1,15 @@
 package me.brzeph.customitems;
 
-// TODO: implement new treasure find list on mining events
-// TODO: create the method soldado mentioned to create items from nbt tags
-//
+
+// TODO: consider creating a method that automatically updates the player vanilla HP based on the NBTTags of currentHealth and maxHP
+// TODO: create method that sets the player level to the player hp
 
 import me.brzeph.customitems.Commands.Commands;
 import me.brzeph.customitems.Commands.CreateCombatItemsCommands;
 import me.brzeph.customitems.Commands.CustomMobsCommands;
 import me.brzeph.customitems.Commands.NPCCommands;
+import me.brzeph.customitems.CustomMobs.*;
 import me.brzeph.customitems.CustomMobs.GUI.*;
-import me.brzeph.customitems.CustomMobs.RightClickSpawnerEvent;
-import me.brzeph.customitems.CustomMobs.SpawnerFunctionality;
-import me.brzeph.customitems.CustomMobs.SpawnerPlaceEvent;
 import me.brzeph.customitems.Events.MiningEvents.MiningEvents;
 import me.brzeph.customitems.Events.NPCEvents.SkillTrainerEvents;
 import me.brzeph.customitems.Events.OnJoinEvents.PlayerRegister;
@@ -52,6 +50,10 @@ public final class Main extends JavaPlugin{
         getServer().getPluginManager().registerEvents(new ChangeSpawnRadiusGUI(), this);
         getServer().getPluginManager().registerEvents(new ChangeMobTypeGUI(), this);
         getServer().getPluginManager().registerEvents(new RegisterMobToSpawnGUI(), this);
+
+        getServer().getPluginManager().registerEvents(new CombatEvents(), this);
+        getServer().getPluginManager().registerEvents(new PlayerCombatTime(), this);
+        getServer().getPluginManager().registerEvents(new PlayerHealthRegeneration(), this);
         world = Bukkit.getWorld("world");
 
         String[] commands = {"nbtTags", "nbtplayer", "nbt", "t1pick", "t2pick", "t3pick", "t4pick", "t5pick", "pick"};
@@ -59,7 +61,7 @@ public final class Main extends JavaPlugin{
             this.getCommand(command).setExecutor(new Commands());
         }
 
-        String[] combatItemsCommand = {"t1helmet", "t2helmet", "t3helmet", "t4helmet", "t5helmet", "t1chestplate", "t2chestplate", "t3chestplate", "t4chestplate"
+        String[] combatItemsCommand = {"heal", "t1helmet", "t2helmet", "t3helmet", "t4helmet", "t5helmet", "t1chestplate", "t2chestplate", "t3chestplate", "t4chestplate"
                 , "t5chestplate", "t1leggings", "t2leggings", "t3leggings", "t4leggings", "t5leggings", "t1boots", "t2boots", "t3boots", "t4boots", "t5boots"
                 , "t1armor", "t2armor", "t3armor", "t4armor", "t5armor", "t1axe", "t2axe", "t3axe", "t4axe", "t5axe", "t1sword", "t2sword", "t3sword", "t4sword"
                 , "t5sword", "t1shovel", "t2shovel", "t3shovel", "t4shovel", "t5shovel", "t1hoe", "t2hoe", "t3hoe", "t4hoe", "t5hoe"};

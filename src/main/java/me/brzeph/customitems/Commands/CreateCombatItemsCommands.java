@@ -17,6 +17,9 @@ public class CreateCombatItemsCommands implements CommandExecutor {
             return true;
         }
         Player player = (Player) sender;
+        if (cmd.getName().equalsIgnoreCase("heal")){
+            player.setHealth(20);
+        }
         if (cmd.getName().equalsIgnoreCase("t1armor")){
             player.getInventory().addItem(upgradingArmorLore(CreateTXArmor.createTXHelmet(1)));
             player.getInventory().addItem(upgradingArmorLore(CreateTXArmor.createTXChestPlate(1)));

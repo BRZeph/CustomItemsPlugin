@@ -105,7 +105,6 @@ public class ChangeMobTypeGUI implements Listener {
         Player player = (Player) event.getWhoClicked();
         if (event.getView().getTitle().equalsIgnoreCase("§0Choose mob type GUI")) {
             if (event.getCurrentItem() == null) {
-                getServer().getConsoleSender().sendMessage("[DEBUG]: clicked on null");
                 return;
             }
             NBTItem nbtItem = new NBTItem(event.getCurrentItem());

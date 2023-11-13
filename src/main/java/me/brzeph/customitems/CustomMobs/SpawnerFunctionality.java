@@ -4,6 +4,7 @@ import de.tr7zw.nbtapi.*;
 import me.brzeph.customitems.CustomItemList.CustomCombatItems.GeneratingCombatItems.CreateTXArmor;
 import me.brzeph.customitems.Main;
 import org.bukkit.Location;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -30,8 +31,6 @@ public class SpawnerFunctionality implements Listener {
         spawnerList.put(spawner.getLocation(), spawner);
         entitiesMap.put(spawner.getLocation(), new HashSet<>());
         tickCount.put(spawner.getLocation(), 1);
-        getServer().getConsoleSender().sendMessage("[DEBUG] spawner uuid: " + new NBTTileEntity(spawner.getState()).getPersistentDataContainer()
-                .getUUID("randomID"));
     }
     public void unRegisterSpawner(Block block) {
         spawnerList.remove(block.getLocation(), block);
@@ -50,9 +49,6 @@ public class SpawnerFunctionality implements Listener {
                     int size = nbtTileEntity.getPersistentDataContainer().getInteger("size");
                     UUID uuid = nbtTileEntity.getPersistentDataContainer().getUUID("randomID");
 
-                    getServer().getConsoleSender().sendMessage("[DEBUG1]: " + tickCount.get(spawnerLocation) + "/" + respawnRate);
-
-                    // Handle tracking dead mobs for the mob cap
                     List<Entity> deadEntities = new ArrayList<>();
                     for (Entity entity : spawned) {
                         if (!entity.isValid() || entity.isDead()) {
@@ -138,103 +134,21 @@ public class SpawnerFunctionality implements Listener {
         return feetBlock.isPassable() && headBlock.isPassable() && middleBlock.isPassable() &&
                 !feetBlock.isLiquid() && !headBlock.isLiquid() && !middleBlock.isLiquid();
     }
-    private int getRandomWithNegative(int size){
+    public int getRandomWithNegative(int size){
         int random = (int) (Math.random()*(size + 1));
         if (Math.random() > 0.5 ) random *= -1;
         return random;
     }
-    private double randomOffset(){
+    public static double randomOffset(){
         double random =Math.random();
         if (Math.random() > 0.5 ) random *= -1;
         return random;
     }
-    private static int getRandomValue(int maxValue, int minValue) {
+    public static int getRandomValue(int maxValue, int minValue) {
         return new Random().nextInt(maxValue - minValue + 1) + minValue;
     }
     @EventHandler
     public void onServerStart(ServerLoadEvent event){
         spawnMobs();
-    }
-    @EventHandler
-    public void onEntityDeath(EntityDeathEvent event) {
-        Entity entity = event.getEntity();
-        if (entity.customName() == null) return;
-        event.setDroppedExp(0);
-        event.getDrops().clear();
-        event.getDrops().add(upgradingArmorLore(CreateTXArmor.createTXBoots(1)));
-    }
-    @EventHandler
-    public void onEntityDamage(EntityDamageByEntityEvent event) {
-        event.setDamage(0);
-        Entity entityHitting = event.getDamager();
-        Entity entityHitted = event.getEntity();
-        if (new NBTEntity(entityHitted).getPersistentDataContainer().getString("customMob").equals("yes")) {
-            //player hitting mob situation
-            Player player = (Player) entityHitting;
-            NBTItem nbtItemPlayer = new NBTItem(player.getItemInHand());
-            int damageFromWeapon;
-            if (nbtItemPlayer == null){
-                damageFromWeapon = 1;
-            } else {
-                damageFromWeapon = getRandomValue(nbtItemPlayer.getInteger("maxDamage"), nbtItemPlayer.getInteger("minDamage"));
-            }
-            NBTEntity nbtEntity = new NBTEntity(entityHitted);
-            int maxHP = nbtEntity.getPersistentDataContainer().getInteger("maxHP");
-            int HPBeforeHit = nbtEntity.getPersistentDataContainer().getInteger("currentHP");
-            nbtEntity.getPersistentDataContainer().setInteger("currentHP", HPBeforeHit - damageFromWeapon);
-            int HPAfterHit = HPBeforeHit - damageFromWeapon;
-//TODO: improve this to better check who's hitting who, implement the situation of PVP
-            String name = entityHitted.getName();
-            String nameWithoutHealth = name.split(" ♥ ")[0].trim();
-            String[] parts = entityHitted.getName().split(" ♥ ");
-            String wordsBeforeHeart = parts[0].trim();
-            player.sendMessage("§c" + damageFromWeapon + " DMG -> §f " + wordsBeforeHeart + " [" + HPAfterHit + " HP]");
-            if (HPBeforeHit > damageFromWeapon) {
-                event.setDamage(0);
-                entityHitted.setCustomName(nameWithoutHealth + " ♥ " + Main.getInstance().formatter.format(HPAfterHit) + "/" + maxHP + " ♥");
-            } else{
-                event.setDamage(50); //hard coding to kill the mob to prevent math issues due to the damage being INT and the health being FLOAT -> INT
-            }
-            Location loc = entityHitted.getLocation().clone().add(randomOffset(), 1, randomOffset());
-            Main.getInstance().world.spawn(loc, ArmorStand.class, armorStand -> {
-                armorStand.setMarker(true);
-                armorStand.setVisible(false);
-                armorStand.setGravity(false);
-                armorStand.setSmall(true);
-                armorStand.setCustomNameVisible(true);
-                armorStand.setCustomName("&c" + Main.getInstance().formatter.format(damageFromWeapon));
-                Main.getInstance().indicators.put(armorStand, 20 * 2); //armorStand will last 2 seconds
-                });
-        }
-        if (entityHitted instanceof Player){
-            getServer().getConsoleSender().sendMessage("[DEBUG]: running mob hitting player event");
-            //mob hitting player situation
-            Player player = (Player) entityHitted;
-            LivingEntity mob = (LivingEntity) entityHitting;
-            NBTItem nbtItemMob = new NBTItem(mob.getEquipment().getItemInMainHand());
-            int damageFromWeapon;
-            if (nbtItemMob == null){
-                damageFromWeapon = 1;
-            } else {
-                damageFromWeapon = getRandomValue(nbtItemMob.getInteger("maxDamage"), nbtItemMob.getInteger("minDamage"));
-            }
-            NBTEntity nbtEntityPlayer = new NBTEntity(player);
-            NBTCompound playerData = nbtEntityPlayer.getPersistentDataContainer();
-            float maxHP = playerData.getFloat("currentMaxHealth");
-            float HPBeforeHit = playerData.getFloat("currentHP");
-            float HPAfterHit = HPBeforeHit - damageFromWeapon;
-            playerData.setFloat("currentHP", HPAfterHit);
-            nbtEntityPlayer.mergeCompound(playerData);
-            float damageOnHealth = 10*damageFromWeapon/maxHP;
-
-            String[] parts = mob.getName().split(" ♥ ");
-            String wordsBeforeHeart = parts[0].trim();
-            player.sendMessage("§c-" + damageFromWeapon + "HP (" + wordsBeforeHeart + ")" + " §a[" + HPAfterHit + " HP]");
-            if (HPAfterHit <= 0){
-                event.setDamage(50);
-            } else {
-                player.damage(damageOnHealth);
-            }
-        }
     }
 }

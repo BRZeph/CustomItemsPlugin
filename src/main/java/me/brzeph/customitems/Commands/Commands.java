@@ -85,6 +85,8 @@ public class Commands implements CommandExecutor {
                 String[] desiredOrderArmor ={
                         "tier",
                         "bonusHealth",
+                        "armorHPS",
+                        "armorEnergy",
                         "armorStatsVitality",
                         "armorStatsDexterity",
                         "armorStatsStrength",

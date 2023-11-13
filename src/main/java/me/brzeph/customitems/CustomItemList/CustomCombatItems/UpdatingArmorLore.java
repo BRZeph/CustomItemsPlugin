@@ -22,6 +22,8 @@ public class UpdatingArmorLore {
         int armorStatsDodge = nbtItem.getInteger("armorStatsDodge");
         int armorStatsBlock = nbtItem.getInteger("armorStatsBlock");
         int armorStatsReflect = nbtItem.getInteger("armorStatsReflect");
+        float armorHPS = nbtItem.getFloat("armorHPS");
+        float armorEnergy = nbtItem.getFloat("armorEnergy");
 
         ItemStack itemStack1 = new ItemStack(nbtItem.getItem());
         ItemMeta itemMeta = itemStack1.getItemMeta();
@@ -51,11 +53,22 @@ public class UpdatingArmorLore {
                 lore2.add("§cHealth: " + bonusHealth);
             }
         }
-        if (nbti.hasKey("bonusArmor")) {
-            if (bonusArmor > 0) {
-                lore2.add("§cArmor: " + bonusArmor);
+        if (nbti.hasKey("armorHPS")){
+            if (armorHPS > 0){
+                lore2.add("§cHealth regeneration/s: " + (int)armorHPS);
             }
         }
+        if (nbti.hasKey("armorEnergy")){
+            if (armorEnergy > 0){
+                lore2.add("§cEnergy/s: " + (int)armorEnergy);
+            }
+        }
+        if (nbti.hasKey("bonusArmor")) {
+            if (bonusArmor > 0) {
+                lore2.add("§cArmor: " + (int)bonusArmor);
+            }
+        }
+        lore2.add("");
         lore2.add("");
         if (nbti.hasKey("armorStatsVitality")) {
             if (armorStatsVitality > 0) {

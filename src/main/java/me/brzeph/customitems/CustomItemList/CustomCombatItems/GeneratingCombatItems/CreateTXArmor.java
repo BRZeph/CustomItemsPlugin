@@ -14,6 +14,7 @@ import java.util.List;
 
 import static me.brzeph.customitems.CustomItemList.CustomCombatItems.GeneratingCombatItems.CalculatingRarity.calculatingRarity;
 import static me.brzeph.customitems.CustomItemList.CustomCombatItems.GeneratingCombatItems.CalculatingRarity.rarityToString;
+import static me.brzeph.customitems.CustomMobs.SpawnerFunctionality.getRandomValue;
 
 public class CreateTXArmor {
     public static ItemStack createTXHelmet(int tier){
@@ -23,7 +24,14 @@ public class CreateTXArmor {
         nbtItem.setString("armorType", "helmet");
         nbtItem.setInteger("tier", tier);
         nbtItem.setInteger("bonusHealth", ArmorTXHPEnum.getArmorHP(tier, rarity));
-        nbtItem.setInteger("bonusArmor", ArmorArmorEnum.getRandomValueByTier(1));
+        nbtItem.setInteger("bonusArmor", ArmorArmorEnum.getRandomValueByTier(tier));
+        int decidingHPSorEnergy = getRandomValue(100, 1);
+        if (decidingHPSorEnergy >= 0 && decidingHPSorEnergy < 33){
+            nbtItem.setFloat("armorHPS", (float) ArmorTXHPEnum.getArmorHPS(tier, rarity));
+        }
+        if (decidingHPSorEnergy >= 33 && decidingHPSorEnergy <= 101){
+            nbtItem.setFloat("armorEnergy", (float) ArmorTXHPEnum.getArmorEnergy(tier, rarity));
+        }
         Field[] fields = BaseArmorStats.class.getDeclaredFields();
         for (Field field : fields){
             if (field.getType() == int.class){
@@ -55,7 +63,14 @@ public class CreateTXArmor {
         nbtItem.setString("armorType", "chestPlate");
         nbtItem.setInteger("tier", tier);
         nbtItem.setInteger("bonusHealth", ArmorTXHPEnum.getArmorHP(tier, rarity));
-        nbtItem.setInteger("bonusArmor", ArmorArmorEnum.getRandomValueByTier(1));
+        nbtItem.setInteger("bonusArmor", ArmorArmorEnum.getRandomValueByTier(tier));
+        int decidingHPSorEnergy = getRandomValue(100, 1);
+        if (decidingHPSorEnergy >= 0 && decidingHPSorEnergy < 33){
+            nbtItem.setFloat("armorHPS", (float) ArmorTXHPEnum.getArmorHPS(tier, rarity));
+        }
+        if (decidingHPSorEnergy >= 33 && decidingHPSorEnergy <= 101){
+            nbtItem.setFloat("armorEnergy", (float) ArmorTXHPEnum.getArmorEnergy(tier, rarity));
+        }
         Field[] fields = BaseArmorStats.class.getDeclaredFields();
         for (Field field : fields){
             if (field.getType() == int.class){
@@ -86,7 +101,14 @@ public class CreateTXArmor {
         nbtItem.setString("armorType", "leggings");
         nbtItem.setInteger("tier", tier);
         nbtItem.setInteger("bonusHealth", ArmorTXHPEnum.getArmorHP(tier, rarity));
-        nbtItem.setInteger("bonusArmor", ArmorArmorEnum.getRandomValueByTier(1));
+        nbtItem.setInteger("bonusArmor", ArmorArmorEnum.getRandomValueByTier(tier));
+        int decidingHPSorEnergy = getRandomValue(100, 1);
+        if (decidingHPSorEnergy >= 0 && decidingHPSorEnergy < 33){
+            nbtItem.setFloat("armorHPS", (float) ArmorTXHPEnum.getArmorHPS(tier, rarity));
+        }
+        if (decidingHPSorEnergy >= 33 && decidingHPSorEnergy <= 101){
+            nbtItem.setFloat("armorEnergy", (float) ArmorTXHPEnum.getArmorEnergy(tier, rarity));
+        }
         Field[] fields = BaseArmorStats.class.getDeclaredFields();
         for (Field field : fields){
             if (field.getType() == int.class){
@@ -117,7 +139,14 @@ public class CreateTXArmor {
         nbtItem.setString("armorType", "boots");
         nbtItem.setInteger("tier", tier);
         nbtItem.setInteger("bonusHealth", ArmorTXHPEnum.getArmorHP(tier, rarity));
-        nbtItem.setInteger("bonusArmor", ArmorArmorEnum.getRandomValueByTier(1));
+        nbtItem.setInteger("bonusArmor", ArmorArmorEnum.getRandomValueByTier(tier));
+        int decidingHPSorEnergy = getRandomValue(100, 1);
+        if (decidingHPSorEnergy >= 0 && decidingHPSorEnergy < 33){
+            nbtItem.setFloat("armorHPS", (float) ArmorTXHPEnum.getArmorHPS(tier, rarity));
+        }
+        if (decidingHPSorEnergy >= 33 && decidingHPSorEnergy <= 101){
+            nbtItem.setFloat("armorEnergy", (float) ArmorTXHPEnum.getArmorEnergy(tier, rarity));
+        }
         Field[] fields = BaseArmorStats.class.getDeclaredFields();
         for (Field field : fields){
             if (field.getType() == int.class){

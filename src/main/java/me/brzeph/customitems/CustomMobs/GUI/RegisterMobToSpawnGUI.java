@@ -57,9 +57,7 @@ public class RegisterMobToSpawnGUI implements Listener {
                 NBTItem nbtItem = new NBTItem(itemStack);
                 NBTItem nbtItem1 = new NBTItem(event.getCurrentItem());
                 String mobIDString = nbtItem.getInteger("uniqueMobID").toString();
-                getServer().getConsoleSender().sendMessage("[DEBUG]: uniquemobid" + mobIDString);
                 int mobPercentage = nbtItem1.getInteger("mobPercentage");
-                getServer().getConsoleSender().sendMessage("[DEBUG]: mobPercentage" + mobPercentage);
                 NBT.modifyPersistentData(block.getState(), nbt -> {
                     nbt.setInteger(mobIDString, mobPercentage);
                 });

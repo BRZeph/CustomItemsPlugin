@@ -2,14 +2,19 @@ package me.brzeph.customitems.Events.OnJoinEvents;
 
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTEntity;
+import me.brzeph.customitems.CustomMobs.PlayerHealthRegeneration;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,6 +23,7 @@ import static org.bukkit.Bukkit.getServer;
 import static org.bukkit.Material.*;
 
 public class PlayerRegister implements Listener {
+
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event){
         Player player = event.getPlayer();
@@ -31,27 +37,16 @@ public class PlayerRegister implements Listener {
         playerData.setInteger("baseDamage", 0);
         playerData.setInteger("baseArmor", 5);
         playerData.setInteger("baseDPS", 5);
+        playerData.setBoolean("onCombat", false);
+        playerData.setInteger("baseCombatTimer", 5); //int in seconds
         nbtEntity.mergeCompound(playerData);
         updatingPlayerHealth(player);
-    }
-    @EventHandler
-    public void onEatingFood (PlayerItemConsumeEvent event){ //prevents vanilla regeneration
-        getServer().getConsoleSender().sendMessage("[DEBUG]: food thing: " + isFood(event.getItem()));
-        if (isFood(event.getItem())) {
-            event.getPlayer().setSaturation(0);
-            event.getPlayer().setSaturatedRegenRate(999999999);
-        } else {
-            event.setCancelled(true);
+        if (PlayerHealthRegeneration.playerHealthRegenTickCount.get(player) != null) {
+            PlayerHealthRegeneration.playerHealthRegenTickCount.remove(player);
         }
     }
-    //TODO: create health regeneration system
-    private boolean isFood(ItemStack item) {
-        Set<Material> foodList = new HashSet<>();
-        foodList.add(Material.APPLE);
-        foodList.add(Material.BREAD);
-        foodList.add(Material.CARROT);
-        foodList.add(Material.POTATO);
-        foodList.add(Material.COOKED_BEEF);
-        return foodList.contains(item.getType());
+    @EventHandler
+    public void noVanillaRegen(EntityRegainHealthEvent event){
+        event.setCancelled(true);
     }
 }

@@ -36,6 +36,7 @@ public class UpdatingPlayerHealth {
         NBTEntity nbtEntity = new NBTEntity(player);
         NBTCompound playerData = nbtEntity.getPersistentDataContainer();
         playerData.setFloat("bonusHealth", armorBonusHealth);
+        player.setLevel((int) armorBonusHealth + nbtEntity.getInteger("baseHealth"));
         nbtEntity.mergeCompound(playerData);
     }
     public static void updatingPlayerHealth(Player player){

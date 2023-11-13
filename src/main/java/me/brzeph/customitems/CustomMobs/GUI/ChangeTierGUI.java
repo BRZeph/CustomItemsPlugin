@@ -66,28 +66,22 @@ public class ChangeTierGUI implements Listener {
         Player player = (Player) event.getWhoClicked();
         if (event.getView().getTitle().equalsIgnoreCase("§0Choose tier GUI")) {
             if (event.getCurrentItem() == null) {
-                getServer().getConsoleSender().sendMessage("[DEBUG]: clicked on null");
                 return;
             }
 
             if (event.getCurrentItem().getItemMeta().getDisplayName().equals("Tier 1")){
-                getServer().getConsoleSender().sendMessage("[DEBUG]: clicked on tier 1");
                 int tier = 1;
                 spawnerChangeTier(tier, player);
             } else if (event.getCurrentItem().getItemMeta().getDisplayName().equals("Tier 2")) {
-                getServer().getConsoleSender().sendMessage("[DEBUG]: clicked on tier 2");
                 int tier = 2;
                 spawnerChangeTier(tier, player);
             } else if (event.getCurrentItem().getItemMeta().getDisplayName().equals("Tier 3")) {
-                getServer().getConsoleSender().sendMessage("[DEBUG]: clicked on tier 3");
                 int tier = 3;
                 spawnerChangeTier(tier, player);
             } else if (event.getCurrentItem().getItemMeta().getDisplayName().equals("Tier 4")) {
-                getServer().getConsoleSender().sendMessage("[DEBUG]: clicked on tier 4");
                 int tier = 4;
                 spawnerChangeTier(tier, player);
             } else if (event.getCurrentItem().getItemMeta().getDisplayName().equals("Tier 5")) {
-                getServer().getConsoleSender().sendMessage("[DEBUG]: clicked on tier 5");
                 int tier = 5;
                 spawnerChangeTier(tier, player);
             }
