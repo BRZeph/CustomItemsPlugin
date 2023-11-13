@@ -46,6 +46,7 @@ public class UpdatingPlayerHealth {
         float bonusHealth = playerData.getFloat("bonusHealth");
         float currentMaxHealth = baseHealth + bonusHealth;
         playerData.setFloat("currentMaxHealth", currentMaxHealth);
+        playerData.setFloat("currentHP", currentMaxHealth);
         nbtEntity.mergeCompound(playerData);
     }
 }

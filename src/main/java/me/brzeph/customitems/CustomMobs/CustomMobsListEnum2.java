@@ -1,5 +1,7 @@
 package me.brzeph.customitems.CustomMobs;
 
+import de.tr7zw.nbtapi.NBTCompound;
+import de.tr7zw.nbtapi.NBTEntity;
 import de.tr7zw.nbtapi.NBTItem;
 import me.brzeph.customitems.CustomItemList.CustomCombatItems.GeneratingCombatItems.CreateTXArmor;
 import me.brzeph.customitems.CustomItemList.CustomCombatItems.GeneratingCombatItems.CreateTXWeapon;
@@ -8,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 
@@ -124,10 +127,17 @@ public enum CustomMobsListEnum2 {
         inv.setBootsDropChance(0F);
         inv.setItemInMainHandDropChance(0F);
 
+        entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20);
+        entity.setMaxHealth(10);
+        entity.setHealth(10);
         entity.setCustomNameVisible(true);
-        entity.setCustomName(name + " ♥ " + returnMobMaxHP(entity) + "/" + returnMobMaxHP(entity) + "♥");
-        entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(returnMobMaxHP(entity));
-        entity.setHealth(returnMobMaxHP(entity));
+        entity.setCustomName(name + " ♥ " + returnEntityMaxHP(entity) + "/" + returnEntityMaxHP(entity) + " ♥");
+        NBTEntity nbtEntity = new NBTEntity(entity);
+        NBTCompound playerData = nbtEntity.getPersistentDataContainer();
+        playerData.setInteger("maxHP", returnEntityMaxHP(entity));
+        playerData.setInteger("currentHP", returnEntityMaxHP(entity));
+        nbtEntity.mergeCompound(playerData);
+
         return entity;
     }
 
@@ -145,20 +155,30 @@ public enum CustomMobsListEnum2 {
         return null;
     }
 
-    public int returnMobMaxHP(LivingEntity entity){
+    public static int returnEntityMaxHP(LivingEntity entity){
         EntityEquipment inv = entity.getEquipment();
         int helmetHP = 0;
         int chestPlateHP = 0;
         int leggingsHP = 0;
         int bootsHP = 0;
-        if (armor != null){
+        int baseHealth = 0;
+        if (entity.getEquipment().getHelmet() != null){
             helmetHP = new NBTItem(inv.getHelmet()).getInteger("bonusHealth");
+        }
+        if (entity.getEquipment().getChestplate() != null){
             chestPlateHP = new NBTItem(inv.getChestplate()).getInteger("bonusHealth");
+        }
+        if (entity.getEquipment().getLeggings() != null){
             leggingsHP = new NBTItem(inv.getLeggings()).getInteger("bonusHealth");
+        }
+        if (entity.getEquipment().getBoots() != null){
             bootsHP = new NBTItem(inv.getBoots()).getInteger("bonusHealth");
         }
-        int totalArmorHP = helmetHP + chestPlateHP + leggingsHP + bootsHP;
-        return totalArmorHP;
+        if (entity instanceof Player){
+            NBTEntity nbtEntity = new NBTEntity(entity);
+            baseHealth = nbtEntity.getInteger("baseHealth");
+        }
+        return helmetHP + chestPlateHP + leggingsHP + bootsHP + baseHealth;
     }
     public EntityType returnMobTypeToEntityType(int mobType){
         EntityType mobTypeToEntityType = EntityType.MINECART_MOB_SPAWNER;

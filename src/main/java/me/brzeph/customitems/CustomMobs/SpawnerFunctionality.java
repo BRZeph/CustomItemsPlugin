@@ -1,8 +1,6 @@
 package me.brzeph.customitems.CustomMobs;
 
-import de.tr7zw.nbtapi.NBT;
-import de.tr7zw.nbtapi.NBTEntity;
-import de.tr7zw.nbtapi.NBTTileEntity;
+import de.tr7zw.nbtapi.*;
 import me.brzeph.customitems.CustomItemList.CustomCombatItems.GeneratingCombatItems.CreateTXArmor;
 import me.brzeph.customitems.Main;
 import org.bukkit.Location;
@@ -10,7 +8,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.server.ServerLoadEvent;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -19,6 +17,7 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.*;
 
 import static me.brzeph.customitems.CustomItemList.CustomCombatItems.UpdatingArmorLore.upgradingArmorLore;
+import static me.brzeph.customitems.CustomMobs.CustomMobsListEnum2.returnEntityMaxHP;
 import static org.bukkit.Bukkit.getServer;
 
 public class SpawnerFunctionality implements Listener {
@@ -165,28 +164,77 @@ public class SpawnerFunctionality implements Listener {
         event.getDrops().add(upgradingArmorLore(CreateTXArmor.createTXBoots(1)));
     }
     @EventHandler
-    public void onEntityDamage(EntityDamageEvent event) {
-        Entity rawEntity = event.getEntity();
-        if (new NBTEntity(rawEntity).getPersistentDataContainer().getString("customMob").equals("yes")) {
-            LivingEntity entity = (LivingEntity) rawEntity;
-            double damage = event.getFinalDamage();
-            double health = entity.getHealth() + entity.getAbsorptionAmount();
-            String name = entity.getName();
-            String nameWithoutHealth = name.split(" ♥ ")[0].trim();
-            if (health > damage) { //checks if the entity survived
-                health -= damage;
-                entity.setCustomName(nameWithoutHealth + " ♥ " + (int) health + "/" + (int) entity.getMaxHealth() + "♥");
+    public void onEntityDamage(EntityDamageByEntityEvent event) {
+        event.setDamage(0);
+        Entity entityHitting = event.getDamager();
+        Entity entityHitted = event.getEntity();
+        if (new NBTEntity(entityHitted).getPersistentDataContainer().getString("customMob").equals("yes")) {
+            //player hitting mob situation
+            Player player = (Player) entityHitting;
+            NBTItem nbtItemPlayer = new NBTItem(player.getItemInHand());
+            int damageFromWeapon;
+            if (nbtItemPlayer == null){
+                damageFromWeapon = 1;
+            } else {
+                damageFromWeapon = getRandomValue(nbtItemPlayer.getInteger("maxDamage"), nbtItemPlayer.getInteger("minDamage"));
             }
-            Location loc = entity.getLocation().clone().add(randomOffset(), 1, randomOffset());
+            NBTEntity nbtEntity = new NBTEntity(entityHitted);
+            int maxHP = nbtEntity.getPersistentDataContainer().getInteger("maxHP");
+            int HPBeforeHit = nbtEntity.getPersistentDataContainer().getInteger("currentHP");
+            nbtEntity.getPersistentDataContainer().setInteger("currentHP", HPBeforeHit - damageFromWeapon);
+            int HPAfterHit = HPBeforeHit - damageFromWeapon;
+//TODO: improve this to better check who's hitting who, implement the situation of PVP
+            String name = entityHitted.getName();
+            String nameWithoutHealth = name.split(" ♥ ")[0].trim();
+            String[] parts = entityHitted.getName().split(" ♥ ");
+            String wordsBeforeHeart = parts[0].trim();
+            player.sendMessage("§c" + damageFromWeapon + " DMG -> §f " + wordsBeforeHeart + " [" + HPAfterHit + " HP]");
+            if (HPBeforeHit > damageFromWeapon) {
+                event.setDamage(0);
+                entityHitted.setCustomName(nameWithoutHealth + " ♥ " + Main.getInstance().formatter.format(HPAfterHit) + "/" + maxHP + " ♥");
+            } else{
+                event.setDamage(50); //hard coding to kill the mob to prevent math issues due to the damage being INT and the health being FLOAT -> INT
+            }
+            Location loc = entityHitted.getLocation().clone().add(randomOffset(), 1, randomOffset());
             Main.getInstance().world.spawn(loc, ArmorStand.class, armorStand -> {
                 armorStand.setMarker(true);
                 armorStand.setVisible(false);
                 armorStand.setGravity(false);
                 armorStand.setSmall(true);
                 armorStand.setCustomNameVisible(true);
-                armorStand.setCustomName("&c" + Main.getInstance().formatter.format(damage));
+                armorStand.setCustomName("&c" + Main.getInstance().formatter.format(damageFromWeapon));
                 Main.getInstance().indicators.put(armorStand, 20 * 2); //armorStand will last 2 seconds
-            });
+                });
+        }
+        if (entityHitted instanceof Player){
+            getServer().getConsoleSender().sendMessage("[DEBUG]: running mob hitting player event");
+            //mob hitting player situation
+            Player player = (Player) entityHitted;
+            LivingEntity mob = (LivingEntity) entityHitting;
+            NBTItem nbtItemMob = new NBTItem(mob.getEquipment().getItemInMainHand());
+            int damageFromWeapon;
+            if (nbtItemMob == null){
+                damageFromWeapon = 1;
+            } else {
+                damageFromWeapon = getRandomValue(nbtItemMob.getInteger("maxDamage"), nbtItemMob.getInteger("minDamage"));
+            }
+            NBTEntity nbtEntityPlayer = new NBTEntity(player);
+            NBTCompound playerData = nbtEntityPlayer.getPersistentDataContainer();
+            float maxHP = playerData.getFloat("currentMaxHealth");
+            float HPBeforeHit = playerData.getFloat("currentHP");
+            float HPAfterHit = HPBeforeHit - damageFromWeapon;
+            playerData.setFloat("currentHP", HPAfterHit);
+            nbtEntityPlayer.mergeCompound(playerData);
+            float damageOnHealth = 10*damageFromWeapon/maxHP;
+
+            String[] parts = mob.getName().split(" ♥ ");
+            String wordsBeforeHeart = parts[0].trim();
+            player.sendMessage("§c-" + damageFromWeapon + "HP (" + wordsBeforeHeart + ")" + " §a[" + HPAfterHit + " HP]");
+            if (HPAfterHit <= 0){
+                event.setDamage(50);
+            } else {
+                player.damage(damageOnHealth);
+            }
         }
     }
 }
