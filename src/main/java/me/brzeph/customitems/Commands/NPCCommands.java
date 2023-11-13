@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import static me.brzeph.customitems.CustomGUIs.SkillTrainerGUIs.skillTrainerOpenGUI;
+import static me.brzeph.customitems.CustomItemList.CustomPickaxe.SkillTrainerGUI.SkillTrainerGUIs.skillTrainerOpenGUI;
 
 public class NPCCommands implements CommandExecutor {
     @Override

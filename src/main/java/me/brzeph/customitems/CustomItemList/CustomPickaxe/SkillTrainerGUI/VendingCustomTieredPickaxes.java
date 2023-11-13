@@ -1,11 +1,11 @@
-package me.brzeph.customitems.Events.NPCEvents.VendingMethods;
+package me.brzeph.customitems.CustomItemList.CustomPickaxe.SkillTrainerGUI;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import static me.brzeph.customitems.CustomItemList.CustomPickaxe.*;
+import static me.brzeph.customitems.CustomItemList.CustomPickaxe.CustomPickaxe.*;
 
 public class VendingCustomTieredPickaxes {
     public static void vendingT1PickaxeOnSkillTrainer(Player player){

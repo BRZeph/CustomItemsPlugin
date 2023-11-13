@@ -4,6 +4,9 @@ package me.brzeph.customitems;
 // TODO: consider creating a method that automatically updates the player vanilla HP based on the NBTTags of currentHealth and maxHP
 // TODO: create method that sets the player level to the player hp
 
+import me.brzeph.customitems.CombatSystem.CombatEvents;
+import me.brzeph.customitems.CombatSystem.PlayerCombatTime;
+import me.brzeph.customitems.CombatSystem.PlayerHealthRegeneration;
 import me.brzeph.customitems.Commands.Commands;
 import me.brzeph.customitems.Commands.CreateCombatItemsCommands;
 import me.brzeph.customitems.Commands.CustomMobsCommands;
@@ -11,7 +14,7 @@ import me.brzeph.customitems.Commands.NPCCommands;
 import me.brzeph.customitems.CustomMobs.*;
 import me.brzeph.customitems.CustomMobs.GUI.*;
 import me.brzeph.customitems.Events.MiningEvents.MiningEvents;
-import me.brzeph.customitems.Events.NPCEvents.SkillTrainerEvents;
+import me.brzeph.customitems.CustomItemList.CustomPickaxe.SkillTrainerGUI.SkillTrainerEvents;
 import me.brzeph.customitems.Events.OnJoinEvents.PlayerRegister;
 import me.brzeph.customitems.Events.PlayerStatsRelatedEvents.OnArmorEquip;
 import org.bukkit.Bukkit;

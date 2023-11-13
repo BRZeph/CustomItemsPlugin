@@ -29,9 +29,12 @@ public class CreateTXArmor {
         if (decidingHPSorEnergy >= 0 && decidingHPSorEnergy < 33){
             nbtItem.setFloat("armorHPS", (float) ArmorTXHPEnum.getArmorHPS(tier, rarity));
         }
-        if (decidingHPSorEnergy >= 33 && decidingHPSorEnergy <= 101){
+        if (decidingHPSorEnergy >= 33 && decidingHPSorEnergy <= 100){
             nbtItem.setFloat("armorEnergy", (float) ArmorTXHPEnum.getArmorEnergy(tier, rarity));
         }
+
+
+
         Field[] fields = BaseArmorStats.class.getDeclaredFields();
         for (Field field : fields){
             if (field.getType() == int.class){

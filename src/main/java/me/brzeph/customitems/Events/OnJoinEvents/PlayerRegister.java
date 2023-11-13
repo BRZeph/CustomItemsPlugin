@@ -2,25 +2,15 @@ package me.brzeph.customitems.Events.OnJoinEvents;
 
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTEntity;
-import me.brzeph.customitems.CustomMobs.PlayerHealthRegeneration;
-import org.bukkit.Material;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeModifier;
+import me.brzeph.customitems.CombatSystem.PlayerHealthRegeneration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
-import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-
-import static me.brzeph.customitems.CustomItemList.CustomCombatItems.UpdatingPlayerHealth.updatingPlayerHealth;
-import static org.bukkit.Bukkit.getServer;
-import static org.bukkit.Material.*;
+import static me.brzeph.customitems.CombatSystem.SetPlayerHPToXPBar.setPlayerHPToXPBar;
+import static me.brzeph.customitems.Events.PlayerStatsRelatedEvents.OnArmorEquip.updatingPlayerMaxHealth;
 
 public class PlayerRegister implements Listener {
 
@@ -38,9 +28,10 @@ public class PlayerRegister implements Listener {
         playerData.setInteger("baseArmor", 5);
         playerData.setInteger("baseDPS", 5);
         playerData.setBoolean("onCombat", false);
-        playerData.setInteger("baseCombatTimer", 5); //int in seconds
+        playerData.setInteger("baseCombatTimer", 10); //int in seconds
         nbtEntity.mergeCompound(playerData);
-        updatingPlayerHealth(player);
+        updatingPlayerMaxHealth(player);
+        setPlayerHPToXPBar(player);
         if (PlayerHealthRegeneration.playerHealthRegenTickCount.get(player) != null) {
             PlayerHealthRegeneration.playerHealthRegenTickCount.remove(player);
         }

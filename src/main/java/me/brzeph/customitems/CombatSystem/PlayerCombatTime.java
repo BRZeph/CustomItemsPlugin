@@ -1,4 +1,4 @@
-package me.brzeph.customitems.CustomMobs;
+package me.brzeph.customitems.CombatSystem;
 
 import de.tr7zw.nbtapi.NBTEntity;
 import me.brzeph.customitems.Main;
@@ -28,7 +28,7 @@ public class PlayerCombatTime implements Listener {
                     NBTEntity nbtEntity = new NBTEntity(player);
                     int previousTickCount = entry.getValue();
                     int newTickCount = previousTickCount - 1;
-                    if (previousTickCount < 0 || previousTickCount > 6){
+                    if (previousTickCount < 0 || previousTickCount > 15){
                         throw new IllegalStateException("Player combat tick count error.");
                     }
                     if (newTickCount <= 0){

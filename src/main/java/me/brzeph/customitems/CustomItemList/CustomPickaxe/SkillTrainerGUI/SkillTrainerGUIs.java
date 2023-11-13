@@ -1,6 +1,5 @@
-package me.brzeph.customitems.CustomGUIs;
+package me.brzeph.customitems.CustomItemList.CustomPickaxe.SkillTrainerGUI;
 
-import me.brzeph.customitems.Events.NPCEvents.VendingMethods.pickaxeVendingCost;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -9,7 +8,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
 
-import static me.brzeph.customitems.CustomItemList.CustomPickaxe.*;
+import static me.brzeph.customitems.CustomItemList.CustomPickaxe.CustomPickaxe.*;
 
 public class SkillTrainerGUIs {
     public static void skillTrainerOpenGUI(Player player){

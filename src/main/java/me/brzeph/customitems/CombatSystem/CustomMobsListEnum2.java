@@ -1,4 +1,4 @@
-package me.brzeph.customitems.CustomMobs;
+package me.brzeph.customitems.CombatSystem;
 
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTEntity;

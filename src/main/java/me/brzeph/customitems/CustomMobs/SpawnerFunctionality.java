@@ -1,25 +1,18 @@
 package me.brzeph.customitems.CustomMobs;
 
 import de.tr7zw.nbtapi.*;
-import me.brzeph.customitems.CustomItemList.CustomCombatItems.GeneratingCombatItems.CreateTXArmor;
+import me.brzeph.customitems.CombatSystem.CustomMobsListEnum2;
 import me.brzeph.customitems.Main;
 import org.bukkit.Location;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.server.ServerLoadEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
-
-import static me.brzeph.customitems.CustomItemList.CustomCombatItems.UpdatingArmorLore.upgradingArmorLore;
-import static me.brzeph.customitems.CustomMobs.CustomMobsListEnum2.returnEntityMaxHP;
-import static org.bukkit.Bukkit.getServer;
 
 public class SpawnerFunctionality implements Listener {
     public static SpawnerFunctionality getInstance() {return instance;}

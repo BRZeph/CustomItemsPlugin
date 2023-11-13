@@ -1,4 +1,4 @@
-package me.brzeph.customitems.Events.NPCEvents.VendingMethods;
+package me.brzeph.customitems.CustomItemList.CustomPickaxe.SkillTrainerGUI;
 
 public enum pickaxeVendingCost {
     T1(100),

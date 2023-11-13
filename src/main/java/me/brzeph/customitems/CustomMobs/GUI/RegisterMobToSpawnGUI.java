@@ -3,7 +3,7 @@ package me.brzeph.customitems.CustomMobs.GUI;
 import de.tr7zw.nbtapi.NBT;
 import de.tr7zw.nbtapi.NBTItem;
 import de.tr7zw.nbtapi.NBTTileEntity;
-import me.brzeph.customitems.CustomMobs.CustomMobsListEnum2;
+import me.brzeph.customitems.CombatSystem.CustomMobsListEnum2;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -14,8 +14,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
-import static org.bukkit.Bukkit.getServer;
 
 public class RegisterMobToSpawnGUI implements Listener {
     public static void registerMobToSpawnOpenGUI(Player player){

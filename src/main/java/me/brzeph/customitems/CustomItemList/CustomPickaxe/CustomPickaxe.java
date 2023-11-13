@@ -1,4 +1,4 @@
-package me.brzeph.customitems.CustomItemList;
+package me.brzeph.customitems.CustomItemList.CustomPickaxe;
 
 import de.tr7zw.nbtapi.NBTItem;
 import me.brzeph.customitems.Events.MiningEvents.BaseEnchantmentValues;

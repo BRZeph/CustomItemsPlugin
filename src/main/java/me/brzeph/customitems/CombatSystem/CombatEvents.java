@@ -1,4 +1,4 @@
-package me.brzeph.customitems.CustomMobs;
+package me.brzeph.customitems.CombatSystem;
 
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTEntity;
@@ -18,6 +18,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.util.Vector;
 
 import static me.brzeph.customitems.CustomItemList.CustomCombatItems.UpdatingArmorLore.upgradingArmorLore;
+import static me.brzeph.customitems.CombatSystem.SetPlayerHPToXPBar.setPlayerHPToXPBar;
 import static me.brzeph.customitems.CustomMobs.SpawnerFunctionality.getRandomValue;
 import static me.brzeph.customitems.CustomMobs.SpawnerFunctionality.randomOffset;
 
@@ -94,10 +95,11 @@ public class CombatEvents implements Listener {
             String nameWithoutHealth = name.split(" ♥ ")[0].trim();
             String[] parts = entityHitted.getName().split(" ♥ ");
             String wordsBeforeHeart = parts[0].trim();
-            player.sendMessage("§c" + damageFromWeapon + " DMG -> §f " + wordsBeforeHeart + " [" + HPAfterHit + " HP]");
             if (HPBeforeHit > damageFromWeapon) {
+                player.sendMessage("§c" + damageFromWeapon + " DMG -> §f " + wordsBeforeHeart + " [" + HPAfterHit + " HP]");
                 entityHitted.setCustomName(nameWithoutHealth + " ♥ " + Main.getInstance().formatter.format(HPAfterHit) + "/" + maxHP + " ♥");
             } else{
+                player.sendMessage("§c" + damageFromWeapon + " DMG -> §f " + wordsBeforeHeart + " [0 HP]");
                 LivingEntity livingEntity = (LivingEntity) entityHitted;
                 livingEntity.damage(50);
             }
@@ -159,6 +161,7 @@ public class CombatEvents implements Listener {
             } else {
                 player.damage(damageOnHealth);
             }
+            setPlayerHPToXPBar(player);
         }
     }
 }

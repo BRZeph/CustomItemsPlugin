@@ -4,8 +4,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import de.tr7zw.nbtapi.NBTTileEntity;
 import me.brzeph.customitems.CustomItemList.CustomCombatItems.ComatItemsEnums.ArmorTXHPEnum;
 import me.brzeph.customitems.CustomItemList.CustomCombatItems.ComatItemsEnums.WeaponTXDamage;
-import me.brzeph.customitems.CustomMobs.CustomMobsListEnum2;
-import me.brzeph.customitems.Main;
+import me.brzeph.customitems.CombatSystem.CustomMobsListEnum2;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -23,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import static me.brzeph.customitems.CustomMobs.GUI.RegisterMobToSpawnGUI.registerMobToSpawnOpenGUI;
-import static org.bukkit.Bukkit.getServer;
 
 public class ChangeMobTypeGUI implements Listener {
     public static void changeMobTypeOpenGUI(Player player){

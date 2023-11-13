@@ -1,4 +1,4 @@
-package me.brzeph.customitems.CustomMobs;
+package me.brzeph.customitems.CombatSystem;
 
 import de.tr7zw.nbtapi.NBTEntity;
 import de.tr7zw.nbtapi.NBTItem;
@@ -12,6 +12,8 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static me.brzeph.customitems.CombatSystem.SetPlayerHPToXPBar.setPlayerHPToXPBar;
 
 public class PlayerHealthRegeneration implements Listener {
     public static HashMap<Player, Integer> playerHealthRegenTickCount = new HashMap<>();
@@ -59,14 +61,16 @@ public class PlayerHealthRegeneration implements Listener {
                         if (!inCombat) {
                             if (newHealth >= maxHealth) {
                                 player.setHealth(20);
+                                nbtPlayer.getPersistentDataContainer().setFloat("currentHP", maxHealth);
                                 player.sendMessage("§a+" + totalHPS + "HP");
-                                player.sendMessage("§aNew health: " + (int) maxHealth);
+                                player.sendMessage("§aHP: " + (int) maxHealth);
+                                setPlayerHPToXPBar(player);
                             } else {
                                 player.setHealth((currentHealth + totalHPS) * 20 / maxHealth);
                                 nbtPlayer.getPersistentDataContainer().setFloat("currentHP", currentHealth + totalHPS);
                                 player.sendMessage("§a+" + totalHPS + "HP");
-                                player.sendMessage("§aNew health: " + newHealth);
-                                player.setLevel(newHealth);
+                                player.sendMessage("§aHP: " + newHealth);
+                                setPlayerHPToXPBar(player);
                             }
                         }
                     }

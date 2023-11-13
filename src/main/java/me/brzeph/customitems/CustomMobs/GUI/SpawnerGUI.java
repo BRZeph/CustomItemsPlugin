@@ -2,7 +2,7 @@ package me.brzeph.customitems.CustomMobs.GUI;
 
 import de.tr7zw.nbtapi.NBT;
 import de.tr7zw.nbtapi.NBTTileEntity;
-import me.brzeph.customitems.CustomMobs.CustomMobsListEnum2;
+import me.brzeph.customitems.CombatSystem.CustomMobsListEnum2;
 import me.brzeph.customitems.CustomMobs.SpawnerFunctionality;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -22,21 +22,20 @@ import static me.brzeph.customitems.CustomMobs.GUI.ChangeMobTypeGUI.changeMobTyp
 import static me.brzeph.customitems.CustomMobs.GUI.ChangeRespawnRateGUI.changeRespawnRateOpenGUIPage1;
 import static me.brzeph.customitems.CustomMobs.GUI.ChangeSpawnRadiusGUI.changeSpawnerRadiusOpenGUI;
 import static me.brzeph.customitems.CustomMobs.GUI.ChangeTierGUI.changeTierOpenGUI;
-import static org.bukkit.Bukkit.getServer;
 
 public class SpawnerGUI implements Listener {
     public static void spawnerOpenGUI(Player player){
-        Inventory inventory = Bukkit.createInventory(player, 9, "§0Mob Spawner GUI");
+        Inventory inventory = Bukkit.createInventory(player, 18, "§0Mob Spawner GUI");
 
-        inventory.setItem(0, changeTier());                  //not implemented yet
-        inventory.setItem(1, changeMobType());               //not implemented yet
+        inventory.setItem(0, changeTier());                  //working
+        inventory.setItem(1, changeMobType());               //working
         inventory.setItem(2, changeRespawnRate());           //working
         inventory.setItem(3, changeMaxAmountOfMobs());       //working
-        inventory.setItem(4, changeSpawnRadius());       //working
-        inventory.setItem(5, spawnerInfo(player));       //working
-        inventory.setItem(6, deleteCurrentSpawnerData());       //working
-        inventory.setItem(7, registerSpawner());             //working
-        inventory.setItem(8, unRegisterSpawner());           //working
+        inventory.setItem(4, changeSpawnRadius());           //working
+        inventory.setItem(7, spawnerInfo(player));           //working
+        inventory.setItem(8, deleteCurrentSpawnerData());    //working
+        inventory.setItem(16, registerSpawner());            //working
+        inventory.setItem(17, unRegisterSpawner());          //working
         player.openInventory(inventory);
     }
 

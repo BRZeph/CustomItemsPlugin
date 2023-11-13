@@ -1,4 +1,4 @@
-package me.brzeph.customitems.Events.NPCEvents;
+package me.brzeph.customitems.CustomItemList.CustomPickaxe.SkillTrainerGUI;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -6,7 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
-import static me.brzeph.customitems.Events.NPCEvents.VendingMethods.VendingCustomTieredPickaxes.*;
+import static me.brzeph.customitems.CustomItemList.CustomPickaxe.SkillTrainerGUI.VendingCustomTieredPickaxes.*;
 import static org.bukkit.Bukkit.getServer;
 
 

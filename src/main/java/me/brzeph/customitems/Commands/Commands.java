@@ -2,7 +2,7 @@ package me.brzeph.customitems.Commands;
 
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTEntity;
-import me.brzeph.customitems.CustomItemList.CustomPickaxe;
+import me.brzeph.customitems.CustomItemList.CustomPickaxe.CustomPickaxe;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
