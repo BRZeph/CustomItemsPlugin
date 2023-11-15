@@ -1,14 +1,14 @@
 package me.brzeph.customitems.Commands;
 
-import me.brzeph.customitems.CustomItemList.CustomCombatItems.GeneratingCombatItems.CreateTXArmor;
-import me.brzeph.customitems.CustomItemList.CustomCombatItems.GeneratingCombatItems.CreateTXWeapon;
+import me.brzeph.customitems.CombatMechanics.CustomCombatItems.GeneratingCombatItems.CreateTXArmor;
+import me.brzeph.customitems.CombatMechanics.CustomCombatItems.GeneratingCombatItems.CreateTXWeapon;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import static me.brzeph.customitems.CustomItemList.CustomCombatItems.UpdatingArmorLore.upgradingArmorLore;
+import static me.brzeph.customitems.CombatMechanics.CustomCombatItems.UpdatingArmorLore.upgradingArmorLore;
 
 public class CreateCombatItemsCommands implements CommandExecutor {
     @Override

@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import static me.brzeph.customitems.CustomItemList.CustomPickaxe.SkillTrainerGUI.SkillTrainerGUIs.skillTrainerOpenGUI;
+import static me.brzeph.customitems.GUIs.test2.GUIGenerator.openSkillTrainerGUI;
 
 public class NPCCommands implements CommandExecutor {
     @Override
@@ -17,7 +17,7 @@ public class NPCCommands implements CommandExecutor {
         Player player = (Player) sender;
 
         if (cmd.getName().equalsIgnoreCase("skilltrainer")){
-            skillTrainerOpenGUI(player);
+            openSkillTrainerGUI(player);
         }
         return true;
     }

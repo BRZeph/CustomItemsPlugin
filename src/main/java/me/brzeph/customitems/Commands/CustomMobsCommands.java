@@ -1,13 +1,12 @@
 package me.brzeph.customitems.Commands;
 
-import me.brzeph.customitems.CustomMobs.GUI.SpawnerGUI;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import static me.brzeph.customitems.CustomMobs.GeneratingSpawner.spawnerItemStack;
+import static me.brzeph.customitems.CombatMechanics.CustomMobs.GeneratingSpawner.spawnerItemStack;
 
 public class CustomMobsCommands implements CommandExecutor {
     @Override

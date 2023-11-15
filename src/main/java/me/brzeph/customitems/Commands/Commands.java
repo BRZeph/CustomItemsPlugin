@@ -2,7 +2,6 @@ package me.brzeph.customitems.Commands;
 
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTEntity;
-import me.brzeph.customitems.CustomItemList.CustomPickaxe.CustomPickaxe;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -16,8 +15,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
-import static me.brzeph.customitems.CustomItemList.CustomCombatItems.UpdatingArmorLore.upgradingArmorLore;
-import static me.brzeph.customitems.Events.MiningEvents.Methods.UpdateLoreEnchantment.updateLoreForNewEnchantment;
+import static me.brzeph.customitems.CombatMechanics.CustomCombatItems.UpdatingArmorLore.upgradingArmorLore;
+import static me.brzeph.customitems.MiningMechanics.PickaxeCreator.*;
 
 public class Commands implements CommandExecutor {
     @Override
@@ -130,20 +129,6 @@ public class Commands implements CommandExecutor {
             return true;
         }
 
-        if (cmd.getName().equalsIgnoreCase("pick")) {
-            ItemStack customPickaxeT1 = CustomPickaxe.create_dr_wooden_pickaxe();
-            ItemStack customPickaxeT2 = CustomPickaxe.create_dr_stone_pickaxe();
-            ItemStack customPickaxeT3 = CustomPickaxe.create_dr_iron_pickaxe();
-            ItemStack customPickaxeT4 = CustomPickaxe.create_dr_diamond_pickaxe();
-            ItemStack customPickaxeT5 = CustomPickaxe.create_dr_gold_pickaxe();
-            player.getInventory().addItem(customPickaxeT1);
-            player.getInventory().addItem(customPickaxeT2);
-            player.getInventory().addItem(customPickaxeT3);
-            player.getInventory().addItem(customPickaxeT4);
-            player.getInventory().addItem(customPickaxeT5);
-            player.sendMessage(ChatColor.GREEN + "You received pickaxes of all tiers");
-        }
-
         if (cmd.getName().equalsIgnoreCase("nbt")) {
             ItemStack heldItem = new ItemStack(player.getInventory().getItemInMainHand());
 
@@ -157,9 +142,7 @@ public class Commands implements CommandExecutor {
                     player.getInventory().setItemInMainHand(nbti.getItem());
 
                     if (validMaterialsPickaxe.contains(player.getInventory().getItemInMainHand().getType())) {
-                        updateLoreForNewEnchantment(player);
                     } else if (player.getInventory().getItemInMainHand().getType() == Material.SPAWNER) {
-
                     } else {
                         player.getInventory().setItemInMainHand(upgradingArmorLore(player.getInventory().getItemInMainHand()));
                     }
@@ -173,31 +156,32 @@ public class Commands implements CommandExecutor {
             return true;
         }
 
-        //creates /tXPick command
-
+        if (cmd.getName().equalsIgnoreCase("pick")) {
+            player.getInventory().addItem(createPreGeneratedPickaxes(createT1Pickaxe));
+            player.getInventory().addItem(createPreGeneratedPickaxes(createT2Pickaxe));
+            player.getInventory().addItem(createPreGeneratedPickaxes(createT3Pickaxe));
+            player.getInventory().addItem(createPreGeneratedPickaxes(createT4Pickaxe));
+            player.getInventory().addItem(createPreGeneratedPickaxes(createT5Pickaxe));
+            player.sendMessage(ChatColor.GREEN + "You received pickaxes of all tiers");
+        }
         if (cmd.getName().equalsIgnoreCase("t1pick")) {
-            ItemStack customPickaxe = CustomPickaxe.create_dr_wooden_pickaxe();
-            player.getInventory().addItem(customPickaxe);
+            player.getInventory().addItem(createPreGeneratedPickaxes(createT1Pickaxe));
             player.sendMessage(ChatColor.GREEN + "You received a Tier 1 pickaxe!");
         }
         if (cmd.getName().equalsIgnoreCase("t2pick")) {
-            ItemStack customPickaxe = CustomPickaxe.create_dr_stone_pickaxe();
-            player.getInventory().addItem(customPickaxe);
+            player.getInventory().addItem(createPreGeneratedPickaxes(createT2Pickaxe));
             player.sendMessage(ChatColor.GREEN + "You received a Tier 2 pickaxe!");
         }
         if (cmd.getName().equalsIgnoreCase("t3pick")) {
-            ItemStack customPickaxe = CustomPickaxe.create_dr_iron_pickaxe();
-            player.getInventory().addItem(customPickaxe);
+            player.getInventory().addItem(createPreGeneratedPickaxes(createT3Pickaxe));
             player.sendMessage(ChatColor.GREEN + "You received a Tier 3 pickaxe!");
         }
         if (cmd.getName().equalsIgnoreCase("t4pick")) {
-            ItemStack customPickaxe = CustomPickaxe.create_dr_diamond_pickaxe();
-            player.getInventory().addItem(customPickaxe);
+            player.getInventory().addItem(createPreGeneratedPickaxes(createT4Pickaxe));
             player.sendMessage(ChatColor.GREEN + "You received a Tier 4 pickaxe!");
         }
         if (cmd.getName().equalsIgnoreCase("t5pick")) {
-            ItemStack customPickaxe = CustomPickaxe.create_dr_gold_pickaxe();
-            player.getInventory().addItem(customPickaxe);
+            player.getInventory().addItem(createPreGeneratedPickaxes(createT5Pickaxe));
             player.sendMessage(ChatColor.GREEN + "You received a Tier 5 pickaxe!");
         }
         return true;

@@ -4,19 +4,16 @@ package me.brzeph.customitems;
 // TODO: consider creating a method that automatically updates the player vanilla HP based on the NBTTags of currentHealth and maxHP
 // TODO: create method that sets the player level to the player hp
 
-import me.brzeph.customitems.CombatSystem.CombatEvents;
-import me.brzeph.customitems.CombatSystem.PlayerCombatTime;
-import me.brzeph.customitems.CombatSystem.PlayerHealthRegeneration;
-import me.brzeph.customitems.Commands.Commands;
-import me.brzeph.customitems.Commands.CreateCombatItemsCommands;
-import me.brzeph.customitems.Commands.CustomMobsCommands;
-import me.brzeph.customitems.Commands.NPCCommands;
-import me.brzeph.customitems.CustomMobs.*;
-import me.brzeph.customitems.CustomMobs.GUI.*;
-import me.brzeph.customitems.Events.MiningEvents.MiningEvents;
-import me.brzeph.customitems.CustomItemList.CustomPickaxe.SkillTrainerGUI.SkillTrainerEvents;
+import me.brzeph.customitems.CombatMechanics.CombatSystem.CombatEvents;
+import me.brzeph.customitems.CombatMechanics.CombatSystem.PlayerCombatTime;
+import me.brzeph.customitems.CombatMechanics.CombatSystem.PlayerHealthRegeneration;
+import me.brzeph.customitems.Commands.*;
+import me.brzeph.customitems.CombatMechanics.CustomMobs.*;
+import me.brzeph.customitems.CombatMechanics.CustomMobs.GUI.*;
+import me.brzeph.customitems.GUIs.test2.GUIEventsHandler;
+import me.brzeph.customitems.MiningMechanics.MiningEvents.MiningEvents;
 import me.brzeph.customitems.Events.OnJoinEvents.PlayerRegister;
-import me.brzeph.customitems.Events.PlayerStatsRelatedEvents.OnArmorEquip;
+import me.brzeph.customitems.CombatMechanics.OnArmorEquip;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
@@ -38,7 +35,6 @@ public final class Main extends JavaPlugin{
         getServer().getConsoleSender().sendMessage("[CustomItems] plugin is now active");
 
         getServer().getPluginManager().registerEvents(new MiningEvents(), this);
-        getServer().getPluginManager().registerEvents(new SkillTrainerEvents(), this);
         getServer().getPluginManager().registerEvents(new PlayerRegister(), this);
         getServer().getPluginManager().registerEvents(new OnArmorEquip(), this);
 
@@ -57,6 +53,9 @@ public final class Main extends JavaPlugin{
         getServer().getPluginManager().registerEvents(new CombatEvents(), this);
         getServer().getPluginManager().registerEvents(new PlayerCombatTime(), this);
         getServer().getPluginManager().registerEvents(new PlayerHealthRegeneration(), this);
+        getServer().getPluginManager().registerEvents(new GUIEventsHandler(this), this);
+
+
         world = Bukkit.getWorld("world");
 
         String[] commands = {"nbtTags", "nbtplayer", "nbt", "t1pick", "t2pick", "t3pick", "t4pick", "t5pick", "pick"};
@@ -71,9 +70,8 @@ public final class Main extends JavaPlugin{
         for (String command: combatItemsCommand){
             this.getCommand(command).setExecutor(new CreateCombatItemsCommands());
         }
-
-        this.getCommand("skilltrainer").setExecutor(new NPCCommands());
         this.getCommand("spawner").setExecutor(new CustomMobsCommands());
+        this.getCommand("skilltrainer").setExecutor(new NPCCommands());
 
         instance = this;
         new BukkitRunnable() {

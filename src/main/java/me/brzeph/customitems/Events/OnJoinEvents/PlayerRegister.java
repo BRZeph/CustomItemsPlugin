@@ -2,15 +2,15 @@ package me.brzeph.customitems.Events.OnJoinEvents;
 
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTEntity;
-import me.brzeph.customitems.CombatSystem.PlayerHealthRegeneration;
+import me.brzeph.customitems.CombatMechanics.CombatSystem.PlayerHealthRegeneration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import static me.brzeph.customitems.CombatSystem.SetPlayerHPToXPBar.setPlayerHPToXPBar;
-import static me.brzeph.customitems.Events.PlayerStatsRelatedEvents.OnArmorEquip.updatingPlayerMaxHealth;
+import static me.brzeph.customitems.CombatMechanics.CombatSystem.SetPlayerHPToXPBar.setPlayerHPToXPBar;
+import static me.brzeph.customitems.CombatMechanics.OnArmorEquip.updatingPlayerMaxHealth;
 
 public class PlayerRegister implements Listener {
 
