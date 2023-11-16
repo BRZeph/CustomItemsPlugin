@@ -21,20 +21,26 @@ import static me.brzeph.customitems.CombatMechanics.CustomCombatItems.UpdatingAr
 import static me.brzeph.customitems.CombatMechanics.CombatSystem.SetPlayerHPToXPBar.setPlayerHPToXPBar;
 import static me.brzeph.customitems.CombatMechanics.CustomMobs.SpawnerFunctionality.getRandomValue;
 import static me.brzeph.customitems.CombatMechanics.CustomMobs.SpawnerFunctionality.randomOffset;
+import static me.brzeph.customitems.MiningMechanics.MiningEvents.Methods.ModifyItemLore.modifyItemLore;
+import static me.brzeph.customitems.MiningMechanics.MiningEvents.MiningXPLevelsTable.XPToLevelUpRequiredMethod;
+import static org.bukkit.Bukkit.getServer;
 
 public class CombatEvents implements Listener {
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event) {
         Entity entity = event.getEntity();
+        NBTEntity nbtEntity = new NBTEntity(entity);
+        int mobLevel = nbtEntity.getPersistentDataContainer().getInteger("mobLevel");
         if (entity.customName() == null) return;
         event.setDroppedExp(0);
         event.getDrops().clear();
-        event.getDrops().add(upgradingArmorLore(CreateTXArmor.createTXBoots(1)));
+        int mobTier = nbtEntity.getPersistentDataContainer().getInteger("mobTier");
+        event.getDrops().add(upgradingArmorLore(CreateTXArmor.createTXBoots(mobTier, mobLevel)));
     }
     private void applyCustomKnockback(Player player, Entity target) {
         Vector yAxisModifier;
-        Vector yAxisDelete = new Vector(1,0,1);
-        Vector direction = target.getLocation().toVector().subtract(player.getLocation().toVector()).multiply(yAxisDelete).normalize();
+        Vector yAxisRemove = new Vector(1,0,1);
+        Vector direction = target.getLocation().toVector().subtract(player.getLocation().toVector()).multiply(yAxisRemove).normalize();
 
         double regularCustomKnockback = (double) getRandomValue(3, 1) /10;
         double funkyCustomKnockback = (double) getRandomValue(20, 10)/10;
@@ -88,16 +94,25 @@ public class CombatEvents implements Listener {
             nbtEntity1.getPersistentDataContainer().setBoolean("onCombat", true);
 
             PlayerCombatTime.playerCombatTickCount.put(player, nbtEntity1.getPersistentDataContainer().getInteger("baseCombatTimer"));
-
 //TODO: implement the situation of PVP
-
+            double ratio = (double) HPAfterHit /maxHP;
+            int barLength = 40;
+            int greenBlocks = (int) (barLength*ratio);
+            StringBuilder newLore = new StringBuilder();
+            for (int i = 0; i < barLength; i++){
+                if (i<greenBlocks){
+                    newLore.append("§a:");
+                }else {
+                    newLore.append("§4:");
+                }
+            }
             String name = entityHitted.getName();
             String nameWithoutHealth = name.split(" ♥ ")[0].trim();
             String[] parts = entityHitted.getName().split(" ♥ ");
             String wordsBeforeHeart = parts[0].trim();
             if (HPBeforeHit > damageFromWeapon) {
-                player.sendMessage("§c" + damageFromWeapon + " DMG -> §f " + wordsBeforeHeart + " [" + HPAfterHit + " HP]");
-                entityHitted.setCustomName(nameWithoutHealth + " ♥ " + Main.getInstance().formatter.format(HPAfterHit) + "/" + maxHP + " ♥");
+                player.sendMessage("§c" + damageFromWeapon + " DMG -> §f " + nameWithoutHealth + " [" + HPAfterHit + " HP]");
+                entityHitted.setCustomName(" ♥ " + Main.getInstance().formatter.format(HPAfterHit) + "/" + maxHP + " ♥" + newLore);
             } else{
                 player.sendMessage("§c" + damageFromWeapon + " DMG -> §f " + wordsBeforeHeart + " [0 HP]");
                 LivingEntity livingEntity = (LivingEntity) entityHitted;

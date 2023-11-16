@@ -10,7 +10,7 @@ import me.brzeph.customitems.CombatMechanics.CombatSystem.PlayerHealthRegenerati
 import me.brzeph.customitems.Commands.*;
 import me.brzeph.customitems.CombatMechanics.CustomMobs.*;
 import me.brzeph.customitems.CombatMechanics.CustomMobs.GUI.*;
-import me.brzeph.customitems.GUIs.test2.GUIEventsHandler;
+import me.brzeph.customitems.GUIs.GUIEventsHandler;
 import me.brzeph.customitems.MiningMechanics.MiningEvents.MiningEvents;
 import me.brzeph.customitems.Events.OnJoinEvents.PlayerRegister;
 import me.brzeph.customitems.CombatMechanics.OnArmorEquip;
@@ -72,6 +72,7 @@ public final class Main extends JavaPlugin{
         }
         this.getCommand("spawner").setExecutor(new CustomMobsCommands());
         this.getCommand("skilltrainer").setExecutor(new NPCCommands());
+        this.getCommand("spawnergui").setExecutor(new NPCCommands());
 
         instance = this;
         new BukkitRunnable() {

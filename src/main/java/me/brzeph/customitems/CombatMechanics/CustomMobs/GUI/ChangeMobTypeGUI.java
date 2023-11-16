@@ -1,5 +1,6 @@
 package me.brzeph.customitems.CombatMechanics.CustomMobs.GUI;
 
+import de.tr7zw.nbtapi.NBTEntity;
 import de.tr7zw.nbtapi.NBTItem;
 import de.tr7zw.nbtapi.NBTTileEntity;
 import me.brzeph.customitems.CombatMechanics.CustomCombatItems.ComatItemsEnums.ArmorTXHPEnum;
@@ -22,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static me.brzeph.customitems.CombatMechanics.CustomMobs.GUI.RegisterMobToSpawnGUI.registerMobToSpawnOpenGUI;
+import static org.bukkit.Bukkit.getServer;
 
 public class ChangeMobTypeGUI implements Listener {
     public static void changeMobTypeOpenGUI(Player player){
@@ -39,12 +41,10 @@ public class ChangeMobTypeGUI implements Listener {
         int inventorySize = (hashmapSize / 9 + (hashmapSize % 9 == 0 ? 0 : 1)) * 9;
         Inventory inventory = Bukkit.createInventory(player, inventorySize, "§0Choose mob type GUI");
         int slot = 0;
-
         for (CustomMobsListEnum2 mob : mobOptionsForTier.keySet()) {
             ItemStack mobItem = createItemStackForMob(mob, tier); // You need to implement this method
             inventory.setItem(slot, mobItem);
             slot++;
-
             if (slot >= inventorySize) {
                 break; // Stop if we filled all slots
             }
@@ -53,10 +53,16 @@ public class ChangeMobTypeGUI implements Listener {
     }
 
     private static ItemStack createItemStackForMob(CustomMobsListEnum2 mob, int tier) {
+        float mobHPMultiplierLevel = mob.getMobHPLevelMultiplier();
+        getServer().getConsoleSender().sendMessage("[DEBUG] hp multiplier: " + mob.getMobLevel() + "        " + mobHPMultiplierLevel);
+        getServer().getConsoleSender().sendMessage("[DEBUG] min hp before applying multiplier: " + 4*ArmorTXHPEnum.getMinHealthValueTier(tier));
+        getServer().getConsoleSender().sendMessage("[DEBUG] max hp before applying multiplier: " + 4*ArmorTXHPEnum.getMaxHealthValueTier(tier));
+        getServer().getConsoleSender().sendMessage("[DEBUG] min hp after applying multiplier: " + (int) (mobHPMultiplierLevel*4*ArmorTXHPEnum.getMinHealthValueTier(tier)));
+        getServer().getConsoleSender().sendMessage("[DEBUG] max hp after applying multiplier: " + (int) (mobHPMultiplierLevel*4*ArmorTXHPEnum.getMaxHealthValueTier(tier)));
         int minDamage = WeaponTXDamage.getMinDamageValueTier(tier);
         int maxDamage = WeaponTXDamage.getMaxDamageValueTier(tier);
-        int minArmorHP = 4*ArmorTXHPEnum.getMinHealthValueTier(tier);
-        int maxArmorHP = 4*ArmorTXHPEnum.getMaxHealthValueTier(tier);
+        int minArmorHP = (int) (mobHPMultiplierLevel*4*ArmorTXHPEnum.getMinHealthValueTier(tier));
+        int maxArmorHP = (int) (mobHPMultiplierLevel*4*ArmorTXHPEnum.getMaxHealthValueTier(tier));
 
         Material mobSkullMaterial = Material.DRAGON_HEAD;
         boolean registeredMob = true;
@@ -76,6 +82,7 @@ public class ChangeMobTypeGUI implements Listener {
         lore.add("");
         lore.add("§fTier: " + mob.getTier());
         lore.add("§fMob type: " + mob.getMobType());
+        lore.add("§fMob level: " + mob.getMobLevel());
         lore.add("§fWeapon type: " + mob.getItemMainHandMaterial());
         lore.add("§fWeapon damage: " + minDamage + " -> " + maxDamage);
         lore.add("§fArmor health: " + minArmorHP + " -> " + maxArmorHP);

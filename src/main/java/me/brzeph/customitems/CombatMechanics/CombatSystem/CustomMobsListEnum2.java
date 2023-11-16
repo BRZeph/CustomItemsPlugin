@@ -15,30 +15,48 @@ import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 
 import static me.brzeph.customitems.CombatMechanics.CustomCombatItems.GeneratingCombatItems.CreateTXWeapon.*;
+import static me.brzeph.customitems.MiningMechanics.MiningEvents.Methods.ModifyItemLore.modifyItemLore;
+import static me.brzeph.customitems.MiningMechanics.MiningEvents.MiningXPLevelsTable.XPToLevelUpRequiredMethod;
 
 public enum CustomMobsListEnum2 {
-    T1BanditZombieAxe(1,"Leather wearer Bandit1", 1, 1, true, "axe", mobWeaponAxe(1)
-            , createArmorSet(1)),
-    T1BanditZombieSword(2,"Leather wearer Bandit2", 1, 3, true, "sword", mobWeaponSword(1)
-            , createArmorSet(1)),
-    T1BanditZombieShovel(3,"Leather wearer Bandit3", 1, 1, true, "shovel", mobWeaponShovel(1)
-            , createArmorSet(1)),
-    T1BanditZombieHoe(4,"Leather wearer Bandit4", 1, 1, true, "hoe", mobWeaponHoe(1)
-            , createArmorSet(1)),
-    T1BanditSkeletonRandomWeapon(5,"Leather wearer Bandit5", 1, 2, true, "random", mobWeaponRandomType(1)
-            , createArmorSet(1)),
-    T1ThiefZombieRandomWeapon(6,"Leather wearer thief6", 1, 1, true, "random", mobWeaponRandomType(1)
-            , createArmorSet(1)),
+    T1BanditZombieAxe(1,"Leather wearer Bandit", 1, 16,1, true, "axe", mobWeaponAxe(1)
+            , createArmorSet(1, 16)),
+    T1BanditZombieSword(2,"Leather wearer Bandit", 1, 13, 2, true, "sword", mobWeaponSword(1)
+            , createArmorSet(1, 13)),
+    T1BanditZombieShovel(3,"Leather wearer Bandit", 1, 10, 1, true, "shovel", mobWeaponShovel(1)
+            , createArmorSet(1, 10)),
+    T1BanditZombieHoe(4,"Leather wearer Bandit", 1, 7, 1, true, "hoe", mobWeaponHoe(1)
+            , createArmorSet(1, 7)),
+    T1BanditSkeletonRandomWeapon(5,"Leather wearer Bandit", 1, 4, 2, true, "random", mobWeaponRandomType(1)
+            , createArmorSet(1, 4)),
+    T1ThiefZombieRandomWeapon(6,"Leather wearer thief", 1, 1, 1, true, "random", mobWeaponRandomType(1)
+            , createArmorSet(1, 1)),
+    T1ThiefZombieRandomWeapon2(11,"Leather wearer thief", 1, 19, 1, true, "random", mobWeaponRandomType(1)
+            , createArmorSet(1, 19)),
 
 
-    T2BanditZombieRandomWeapon(7,"Chain wearer Bandit", 2, 1, true, "random", mobWeaponRandomType(2)
-            , createArmorSet(2)),
-    T3BanditZombieRandomWeapon(8,"Iron wearer Bandit", 3, 1, true, "random", mobWeaponRandomType(3)
-            , createArmorSet(3)),
-    T4BanditZombieRandomWeapon(9,"Diamond wearer Bandit", 4, 1, true, "random", mobWeaponRandomType(4)
-            , createArmorSet(4)),
-    T5BanditZombieRandomWeapon(10,"Gold wearer Bandit", 5, 1, true, "random", mobWeaponRandomType(5)
-            , createArmorSet(5));
+
+
+
+
+
+
+
+
+
+    //MayelMechanics(11, "Mayel the destroyer", 1, 3, true, "Mayel.axe", mayelAxe()
+            //,createMayelSet()),
+    //TODO: finish mayel
+
+
+    T2BanditZombieRandomWeapon(7,"Chain wearer Bandit", 2, 39, 1, true, "random", mobWeaponRandomType(2)
+            , createArmorSet(2, 39)),
+    T3BanditZombieRandomWeapon(8,"Iron wearer Bandit", 3, 59, 1, true, "random", mobWeaponRandomType(3)
+            , createArmorSet(3, 59)),
+    T4BanditZombieRandomWeapon(9,"Diamond wearer Bandit", 4, 79, 1, true, "random", mobWeaponRandomType(4)
+            , createArmorSet(4, 79)),
+    T5BanditZombieRandomWeapon(10,"Gold wearer Bandit", 5, 99, 1, true, "random", mobWeaponRandomType(5)
+            , createArmorSet(5, 99));
 
     private static ItemStack mobWeaponAxe(int i) {
         return CreateTXWeapon.createTXWeaponAxe(i);
@@ -56,15 +74,15 @@ public enum CustomMobsListEnum2 {
         return CreateTXWeapon.createTXWeaponRandomType(i);
     }
 
-    public static ItemStack[] createArmorSet(int tier){
+    public static ItemStack[] createArmorSet(int tier, int level){
         ItemStack[] armor = new ItemStack[4];
-        armor[3] = CreateTXArmor.createTXHelmet(tier);
-        armor[2] = CreateTXArmor.createTXChestPlate(tier);
-        armor[1] = CreateTXArmor.createTXLeggings(tier);
-        armor[0] = CreateTXArmor.createTXBoots(tier);
+        armor[3] = CreateTXArmor.createTXHelmet(tier, level);
+        armor[2] = CreateTXArmor.createTXChestPlate(tier, level);
+        armor[1] = CreateTXArmor.createTXLeggings(tier, level);
+        armor[0] = CreateTXArmor.createTXBoots(tier, level);
         return armor;
     }
-
+    private int mobLevel;
     private String name;
     private int tier;
     private int mobType; //mobType{1,2,...} == {zombie,skeleton,...}
@@ -75,9 +93,10 @@ public enum CustomMobsListEnum2 {
     private int uniqueMobID;
 
 
-    CustomMobsListEnum2(int uniqueMobID, String name, int tier, int mobType, boolean melee, String itemMainHandMaterial, ItemStack itemMainHand, ItemStack[] armor){
+    CustomMobsListEnum2(int uniqueMobID, String name, int tier, int mobLevel, int mobType, boolean melee, String itemMainHandMaterial, ItemStack itemMainHand, ItemStack[] armor){
         this.name = name;
         this.tier = tier;
+        this.mobLevel = mobLevel;
         this.mobType = mobType;
         this.melee = melee;
         this.itemMainHand = itemMainHand;
@@ -85,6 +104,9 @@ public enum CustomMobsListEnum2 {
         this.itemMainHandMaterial = itemMainHandMaterial;
         this.uniqueMobID = uniqueMobID;
     }
+
+
+    public int getMobLevel() {return mobLevel;}
 
     public int getUniqueMobID() {
         return uniqueMobID;
@@ -114,12 +136,27 @@ public enum CustomMobsListEnum2 {
     public String getItemMainHandMaterial() {
         return itemMainHandMaterial;
     }
+    public float getMobHPLevelMultiplier(){
+        int level = getMobLevel();
+        int baseTierLevel = 20*(getTier()-1);
+        if (level > baseTierLevel + 21 || level < baseTierLevel){throw new RuntimeException("Illegal level compared to tier");}
+        float levelHPMultiplier = 1;
+        float i;
+        for (i = 1; i <= baseTierLevel + 21; i = i + 3) {
+            if (baseTierLevel + i <= level && level < baseTierLevel + i + 3) {
+                levelHPMultiplier = 0.6F + i/30;
+            }
+        }
+        return levelHPMultiplier;
+    }
+
+
     public LivingEntity spawnWithRandomStats(Location location){
 
         LivingEntity entity = (LivingEntity) location.getWorld().spawnEntity(location, returnMobTypeToEntityType(getMobType()));
         EntityEquipment inv = entity.getEquipment();
         inv.clear();
-        inv.setArmorContents(createArmorSet(tier));
+        inv.setArmorContents(createArmorSet(tier, getMobLevel()));
         inv.setItemInMainHand(itemInMainHand(tier, getItemMainHandMaterial()));
         inv.setHelmetDropChance(0F);
         inv.setChestplateDropChance(0F);
@@ -131,12 +168,14 @@ public enum CustomMobsListEnum2 {
         entity.setMaxHealth(10);
         entity.setHealth(10);
         entity.setCustomNameVisible(true);
-        entity.setCustomName(name + " ♥ " + returnEntityMaxHP(entity) + "/" + returnEntityMaxHP(entity) + " ♥");
+        entity.setCustomName("Level " + mobLevel + " " + name + " ♥ " + returnEntityMaxHP(entity) + "/" + returnEntityMaxHP(entity));
         NBTEntity nbtEntity = new NBTEntity(entity);
-        NBTCompound playerData = nbtEntity.getPersistentDataContainer();
-        playerData.setInteger("maxHP", returnEntityMaxHP(entity));
-        playerData.setInteger("currentHP", returnEntityMaxHP(entity));
-        nbtEntity.mergeCompound(playerData);
+        NBTCompound entityData = nbtEntity.getPersistentDataContainer();
+        entityData.setInteger("maxHP", returnEntityMaxHP(entity));
+        entityData.setInteger("currentHP", returnEntityMaxHP(entity));
+        entityData.setInteger("mobTier", tier);
+        entityData.setInteger("mobLevel", mobLevel);
+        nbtEntity.mergeCompound(entityData);
 
         return entity;
     }

@@ -17,13 +17,23 @@ import static me.brzeph.customitems.CombatMechanics.CustomCombatItems.Generating
 import static me.brzeph.customitems.CombatMechanics.CustomMobs.SpawnerFunctionality.getRandomValue;
 
 public class CreateTXArmor {
-    public static ItemStack createTXHelmet(int tier){
+    public static ItemStack createTXHelmet(int tier, int level){
         NBTItem nbtItem = new NBTItem(new ItemStack(getHelmetMaterial(tier), 1));
         int rarity = calculatingRarity();
+        int baseTierLevel = 20*(tier-1);
+        if (level > baseTierLevel + 21 || level < baseTierLevel){throw new RuntimeException("Illegal level compared to tier");}
+        float levelHPMultiplier = 1;
+        float i;
+        for (i = 1; i <= baseTierLevel + 21; i = i + 3) {
+            if (baseTierLevel + i <= level && level < baseTierLevel + i + 3) {
+                levelHPMultiplier = 0.6F + i/30;
+            }
+        }
         nbtItem.setString("rarity", rarityToString(rarity));
         nbtItem.setString("armorType", "helmet");
         nbtItem.setInteger("tier", tier);
-        nbtItem.setInteger("bonusHealth", ArmorTXHPEnum.getArmorHP(tier, rarity));
+        nbtItem.setInteger("level", level);
+        nbtItem.setInteger("bonusHealth", (int) (levelHPMultiplier * ArmorTXHPEnum.getArmorHP(tier, rarity)));
         nbtItem.setInteger("bonusArmor", ArmorArmorEnum.getRandomValueByTier(tier));
         int decidingHPSorEnergy = getRandomValue(100, 1);
         if (decidingHPSorEnergy >= 0 && decidingHPSorEnergy < 33){
@@ -32,9 +42,6 @@ public class CreateTXArmor {
         if (decidingHPSorEnergy >= 33 && decidingHPSorEnergy <= 100){
             nbtItem.setFloat("armorEnergy", (float) ArmorTXHPEnum.getArmorEnergy(tier, rarity));
         }
-
-
-
         Field[] fields = BaseArmorStats.class.getDeclaredFields();
         for (Field field : fields){
             if (field.getType() == int.class){
@@ -59,13 +66,23 @@ public class CreateTXArmor {
         return new ItemStack(itemStack);
     }
 
-    public static ItemStack createTXChestPlate(int tier){
+    public static ItemStack createTXChestPlate(int tier, int level){
         NBTItem nbtItem = new NBTItem(new ItemStack(getChestPlateMaterial(tier), 1));
         int rarity = calculatingRarity();
+        int baseTierLevel = 20*(tier-1);
+        if (level > baseTierLevel + 21 || level < baseTierLevel){throw new RuntimeException("Illegal level compared to tier");}
+        float levelHPMultiplier = 1;
+        float i;
+        for (i = 1; i <= baseTierLevel + 21; i = i + 3) {
+            if (baseTierLevel + i <= level && level < baseTierLevel + i + 3) {
+                levelHPMultiplier = 0.6F + i/30;
+            }
+        }
         nbtItem.setString("rarity", rarityToString(rarity));
         nbtItem.setString("armorType", "chestPlate");
         nbtItem.setInteger("tier", tier);
-        nbtItem.setInteger("bonusHealth", ArmorTXHPEnum.getArmorHP(tier, rarity));
+        nbtItem.setInteger("level", level);
+        nbtItem.setInteger("bonusHealth", (int) (levelHPMultiplier * ArmorTXHPEnum.getArmorHP(tier, rarity)));
         nbtItem.setInteger("bonusArmor", ArmorArmorEnum.getRandomValueByTier(tier));
         int decidingHPSorEnergy = getRandomValue(100, 1);
         if (decidingHPSorEnergy >= 0 && decidingHPSorEnergy < 33){
@@ -97,13 +114,23 @@ public class CreateTXArmor {
 
         return new ItemStack(itemStack);
     }
-    public static ItemStack createTXLeggings(int tier){
+    public static ItemStack createTXLeggings(int tier, int level){
         NBTItem nbtItem = new NBTItem(new ItemStack(getLeggingsMaterial(tier), 1));
         int rarity = calculatingRarity();
+        int baseTierLevel = 20*(tier-1);
+        if (level > baseTierLevel + 21 || level < baseTierLevel){throw new RuntimeException("Illegal level compared to tier");}
+        float levelHPMultiplier = 1;
+        float i;
+        for (i = 1; i <= baseTierLevel + 21; i = i + 3) {
+            if (baseTierLevel + i <= level && level < baseTierLevel + i + 3) {
+                levelHPMultiplier = 0.6F + i/30;
+            }
+        }
         nbtItem.setString("rarity", rarityToString(rarity));
         nbtItem.setString("armorType", "leggings");
         nbtItem.setInteger("tier", tier);
-        nbtItem.setInteger("bonusHealth", ArmorTXHPEnum.getArmorHP(tier, rarity));
+        nbtItem.setInteger("level", level);
+        nbtItem.setInteger("bonusHealth", (int) (levelHPMultiplier * ArmorTXHPEnum.getArmorHP(tier, rarity)));
         nbtItem.setInteger("bonusArmor", ArmorArmorEnum.getRandomValueByTier(tier));
         int decidingHPSorEnergy = getRandomValue(100, 1);
         if (decidingHPSorEnergy >= 0 && decidingHPSorEnergy < 33){
@@ -135,13 +162,23 @@ public class CreateTXArmor {
 
         return new ItemStack(itemStack);
     }
-    public static ItemStack createTXBoots(int tier){
+    public static ItemStack createTXBoots(int tier, int level){
         NBTItem nbtItem = new NBTItem(new ItemStack(getBootsMaterial(tier), 1));
         int rarity = calculatingRarity();
+        int baseTierLevel = 20*(tier-1);
+        if (level > baseTierLevel + 21 || level < baseTierLevel){throw new RuntimeException("Illegal level compared to tier");}
+        float levelHPMultiplier = 1;
+        float i;
+        for (i = 1; i <= baseTierLevel + 21; i = i + 3) {
+            if (baseTierLevel + i <= level && level < baseTierLevel + i + 3) {
+                levelHPMultiplier = 0.6F + i/30;
+            }
+        }
         nbtItem.setString("rarity", rarityToString(rarity));
         nbtItem.setString("armorType", "boots");
         nbtItem.setInteger("tier", tier);
-        nbtItem.setInteger("bonusHealth", ArmorTXHPEnum.getArmorHP(tier, rarity));
+        nbtItem.setInteger("level", level);
+        nbtItem.setInteger("bonusHealth", (int) (levelHPMultiplier * ArmorTXHPEnum.getArmorHP(tier, rarity)));
         nbtItem.setInteger("bonusArmor", ArmorArmorEnum.getRandomValueByTier(tier));
         int decidingHPSorEnergy = getRandomValue(100, 1);
         if (decidingHPSorEnergy >= 0 && decidingHPSorEnergy < 33){

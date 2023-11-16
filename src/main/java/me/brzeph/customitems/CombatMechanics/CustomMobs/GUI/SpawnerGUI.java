@@ -63,7 +63,7 @@ public class SpawnerGUI implements Listener {
         return itemStack;
     }
 
-    private static ItemStack spawnerInfo(Player player) {
+    public static ItemStack spawnerInfo(Player player) {
         Block block = SharedData.callingBlock.get(player);
         NBTTileEntity nbtTileEntity = new NBTTileEntity(block.getState());
         int tier = nbtTileEntity.getPersistentDataContainer().getInteger("tier");
@@ -83,8 +83,7 @@ public class SpawnerGUI implements Listener {
         lore.add("");
         lore.add("§6Spawner mob list: ");
 
-        int i = 1;
-        for (i = 1; i <= CustomMobsListEnum2.values().length; i++){
+        for (int i = 1; i <= CustomMobsListEnum2.values().length; i++){
             int k = nbtTileEntity.getPersistentDataContainer().getInteger(String.valueOf(i));
             if (k != 0){
                 for (CustomMobsListEnum2 mob : CustomMobsListEnum2.values()) {
@@ -94,7 +93,6 @@ public class SpawnerGUI implements Listener {
                 }
             }
         }
-
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
         return itemStack;

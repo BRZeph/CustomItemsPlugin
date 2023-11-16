@@ -1,4 +1,4 @@
-package me.brzeph.customitems.GUIs.test2;
+package me.brzeph.customitems.GUIs;
 
 import me.brzeph.customitems.Main;
 import me.brzeph.customitems.MiningMechanics.pickaxeVendingCost;
@@ -10,12 +10,18 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import java.util.function.BiConsumer;
 
-import static me.brzeph.customitems.GUIs.test2.GUIEventsHandler.playerBuyItemEvent;
+import static me.brzeph.customitems.CombatMechanics.CustomMobs.GUI.ChangeMaxAmountOfMobsGUI.changeMaxAmountOfMobsOpenGui;
+import static me.brzeph.customitems.CombatMechanics.CustomMobs.GUI.ChangeMobTypeGUI.changeMobTypeOpenGUI;
+import static me.brzeph.customitems.CombatMechanics.CustomMobs.GUI.ChangeRespawnRateGUI.changeRespawnRateOpenGUIPage1;
+import static me.brzeph.customitems.CombatMechanics.CustomMobs.GUI.ChangeSpawnRadiusGUI.changeSpawnerRadiusOpenGUI;
+import static me.brzeph.customitems.CombatMechanics.CustomMobs.GUI.ChangeTierGUI.changeTierOpenGUI;
+import static me.brzeph.customitems.CombatMechanics.CustomMobs.GUI.SpawnerGUI.spawnerInfo;
+import static me.brzeph.customitems.GUIs.GUIEventsHandler.playerBuyItemEvent;
+import static me.brzeph.customitems.ItemWrapper.itemWrapperGUIItems;
 import static me.brzeph.customitems.MiningMechanics.PickaxeCreator.*;
 import static org.bukkit.Bukkit.getServer;
 
 public enum GUIGenerator {
-
     GUISkillTrainer("Skill trainer GUI", 27,
             createClickableItem2(0, createNewGeneratedPickaxe(Pickaxe.createPickaxe("Custom T1 Pickaxe", true, false, 1, 0, 1,
                     "§aItem cost: §c" + pickaxeVendingCost.PickaxeVendingCost(1) + "G")), (player, event) -> {
@@ -42,7 +48,45 @@ public enum GUIGenerator {
                 playerBuyItemEvent(player, createPreGeneratedPickaxes(createT5Pickaxe), pickaxeVendingCost.PickaxeVendingCost(5));
                 event.setCancelled(true);
             })
+    ),
+    GUISpawnerMain("Mob Spawner GUI", 18,
+            createClickableItem2(0, itemWrapperGUIItems(Material.GOLD_BLOCK, 1, "Change spawner Tier", "", "§4Values range between 1 and 5"), (player, event) -> {
+                changeTierOpenGUI(player);
+                getServer().getConsoleSender().sendMessage("[debug] change tier open gui");
+                event.setCancelled(true);
+            }),
+            createClickableItem2(1,itemWrapperGUIItems(Material.ZOMBIE_HEAD, 1, "Chose mob to spawn", ""), (player, event) -> {
+                changeMobTypeOpenGUI(player);
+                event.setCancelled(true);
+            }),
+            createClickableItem2(2, itemWrapperGUIItems(Material.GOLD_BLOCK, 1, "Change respawn rate", ""), (player, event) -> {
+                changeRespawnRateOpenGUIPage1(player);
+                event.setCancelled(true);
+            }),
+            createClickableItem2(3, itemWrapperGUIItems(Material.GOLD_BLOCK, 64, "Change max amount of mobs", ""), (player, event) -> {
+                changeMaxAmountOfMobsOpenGui(player);
+                event.setCancelled(true);
+            }),
+            createClickableItem2(4, itemWrapperGUIItems(Material.GOLD_BLOCK, 1, "Change spawn radius", ""), (player, event) -> {
+                changeSpawnerRadiusOpenGUI(player);
+                event.setCancelled(true);
+            })
+
+
     );
+
+    public String getGuiName() {
+        return guiName;
+    }
+
+    public int getGuiSize() {
+        return guiSize;
+    }
+
+    public ClickableItem[] getItems() {
+        return items;
+    }
+
     public static class ClickableItem extends ItemStack {
 
         private final BiConsumer<Player, InventoryClickEvent> clickAction;
@@ -62,7 +106,7 @@ public enum GUIGenerator {
             clickAction.accept(player, event);
         }
     }
-    private static ClickableItem createClickableItem( int itemPosition, Material material, BiConsumer<Player, InventoryClickEvent> clickAction) {
+    private static ClickableItem createClickableItem(int itemPosition, Material material, BiConsumer<Player, InventoryClickEvent> clickAction) {
         return new ClickableItem(itemPosition, new ItemStack(material), clickAction);
     }
     private static ClickableItem createClickableItem2(int itemPosition, ItemStack itemStack, BiConsumer<Player, InventoryClickEvent> clickAction) {
@@ -83,11 +127,17 @@ public enum GUIGenerator {
     public static void handleEvent(InventoryClickEvent event, Main plugin) {
         Player player = (Player) event.getWhoClicked();
         ItemStack clickedItem = event.getCurrentItem();
-        if (clickedItem != null) {
-            for (ClickableItem item : GUISkillTrainer.items) {
-                if (item.isSimilar(clickedItem)) {
-                    item.handleClick(player, event);
-                    break;
+        String guiName = event.getView().getTitle();
+
+        for (GUIGenerator generator : GUIGenerator.values()) {
+            if (guiName.equals(generator.getGuiName())) {
+                if (clickedItem != null) {
+                    for (ClickableItem item : generator.items) {
+                        if (item.isSimilar(clickedItem)) {
+                            item.handleClick(player, event);
+                            break;
+                        }
+                    }
                 }
             }
         }
@@ -97,6 +147,14 @@ public enum GUIGenerator {
         Inventory gui = Bukkit.createInventory(player, GUISkillTrainer.guiSize, GUISkillTrainer.guiName);
         for (ClickableItem item : GUISkillTrainer.items) {
             getServer().getConsoleSender().sendMessage("[DEBUG]: item positions is " + item.getItemPosition());
+            int position = item.getItemPosition();
+            gui.setItem(position, item);
+        }
+        player.openInventory(gui);
+    }
+    public static void openSpawnerGUI(Player player) {
+        Inventory gui = Bukkit.createInventory(player, GUISpawnerMain.guiSize, GUISpawnerMain.guiName);
+        for (ClickableItem item : GUISpawnerMain.items) {
             int position = item.getItemPosition();
             gui.setItem(position, item);
         }

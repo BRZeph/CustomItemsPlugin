@@ -78,7 +78,6 @@ public class SpawnerFunctionality implements Listener {
                                 });
                                 spawned.add(spawnedEntity);
 
-                                // This handles the mob cap
                                 if (spawned.size() >= mobCap) break;
                             }
                         }

@@ -13,6 +13,7 @@ public class UpdatingArmorLore {
         String armorType = nbtItem.getString("armorType");
         String rarity = nbtItem.getString("rarity");
         int tier = nbtItem.getInteger("tier");
+        int level = nbtItem.getInteger("level");
         int bonusHealth = nbtItem.getInteger("bonusHealth");
         int bonusArmor  = nbtItem.getInteger("bonusArmor");
         int armorStatsVitality = nbtItem.getInteger("armorStatsVitality");
@@ -25,8 +26,7 @@ public class UpdatingArmorLore {
         float armorHPS = nbtItem.getFloat("armorHPS");
         float armorEnergy = nbtItem.getFloat("armorEnergy");
 
-        ItemStack itemStack1 = new ItemStack(nbtItem.getItem());
-        ItemMeta itemMeta = itemStack1.getItemMeta();
+        ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName("§fCustom T" + tier + " " + armorType);
         List<String> lore = itemMeta.getLore();
         lore.add(".");
@@ -39,82 +39,87 @@ public class UpdatingArmorLore {
             lore.remove(i);
         }
         itemMeta.setLore(lore);
-        itemStack1.setItemMeta(itemMeta);
+        itemStack.setItemMeta(itemMeta);
 
-        List<String> lore2 = new ArrayList<>();
-        NBTItem nbti = new NBTItem(itemStack1);
+        List<String> lore1 = new ArrayList<>();
+        NBTItem nbti = new NBTItem(itemStack);
         if (nbti.hasKey("tier")) {
             if (tier > 0) {
-                lore2.add("§cTier: " + tier);
+                lore1.add("§cTier: " + tier);
             }
         }
+        if (nbti.hasKey("level")) {
+            if (level > 0) {
+                lore1.add("§cLevel: " + level);
+            }
+        }
+        lore1.add("");
         if (nbti.hasKey("bonusHealth")) {
             if (bonusHealth > 0) {
-                lore2.add("§cHealth: " + bonusHealth);
+                lore1.add("§cHealth: " + bonusHealth);
             }
         }
         if (nbti.hasKey("armorHPS")){
             if (armorHPS > 0){
-                lore2.add("§cHealth regeneration/s: " + (int)armorHPS);
+                lore1.add("§cHealth regeneration/s: " + (int)armorHPS);
             }
         }
         if (nbti.hasKey("armorEnergy")){
             if (armorEnergy > 0){
-                lore2.add("§cEnergy/s: " + (int)armorEnergy);
+                lore1.add("§cEnergy/s: " + (int)armorEnergy);
             }
         }
         if (nbti.hasKey("bonusArmor")) {
             if (bonusArmor > 0) {
-                lore2.add("§cArmor: " + (int)bonusArmor);
+                lore1.add("§cArmor: " + (int)bonusArmor);
             }
         }
-        lore2.add("");
-        lore2.add("");
+        lore1.add("");
         if (nbti.hasKey("armorStatsVitality")) {
             if (armorStatsVitality > 0) {
-                lore2.add("§cVitality: " + armorStatsVitality);
+                lore1.add("§cVitality: " + armorStatsVitality);
             }
         }
         if (nbti.hasKey("armorStatsDexterity")) {
             if (armorStatsDexterity > 0) {
-                lore2.add("§cDexterity: " + armorStatsDexterity);
+                lore1.add("§cDexterity: " + armorStatsDexterity);
             }
         }
         if (nbti.hasKey("armorStatsStrength")) {
             if (armorStatsStrength > 0) {
-                lore2.add("§cStrength: " + armorStatsStrength);
+                lore1.add("§cStrength: " + armorStatsStrength);
             }
         }
         if (nbti.hasKey("armorStatsAgility")) {
             if (armorStatsAgility > 0) {
-                lore2.add("§cAgility: " + armorStatsAgility);
+                lore1.add("§cAgility: " + armorStatsAgility);
             }
         }
         if (nbti.hasKey("armorStatsDodge")) {
             if (armorStatsDodge > 0) {
-                lore2.add("§cDodge: " + armorStatsDodge);
+                lore1.add("§cDodge: " + armorStatsDodge);
             }
         }
         if (nbti.hasKey("armorStatsBlock")) {
             if (armorStatsBlock > 0) {
-                lore2.add("§cBlock: " + armorStatsBlock);
+                lore1.add("§cBlock: " + armorStatsBlock);
             }
         }
         if (nbti.hasKey("armorStatsReflect")) {
             if (armorStatsReflect > 0) {
-                lore2.add("§cReflect: " + armorStatsReflect);
+                lore1.add("§cReflect: " + armorStatsReflect);
             }
         }
         if (nbti.hasKey("rarity")){
             if (rarity != null){
-                lore2.add("");
-                lore2.add(rarity);
+                lore1.add("");
+                lore1.add(rarity);
             }
         }
-        ItemStack itemStack2 = new ItemStack(nbti.getItem());
-        ItemMeta itemMeta1 = itemStack2.getItemMeta();
-        itemMeta1.setLore(lore2);
-        itemStack2.setItemMeta(itemMeta1);
-        return itemStack2;
+        ItemStack itemStack1 = new ItemStack(nbti.getItem());
+        ItemMeta itemMeta1 = itemStack1.getItemMeta();
+        itemMeta1.setLore(lore1);
+        itemStack1.setItemMeta(itemMeta1);
+        return itemStack1;
     }
 }

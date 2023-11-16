@@ -1,4 +1,4 @@
-package me.brzeph.customitems.GUIs.test2;
+package me.brzeph.customitems.GUIs;
 
 import me.brzeph.customitems.Main;
 import org.bukkit.Location;

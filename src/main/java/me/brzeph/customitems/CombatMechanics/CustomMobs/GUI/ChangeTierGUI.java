@@ -12,8 +12,11 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import static org.bukkit.Bukkit.getServer;
+
 public class ChangeTierGUI implements Listener {
     public static void changeTierOpenGUI(Player player){
+        getServer().getConsoleSender().sendMessage("[debug] change tier open gui");
         Inventory inventory = Bukkit.createInventory(player, 9, "§0Choose tier GUI");
 
         inventory.setItem(0, changeSpawnerTierToTier1());

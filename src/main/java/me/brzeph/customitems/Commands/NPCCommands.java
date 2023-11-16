@@ -6,7 +6,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import static me.brzeph.customitems.GUIs.test2.GUIGenerator.openSkillTrainerGUI;
+import static me.brzeph.customitems.GUIs.GUIGenerator.openSkillTrainerGUI;
+import static me.brzeph.customitems.GUIs.GUIGenerator.openSpawnerGUI;
 
 public class NPCCommands implements CommandExecutor {
     @Override
@@ -18,6 +19,9 @@ public class NPCCommands implements CommandExecutor {
 
         if (cmd.getName().equalsIgnoreCase("skilltrainer")){
             openSkillTrainerGUI(player);
+        }
+        if (cmd.getName().equalsIgnoreCase("spawnergui")){
+            openSpawnerGUI(player);
         }
         return true;
     }
