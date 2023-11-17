@@ -40,6 +40,8 @@ public class CreateTXWeapon {
         List<String> lore = new ArrayList<>();
         lore.add("");
         lore.add("§cDamage: " + minDamage + " -> " + maxDamage);
+        lore.add("");
+        lore.add(rarityToString(rarity));
 
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
@@ -72,6 +74,8 @@ public class CreateTXWeapon {
         List<String> lore = new ArrayList<>();
         lore.add("");
         lore.add("§cDamage: " + minDamage + " -> " + maxDamage);
+        lore.add("");
+        lore.add(rarityToString(rarity));
 
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
@@ -104,6 +108,8 @@ public class CreateTXWeapon {
         List<String> lore = new ArrayList<>();
         lore.add("");
         lore.add("§cDamage: " + minDamage + " -> " + maxDamage);
+        lore.add("");
+        lore.add(rarityToString(rarity));
 
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
@@ -136,6 +142,8 @@ public class CreateTXWeapon {
         List<String> lore = new ArrayList<>();
         lore.add("");
         lore.add("§cDamage: " + minDamage + " -> " + maxDamage);
+        lore.add("");
+        lore.add(rarityToString(rarity));
 
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
@@ -168,6 +176,8 @@ public class CreateTXWeapon {
         List<String> lore = new ArrayList<>();
         lore.add("");
         lore.add("§cDamage: " + minDamage + " -> " + maxDamage);
+        lore.add("");
+        lore.add(rarityToString(rarity));
 
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);

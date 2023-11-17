@@ -33,10 +33,9 @@ public class Commands implements CommandExecutor {
         validMaterialsPickaxe.add(Material.DIAMOND_PICKAXE);
         validMaterialsPickaxe.add(Material.GOLDEN_PICKAXE);
 
-        //creates /nbt command
-        if (cmd.getName().equalsIgnoreCase("nbtTags")) {
+        if (cmd.getName().equalsIgnoreCase("nbtSpawner")) {
             NBTItem heldItem = new NBTItem(player.getInventory().getItemInMainHand());
-            if (player.getInventory().getItemInMainHand().getType() == Material.SPAWNER){
+            if (player.getInventory().getItemInMainHand().getType() == Material.SPAWNER) {
                 String[] desiredOrderPickaxe = {
                         "customBlock",
                         "tier",
@@ -56,7 +55,9 @@ public class Commands implements CommandExecutor {
                 player.sendMessage("§aThe nbt tags on your pickaxe are: " + "\n" + nbtTags);
                 return true;
             }
-
+        }
+        if (cmd.getName().equalsIgnoreCase("nbtPick")){
+            NBTItem heldItem = new NBTItem(player.getInventory().getItemInMainHand());
             if (validMaterialsPickaxe.contains(heldItem.getItem().getType())) {
                 String[] desiredOrderPickaxe = {
                         "uniqueItemID",
@@ -80,7 +81,33 @@ public class Commands implements CommandExecutor {
                 }
                 player.sendMessage("§aThe nbt tags on your pickaxe are: " + "\n" + nbtTags);
                 return true;
-            }else{
+            }
+        }
+        if (cmd.getName().equalsIgnoreCase("nbtWeapon")){
+            NBTItem heldItem = new NBTItem(player.getInventory().getItemInMainHand());
+            if (heldItem.getInteger("armorType") != null) {
+                String[] desiredOrderArmor ={
+                        "rarity",
+                        "weaponType",
+                        "tier",
+                        "minDamage",
+                        "maxDamage"
+                };
+                StringBuilder nbtTags = new StringBuilder();
+                for (String key : desiredOrderArmor){
+                    if (heldItem.hasKey(key)){
+                        String tagName = heldItem.getString(key);
+                        int tagValue = heldItem.getInteger(key);
+                        nbtTags.append(key).append("§a: ").append(tagName).append(tagValue).append("§a\n");
+                    }
+                }
+                player.sendMessage("§aThe nbt tags on your armor are: " + "\n" + nbtTags);
+                return true;
+            }
+        }
+        if (cmd.getName().equalsIgnoreCase("nbtArmor")){
+            NBTItem heldItem = new NBTItem(player.getInventory().getItemInMainHand());
+            if (heldItem.getInteger("armorType") != null) {
                 String[] desiredOrderArmor ={
                         "tier",
                         "bonusHealth",
@@ -106,17 +133,21 @@ public class Commands implements CommandExecutor {
                 return true;
             }
         }
-
         if (cmd.getName().equalsIgnoreCase("nbtplayer")) {
             NBTEntity nbtEntity = new NBTEntity(player);
             NBTCompound playerData = nbtEntity.getPersistentDataContainer();
             String[] desiredOrder = {
+                    "registeredPlayer",
                     "baseHealth",
                     "bonusHealth",
                     "currentMaxHealth",
+                    "currentHP",
                     "baseDamage",
+                    "baseHPS",
                     "baseArmor",
-                    "baseDPS"
+                    "baseDPS",
+                    "onCombat",
+                    "baseCombatTimer"
             };
             StringBuilder nbtTags = new StringBuilder();
             for (String key : desiredOrder) {

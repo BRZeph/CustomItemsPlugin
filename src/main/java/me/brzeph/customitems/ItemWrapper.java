@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ItemWrapper extends ItemStack{
-    public static ItemStack itemWrapperGUIItems(Material material, int amount ,String name, String... lore) {
+    public static ItemStack genericItemTemplate(Material material, int amount , String name, String... lore) {
         ItemStack itemStack = new ItemStack(material, amount);
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(name);

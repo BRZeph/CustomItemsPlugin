@@ -37,7 +37,8 @@ public class PlayerHealthRegeneration implements Listener {
                         //life steal should be handled on "combat events"
 
                         NBTEntity nbtPlayer = new NBTEntity(player);
-                        int helmetHPS = 0;
+                        int baseHPS = nbtPlayer.getPersistentDataContainer().getInteger("baseHPS");
+                        int helmetHPS = 0; //TODO: change this to make it more OOP on the player
                         int chestPlateHPS = 0;
                         int leggingsHPS = 0;
                         int bootsHPS = 0;
@@ -53,7 +54,7 @@ public class PlayerHealthRegeneration implements Listener {
                         if (player.getEquipment().getBoots() != null) {
                             bootsHPS = new NBTItem(player.getEquipment().getBoots()).getInteger("armorHPS");
                         }
-                        int totalHPS = helmetHPS + chestPlateHPS + leggingsHPS + bootsHPS;
+                        int totalHPS = helmetHPS + chestPlateHPS + leggingsHPS + bootsHPS + baseHPS;
                         float maxHealth = nbtPlayer.getPersistentDataContainer().getFloat("currentMaxHealth");
                         float currentHealth = nbtPlayer.getPersistentDataContainer().getFloat("currentHP");
                         boolean inCombat = nbtPlayer.getPersistentDataContainer().getBoolean("onCombat");
@@ -69,7 +70,7 @@ public class PlayerHealthRegeneration implements Listener {
                                 player.setHealth((currentHealth + totalHPS) * 20 / maxHealth);
                                 nbtPlayer.getPersistentDataContainer().setFloat("currentHP", currentHealth + totalHPS);
                                 player.sendMessage("§a+" + totalHPS + "HP");
-                                player.sendMessage("§aHP: " + newHealth);
+                                player.sendMessage("§aHP: " + newHealth + "/" + (int) maxHealth);
                                 setPlayerHPToXPBar(player);
                             }
                         }

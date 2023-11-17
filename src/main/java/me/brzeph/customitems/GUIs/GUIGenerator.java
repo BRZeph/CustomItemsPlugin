@@ -15,59 +15,58 @@ import static me.brzeph.customitems.CombatMechanics.CustomMobs.GUI.ChangeMobType
 import static me.brzeph.customitems.CombatMechanics.CustomMobs.GUI.ChangeRespawnRateGUI.changeRespawnRateOpenGUIPage1;
 import static me.brzeph.customitems.CombatMechanics.CustomMobs.GUI.ChangeSpawnRadiusGUI.changeSpawnerRadiusOpenGUI;
 import static me.brzeph.customitems.CombatMechanics.CustomMobs.GUI.ChangeTierGUI.changeTierOpenGUI;
-import static me.brzeph.customitems.CombatMechanics.CustomMobs.GUI.SpawnerGUI.spawnerInfo;
 import static me.brzeph.customitems.GUIs.GUIEventsHandler.playerBuyItemEvent;
-import static me.brzeph.customitems.ItemWrapper.itemWrapperGUIItems;
+import static me.brzeph.customitems.ItemWrapper.genericItemTemplate;
 import static me.brzeph.customitems.MiningMechanics.PickaxeCreator.*;
 import static org.bukkit.Bukkit.getServer;
 
 public enum GUIGenerator {
     GUISkillTrainer("Skill trainer GUI", 27,
-            createClickableItem2(0, createNewGeneratedPickaxe(Pickaxe.createPickaxe("Custom T1 Pickaxe", true, false, 1, 0, 1,
+            createClickableItem(0, createNewGeneratedPickaxe(Pickaxe.createPickaxe("Custom T1 Pickaxe", true, false, 1, 0, 1,
                     "§aItem cost: §c" + pickaxeVendingCost.PickaxeVendingCost(1) + "G")), (player, event) -> {
                 playerBuyItemEvent(player, createPreGeneratedPickaxes(createT1Pickaxe), pickaxeVendingCost.PickaxeVendingCost(1));
                 event.setCancelled(true);
             }),
-            createClickableItem2(2, createNewGeneratedPickaxe(Pickaxe.createPickaxe("Custom T2 Pickaxe", true, false, 2, 1, 20,
+            createClickableItem(2, createNewGeneratedPickaxe(Pickaxe.createPickaxe("Custom T2 Pickaxe", true, false, 2, 1, 20,
                     "§6[+1] Custom enchantment", "" , "§aItem cost: §c" + pickaxeVendingCost.PickaxeVendingCost(2) + "G")), (player, event) -> {
                 playerBuyItemEvent(player, createPreGeneratedPickaxes(createT2Pickaxe), pickaxeVendingCost.PickaxeVendingCost(2));
                 event.setCancelled(true);
             }),
-            createClickableItem2(4, createNewGeneratedPickaxe(Pickaxe.createPickaxe("Custom T3 Pickaxe", true, false, 3, 2, 40,
+            createClickableItem(4, createNewGeneratedPickaxe(Pickaxe.createPickaxe("Custom T3 Pickaxe", true, false, 3, 2, 40,
                     "§6[+2] Custom enchantment", "" , "§aItem cost: §c" + pickaxeVendingCost.PickaxeVendingCost(3) + "G")), (player, event) -> {
                 playerBuyItemEvent(player, createPreGeneratedPickaxes(createT3Pickaxe), pickaxeVendingCost.PickaxeVendingCost(3));
                 event.setCancelled(true);
             }),
-            createClickableItem2(6, createNewGeneratedPickaxe(Pickaxe.createPickaxe("Custom T4 Pickaxe", true, false, 4, 3, 60,
+            createClickableItem(6, createNewGeneratedPickaxe(Pickaxe.createPickaxe("Custom T4 Pickaxe", true, false, 4, 3, 60,
                     "§6[+3] Custom enchantment", "" , "§aItem cost: §c" + pickaxeVendingCost.PickaxeVendingCost(4) + "G")), (player, event) -> {
                 playerBuyItemEvent(player, createPreGeneratedPickaxes(createT4Pickaxe), pickaxeVendingCost.PickaxeVendingCost(4));
                 event.setCancelled(true);
             }),
-            createClickableItem2(8, createNewGeneratedPickaxe(Pickaxe.createPickaxe("Custom T5 Pickaxe", true, false, 5, 4, 80,
+            createClickableItem(8, createNewGeneratedPickaxe(Pickaxe.createPickaxe("Custom T5 Pickaxe", true, false, 5, 4, 80,
                     "§6[+4] Custom enchantment", "" , "§aItem cost: §c" + pickaxeVendingCost.PickaxeVendingCost(5) + "G")), (player, event) -> {
                 playerBuyItemEvent(player, createPreGeneratedPickaxes(createT5Pickaxe), pickaxeVendingCost.PickaxeVendingCost(5));
                 event.setCancelled(true);
             })
     ),
     GUISpawnerMain("Mob Spawner GUI", 18,
-            createClickableItem2(0, itemWrapperGUIItems(Material.GOLD_BLOCK, 1, "Change spawner Tier", "", "§4Values range between 1 and 5"), (player, event) -> {
+            createClickableItem(0, genericItemTemplate(Material.GOLD_BLOCK, 1, "Change spawner Tier", "", "§4Values range between 1 and 5"), (player, event) -> {
                 changeTierOpenGUI(player);
                 getServer().getConsoleSender().sendMessage("[debug] change tier open gui");
                 event.setCancelled(true);
             }),
-            createClickableItem2(1,itemWrapperGUIItems(Material.ZOMBIE_HEAD, 1, "Chose mob to spawn", ""), (player, event) -> {
+            createClickableItem(1, genericItemTemplate(Material.ZOMBIE_HEAD, 1, "Chose mob to spawn", ""), (player, event) -> {
                 changeMobTypeOpenGUI(player);
                 event.setCancelled(true);
             }),
-            createClickableItem2(2, itemWrapperGUIItems(Material.GOLD_BLOCK, 1, "Change respawn rate", ""), (player, event) -> {
+            createClickableItem(2, genericItemTemplate(Material.GOLD_BLOCK, 1, "Change respawn rate", ""), (player, event) -> {
                 changeRespawnRateOpenGUIPage1(player);
                 event.setCancelled(true);
             }),
-            createClickableItem2(3, itemWrapperGUIItems(Material.GOLD_BLOCK, 64, "Change max amount of mobs", ""), (player, event) -> {
+            createClickableItem(3, genericItemTemplate(Material.GOLD_BLOCK, 64, "Change max amount of mobs", ""), (player, event) -> {
                 changeMaxAmountOfMobsOpenGui(player);
                 event.setCancelled(true);
             }),
-            createClickableItem2(4, itemWrapperGUIItems(Material.GOLD_BLOCK, 1, "Change spawn radius", ""), (player, event) -> {
+            createClickableItem(4, genericItemTemplate(Material.GOLD_BLOCK, 1, "Change spawn radius", ""), (player, event) -> {
                 changeSpawnerRadiusOpenGUI(player);
                 event.setCancelled(true);
             })
@@ -109,7 +108,7 @@ public enum GUIGenerator {
     private static ClickableItem createClickableItem(int itemPosition, Material material, BiConsumer<Player, InventoryClickEvent> clickAction) {
         return new ClickableItem(itemPosition, new ItemStack(material), clickAction);
     }
-    private static ClickableItem createClickableItem2(int itemPosition, ItemStack itemStack, BiConsumer<Player, InventoryClickEvent> clickAction) {
+    private static ClickableItem createClickableItem(int itemPosition, ItemStack itemStack, BiConsumer<Player, InventoryClickEvent> clickAction) {
         return new ClickableItem(itemPosition,itemStack, clickAction);
     }
 

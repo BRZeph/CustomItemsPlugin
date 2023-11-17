@@ -23,14 +23,15 @@ public class PlayerRegister implements Listener {
         playerData.setFloat("baseHealth", 50F);
         playerData.setFloat("bonusHealth", 0F);
         playerData.setFloat("currentMaxHealth", 50F);
-        playerData.setFloat("currentHP", 50F);
+        playerData.setFloat("currentHP", 0F);
         playerData.setInteger("baseDamage", 0);
+        playerData.setInteger("baseHPS", 10);
         playerData.setInteger("baseArmor", 5);
         playerData.setInteger("baseDPS", 5);
         playerData.setBoolean("onCombat", false);
         playerData.setInteger("baseCombatTimer", 10); //int in seconds
         nbtEntity.mergeCompound(playerData);
-        updatingPlayerMaxHealth(player);
+        updatingPlayerMaxHealth(player, true);
         setPlayerHPToXPBar(player);
         if (PlayerHealthRegeneration.playerHealthRegenTickCount.get(player) != null) {
             PlayerHealthRegeneration.playerHealthRegenTickCount.remove(player);

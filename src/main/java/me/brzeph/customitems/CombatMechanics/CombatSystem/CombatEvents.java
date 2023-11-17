@@ -17,6 +17,9 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.util.Vector;
 
+import static me.brzeph.customitems.CombatMechanics.CustomCombatItems.GeneratingCombatItems.CalculatingRarity.randomRarityInt;
+import static me.brzeph.customitems.CombatMechanics.CustomCombatItems.GeneratingCombatItems.CreateTXArmor.*;
+import static me.brzeph.customitems.CombatMechanics.CustomCombatItems.GeneratingCombatItems.CreateTXWeapon.*;
 import static me.brzeph.customitems.CombatMechanics.CustomCombatItems.UpdatingArmorLore.upgradingArmorLore;
 import static me.brzeph.customitems.CombatMechanics.CombatSystem.SetPlayerHPToXPBar.setPlayerHPToXPBar;
 import static me.brzeph.customitems.CombatMechanics.CustomMobs.SpawnerFunctionality.getRandomValue;
@@ -35,7 +38,20 @@ public class CombatEvents implements Listener {
         event.setDroppedExp(0);
         event.getDrops().clear();
         int mobTier = nbtEntity.getPersistentDataContainer().getInteger("mobTier");
-        event.getDrops().add(upgradingArmorLore(CreateTXArmor.createTXBoots(mobTier, mobLevel)));
+
+        int dropChance = 100/mobTier;
+        int dropRoll = getRandomValue(100, 1);
+        if (dropRoll < dropChance){
+            int droppedItem = getRandomValue(17,1);
+            if (droppedItem == 1){event.getDrops().add(createTXWeaponAxe(mobTier));}
+            if (droppedItem == 2){event.getDrops().add(createTXWeaponSword(mobTier));}
+            if (droppedItem == 3){event.getDrops().add(createTXWeaponHoe(mobTier));}
+            if (droppedItem == 4){event.getDrops().add(createTXWeaponShovel(mobTier));}
+            if (droppedItem > 4 && droppedItem <= 7){event.getDrops().add(upgradingArmorLore(createTXHelmet(mobTier, mobLevel)));}
+            if (droppedItem > 8 && droppedItem <= 11){event.getDrops().add(upgradingArmorLore(createTXChestPlate(mobTier, mobLevel)));}
+            if (droppedItem > 11 && droppedItem <= 14){event.getDrops().add(upgradingArmorLore(createTXLeggings(mobTier, mobLevel)));}
+            if (droppedItem > 14 && droppedItem <= 17){event.getDrops().add(upgradingArmorLore(createTXBoots(mobTier, mobLevel)));}
+        }
     }
     private void applyCustomKnockback(Player player, Entity target) {
         Vector yAxisModifier;
@@ -93,8 +109,10 @@ public class CombatEvents implements Listener {
             nbtEntity1.getPersistentDataContainer().setInteger("CombatTimer", nbtEntity1.getPersistentDataContainer().getInteger("baseCombatTimer")); //int in seconds
             nbtEntity1.getPersistentDataContainer().setBoolean("onCombat", true);
 
+
             PlayerCombatTime.playerCombatTickCount.put(player, nbtEntity1.getPersistentDataContainer().getInteger("baseCombatTimer"));
 //TODO: implement the situation of PVP
+
             double ratio = (double) HPAfterHit /maxHP;
             int barLength = 40;
             int greenBlocks = (int) (barLength*ratio);

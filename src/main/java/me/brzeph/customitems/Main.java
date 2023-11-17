@@ -7,6 +7,7 @@ package me.brzeph.customitems;
 import me.brzeph.customitems.CombatMechanics.CombatSystem.CombatEvents;
 import me.brzeph.customitems.CombatMechanics.CombatSystem.PlayerCombatTime;
 import me.brzeph.customitems.CombatMechanics.CombatSystem.PlayerHealthRegeneration;
+import me.brzeph.customitems.CombatMechanics.ReWritingVanillaDamageCode;
 import me.brzeph.customitems.Commands.*;
 import me.brzeph.customitems.CombatMechanics.CustomMobs.*;
 import me.brzeph.customitems.CombatMechanics.CustomMobs.GUI.*;
@@ -53,12 +54,13 @@ public final class Main extends JavaPlugin{
         getServer().getPluginManager().registerEvents(new CombatEvents(), this);
         getServer().getPluginManager().registerEvents(new PlayerCombatTime(), this);
         getServer().getPluginManager().registerEvents(new PlayerHealthRegeneration(), this);
+        getServer().getPluginManager().registerEvents(new ReWritingVanillaDamageCode(), this);
         getServer().getPluginManager().registerEvents(new GUIEventsHandler(this), this);
 
 
         world = Bukkit.getWorld("world");
 
-        String[] commands = {"nbtTags", "nbtplayer", "nbt", "t1pick", "t2pick", "t3pick", "t4pick", "t5pick", "pick"};
+        String[] commands = {"nbt", "nbtTags", "nbtplayer", "nbtArmor", "nbtSpawner", "nbtPick", "nbtWeapon","t1pick", "t2pick", "t3pick", "t4pick", "t5pick", "pick"};
         for (String command : commands) {
             this.getCommand(command).setExecutor(new Commands());
         }
