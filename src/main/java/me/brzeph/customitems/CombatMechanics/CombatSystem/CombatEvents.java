@@ -134,6 +134,7 @@ public class CombatEvents implements Listener {
                 player.sendMessage("");
                 player.sendMessage("");
             }
+
             int damageFromWeapon;
             if (player.getEquipment().getItemInMainHand().isEmpty()){
                 damageFromWeapon = 1;
