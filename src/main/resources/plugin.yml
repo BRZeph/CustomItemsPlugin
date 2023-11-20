@@ -1,0 +1,209 @@
+name: CustomItems
+version: '${project.version}'
+main: me.brzeph.customitems.Main
+api-version: '1.20'
+depend: [NBTAPI]
+
+commands:
+  orb:
+    description: debug
+    usage: /<command>
+  nbt:
+    description: used to change the nbt tags of the item
+    usage: /<command>
+  nbtWeapon:
+    description: gives the tags of the weapon
+    usage: /<command>
+  nbtSpawner:
+    description: gives the tags of the spawner
+    usage: /<command>
+  nbtPick:
+    description: gives the tags of the pick
+    usage: /<command>
+  nbtArmor:
+    description: gives the tags of the armor
+    usage: /<command>
+
+  spawnergui:
+    description: abre o role la mano fds
+    usage: /<command>
+
+  test:
+    description: test
+    usage: /<command>
+
+
+  heal:
+    description: heals the player
+    usage: /<command>
+  spawner:
+    description: gives the player a spawner
+    usage: /<command>
+
+  nbtplayer:
+    description: gives the tags of the player
+    usage: /<command>
+
+  skilltrainer:
+    description: opens the skilltrainer GUI
+    usage: /<command>
+
+  t1axe:
+    description: gives the player a t1 axe
+    usage: /<command>
+  t2axe:
+    description: gives the player a t2 axe
+    usage: /<command>
+  t3axe:
+    description: gives the player a t3 axe
+    usage: /<command>
+  t4axe:
+    description: gives the player a t4 axe
+    usage: /<command>
+  t5axe:
+    description: gives the player a t5 axe
+    usage: /<command>
+  t1sword:
+    description: gives the player a t1 sword
+    usage: /<command>
+  t2sword:
+    description: gives the player a t2 sword
+    usage: /<command>
+  t3sword:
+    description: gives the player a t3 sword
+    usage: /<command>
+  t4sword:
+    description: gives the player a t4 sword
+    usage: /<command>
+  t5sword:
+    description: gives the player a t5 sword
+    usage: /<command>
+  t1shovel:
+    description: gives the player a t1 shovel
+    usage: /<command>
+  t2shovel:
+    description: gives the player a t2 shovel
+    usage: /<command>
+  t3shovel:
+    description: gives the player a t3 shovel
+    usage: /<command>
+  t4shovel:
+    description: gives the player a t4 shovel
+    usage: /<command>
+  t5shovel:
+    description: gives the player a t5 shovel
+    usage: /<command>
+  t1hoe:
+    description: gives the player a t1 hoe
+    usage: /<command>
+  t2hoe:
+    description: gives the player a t2 hoe
+    usage: /<command>
+  t3hoe:
+    description: gives the player a t3 hoe
+    usage: /<command>
+  t4hoe:
+    description: gives the player a t4 hoe
+    usage: /<command>
+  t5hoe:
+    description: gives the player a t5 hoe
+    usage: /<command>
+
+  t1armor:
+    description: gives the player a full set of t1 armor
+    usage: /<command>
+  t2armor:
+    description: gives the player a full set of t2 armor
+    usage: /<command>
+  t3armor:
+    description: gives the player a full set of t3 armor
+    usage: /<command>
+  t4armor:
+    description: gives the player a full set of t4 armor
+    usage: /<command>
+  t5armor:
+    description: gives the player a full set of t5 armor
+    usage: /<command>
+
+  t1helmet:
+    description: gives the player a t1 helmet
+    usage: /<command>
+  t2helmet:
+    description: gives the player a t2 helmet
+    usage: /<command>
+  t3helmet:
+    description: gives the player a t3 helmet
+    usage: /<command>
+  t4helmet:
+    description: gives the player a t4 helmet
+    usage: /<command>
+  t5helmet:
+    description: gives the player a t5 helmet
+    usage: /<command>
+
+  t1chestplate:
+    description: gives the player a t1 chestplate
+    usage: /<command>
+  t2chestplate:
+    description: gives the player a t2 chestplate
+    usage: /<command>
+  t3chestplate:
+    description: gives the player a t3 chestplate
+    usage: /<command>
+  t4chestplate:
+    description: gives the player a t4 chestplate
+    usage: /<command>
+  t5chestplate:
+    description: gives the player a t5 chestplate
+    usage: /<command>
+
+  t1leggings:
+    description: gives the player a t1 leggings
+    usage: /<command>
+  t2leggings:
+    description: gives the player a t2 leggings
+    usage: /<command>
+  t3leggings:
+    description: gives the player a t3 leggings
+    usage: /<command>
+  t4leggings:
+    description: gives the player a t4 leggings
+    usage: /<command>
+  t5leggings:
+    description: gives the player a t5 leggings
+    usage: /<command>
+
+  t1boots:
+    description: gives the player a t1 boots
+    usage: /<command>
+  t2boots:
+    description: gives the player a t2 boots
+    usage: /<command>
+  t3boots:
+    description: gives the player a t3 boots
+    usage: /<command>
+  t4boots:
+    description: gives the player a t4 boots
+    usage: /<command>
+  t5boots:
+    description: gives the player a t5 boots
+    usage: /<command>
+
+  pick:
+    description: gives the player all custom picks
+    usage: /<command>
+  t1pick:
+    description: gives the player a t1 custom pick
+    usage: /<command>
+  t2pick:
+    description: gives the player a t2 custom pick
+    usage: /<command>
+  t3pick:
+    description: gives the player a t3 custom pick
+    usage: /<command>
+  t4pick:
+    description: gives the player a t4 custom pick
+    usage: /<command>
+  t5pick:
+    description: gives the player a t5 custom pick
+    usage: /<command>
