@@ -152,8 +152,6 @@ public enum CustomMobsListEnum2 {
     public float getMobHPLevelMultiplier(){
         int level = getMobLevel();
         int baseTierLevel = 20*(getTier()-1);
-        getServer().getConsoleSender().sendMessage("[DEBUG]: mob level " + level);
-        getServer().getConsoleSender().sendMessage("[DEBUG]: base tier level " + baseTierLevel);
         if (level >= baseTierLevel + 20 || level < baseTierLevel){throw new RuntimeException("Illegal level compared to tier");}
         float levelHPMultiplier = 1;
         float i;
@@ -178,6 +176,11 @@ public enum CustomMobsListEnum2 {
             inv.setLeggingsDropChance(0F);
             inv.setBootsDropChance(0F);
             inv.setItemInMainHandDropChance(0F);
+            int helmetArmor = new NBTItem(inv.getHelmet()).getInteger("bonusArmor");
+            int chestplateArmor = new NBTItem(inv.getChestplate()).getInteger("bonusArmor");
+            int leggingsArmor = new NBTItem(inv.getLeggings()).getInteger("bonusArmor");
+            int bootsArmor = new NBTItem(inv.getBoots()).getInteger("bonusArmor");
+            int totalArmor = helmetArmor + chestplateArmor + leggingsArmor + bootsArmor;
 
             // Check if it's a baby version and rerun the loop if it is
             if (babyVersion){
@@ -191,6 +194,7 @@ public enum CustomMobsListEnum2 {
                     NBTCompound entityData = nbtEntity.getPersistentDataContainer();
                     entityData.setInteger("maxHP", returnEntityMaxHP(entity));
                     entityData.setInteger("currentHP", returnEntityMaxHP(entity));
+                    entityData.setInteger("totalArmor", totalArmor);
                     entityData.setInteger("mobTier", tier);
                     entityData.setInteger("mobLevel", mobLevel);
                     entityData.setBoolean("sunlightResistant", true);
@@ -198,7 +202,7 @@ public enum CustomMobsListEnum2 {
 
                     return entity;
                 } else {
-                    entity.remove(); // Remove the entity if it's a baby version
+                    entity.remove();
                 }
             } else if (!isBabyVersion(returnMobTypeToEntityType(getMobType()), entity)) {
                 entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20);
@@ -210,6 +214,7 @@ public enum CustomMobsListEnum2 {
                 NBTCompound entityData = nbtEntity.getPersistentDataContainer();
                 entityData.setInteger("maxHP", returnEntityMaxHP(entity));
                 entityData.setInteger("currentHP", returnEntityMaxHP(entity));
+                entityData.setInteger("totalArmor", totalArmor);
                 entityData.setInteger("mobTier", tier);
                 entityData.setInteger("mobLevel", mobLevel);
                 entityData.setBoolean("sunlightResistant", true);
@@ -217,7 +222,7 @@ public enum CustomMobsListEnum2 {
 
                 return entity;
             } else {
-                entity.remove(); // Remove the entity if it's a baby version
+                entity.remove();
             }
         }
     }

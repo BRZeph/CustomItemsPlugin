@@ -22,6 +22,7 @@ import static me.brzeph.customitems.CombatMechanics.CustomMobs.GUI.ChangeMobType
 import static me.brzeph.customitems.CombatMechanics.CustomMobs.GUI.ChangeRespawnRateGUI.changeRespawnRateOpenGUIPage1;
 import static me.brzeph.customitems.CombatMechanics.CustomMobs.GUI.ChangeSpawnRadiusGUI.changeSpawnerRadiusOpenGUI;
 import static me.brzeph.customitems.CombatMechanics.CustomMobs.GUI.ChangeTierGUI.changeTierOpenGUI;
+import static me.brzeph.customitems.ItemWrapper.genericItemTemplate;
 import static me.brzeph.customitems.Utils.Utils.getBlockNBTTagsBoolean;
 import static me.brzeph.customitems.Utils.Utils.setBlockNBTTags;
 
@@ -34,11 +35,16 @@ public class SpawnerGUI implements Listener {
         inventory.setItem(2, changeRespawnRate());           //working
         inventory.setItem(3, changeMaxAmountOfMobs());       //working
         inventory.setItem(4, changeSpawnRadius());           //working
+        inventory.setItem(5, changeMobRangeLimit());           //working
         inventory.setItem(7, spawnerInfo(player));           //working
         inventory.setItem(8, deleteCurrentSpawnerData());    //working
         inventory.setItem(16, registerSpawner());            //working
         inventory.setItem(17, unRegisterSpawner());          //working
         player.openInventory(inventory);
+    }
+
+    private static ItemStack changeMobRangeLimit() {
+        return genericItemTemplate(Material.ARROW, 1, "mudar rage", "salve");
     }
 
     private static ItemStack deleteCurrentSpawnerData() {

@@ -1,5 +1,6 @@
 package me.brzeph.customitems.CombatMechanics.CombatSystem;
 
+import de.tr7zw.nbtapi.NBT;
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTEntity;
 import de.tr7zw.nbtapi.NBTItem;
@@ -27,6 +28,7 @@ import static me.brzeph.customitems.CombatMechanics.CustomCombatItems.UpgradingA
 import static me.brzeph.customitems.CombatMechanics.CombatSystem.SetPlayerHPToXPBar.setPlayerHPToXPBar;
 import static me.brzeph.customitems.CombatMechanics.CustomMobs.SpawnerFunctionality.randomOffset;
 import static me.brzeph.customitems.Utils.Utils.getRandomValue;
+import static org.bukkit.Bukkit.getServer;
 import static org.bukkit.Sound.*;
 
 public class CombatEvents implements Listener {
@@ -134,19 +136,76 @@ public class CombatEvents implements Listener {
                 player.sendMessage("");
                 player.sendMessage("");
             }
-
-            int damageFromWeapon;
+            float damageFromWeapon;
+            float fireDMG, iceDMG, pureDMG, poisonDMG, VSMonster;
+            boolean BFireDMG, BIceDMG, BPureDMG, BPoison, criticalHit;
+            int lifeSteal = 0;
+            boolean BlifeSteal = false;
             if (player.getEquipment().getItemInMainHand().isEmpty()){
                 damageFromWeapon = 1;
+                fireDMG = 0;
+                iceDMG = 0;
+                pureDMG = 0;
+                poisonDMG = 0;
             } else {
-                NBTItem nbtItemPlayer = new NBTItem(player.getItemInHand());
-                damageFromWeapon = getRandomValue(nbtItemPlayer.getInteger("maxDamage"), nbtItemPlayer.getInteger("minDamage"));
+                NBTItem nbtItem = new NBTItem(player.getEquipment().getItemInMainHand());
+                fireDMG = nbtItem.getInteger("Fire");
+                iceDMG = nbtItem.getInteger("Ice");
+                pureDMG = nbtItem.getInteger("Pure");
+                poisonDMG = nbtItem.getInteger("Poison");
+                if (fireDMG > 0) BFireDMG = true;
+                if (iceDMG > 0) BIceDMG = true;
+                if (pureDMG > 0) BPureDMG = true;
+                if (poisonDMG > 0) BPoison = true;
+                damageFromWeapon = getRandomValue(nbtItem.getInteger("maxDamage"), nbtItem.getInteger("minDamage"));
+                VSMonster = nbtItem.getInteger("VSMonster");
+                damageFromWeapon = damageFromWeapon*(100 + VSMonster)/100;
+                int criticalHitChance = nbtItem.getInteger("CriticalHit");
+                if (getRandomValue(100, 1) <= criticalHitChance) {
+                    damageFromWeapon = 2* damageFromWeapon;
+                    criticalHit = true;
+                }
+                lifeSteal = nbtItem.getInteger("LifeSteal");
+                if (lifeSteal > 0){BlifeSteal = true;}
             }
             NBTEntity nbtEntity = new NBTEntity(entityHitted);
             int maxHP = nbtEntity.getPersistentDataContainer().getInteger("maxHP");
             int HPBeforeHit = nbtEntity.getPersistentDataContainer().getInteger("currentHP");
-            nbtEntity.getPersistentDataContainer().setInteger("currentHP", HPBeforeHit - damageFromWeapon);
-            int HPAfterHit = HPBeforeHit - damageFromWeapon;
+            int totalArmor = nbtEntity.getPersistentDataContainer().getInteger("totalArmor");
+            int elementalResistance = nbtEntity.getPersistentDataContainer().getInteger("elementalResistance");
+            if (damageFromWeapon != 1){
+                fireDMG = fireDMG*(100 - elementalResistance)/100;
+                iceDMG = iceDMG*(100 - elementalResistance)/100;
+                poisonDMG = poisonDMG*(100 - elementalResistance)/100;
+                damageFromWeapon = damageFromWeapon + fireDMG + iceDMG + poisonDMG;
+                damageFromWeapon = damageFromWeapon * (100-totalArmor)/100;
+                damageFromWeapon = damageFromWeapon + pureDMG; //pure goes through armor
+            }
+
+            int totalDamage = (int) (damageFromWeapon);
+            if (BlifeSteal) {
+                float playerLifeSteal = totalDamage * ((float)lifeSteal/100);
+                NBTEntity nbtEntityPlayer = new NBTEntity(player);
+                NBTCompound playerData = nbtEntityPlayer.getPersistentDataContainer();
+                float playerMaxHP = playerData.getFloat("currentMaxHealth");
+                float playerHPBeforeHit = playerData.getFloat("currentHP");
+                float HPAfterHit = playerHPBeforeHit + playerLifeSteal;
+                if (HPAfterHit > playerMaxHP){
+                    player.setHealth(20);
+                    playerData.setFloat("currentHP", playerMaxHP);
+                    player.sendMessage("+" + (int) playerLifeSteal + " HP recovered");
+                    player.sendMessage("[" + (int)playerMaxHP + "/" + (int)playerMaxHP + "]" + " HP");
+                } else {
+                    playerData.setFloat("currentHP", HPAfterHit);
+                    float newLife = 20 * HPAfterHit / playerMaxHP;
+                    player.setHealth(newLife);
+                    player.sendMessage("[" + (int)HPAfterHit + "/" + (int)playerMaxHP + "]" + " HP");
+                }
+                nbtEntityPlayer.mergeCompound(playerData);
+                setPlayerHPToXPBar(player);
+            }
+            nbtEntity.getPersistentDataContainer().setInteger("currentHP", HPBeforeHit - totalDamage);
+            int HPAfterHit = HPBeforeHit - totalDamage;
 
             NBTEntity nbtEntity1 = new NBTEntity(player);
             nbtEntity1.getPersistentDataContainer().setInteger("CombatTimer", nbtEntity1.getPersistentDataContainer().getInteger("baseCombatTimer")); //int in seconds
@@ -171,22 +230,22 @@ public class CombatEvents implements Listener {
             String nameWithoutHealth = name.split(" ♥ ")[0].trim();
             String[] parts = entityHitted.getName().split(" ♥ ");
             String wordsBeforeHeart = parts[0].trim();
-            if (HPBeforeHit > damageFromWeapon) {
-                player.sendMessage("§c" + damageFromWeapon + " DMG -> §f " + nameWithoutHealth + " [" + HPAfterHit + " HP]");
+            if (HPBeforeHit > totalDamage) {
+                player.sendMessage("§c" + totalDamage + " DMG -> §f " + nameWithoutHealth + " [" + HPAfterHit + " HP]");
                 entityHitted.setCustomName(" ♥ " + Main.getInstance().formatter.format(HPAfterHit) + "/" + maxHP + " ♥" + newLore);
             } else{
-                player.sendMessage("§c" + damageFromWeapon + " DMG -> §f " + wordsBeforeHeart + " [0 HP]");
+                player.sendMessage("§c" + totalDamage + " DMG -> §f " + wordsBeforeHeart + " [0 HP]");
                 LivingEntity livingEntity = (LivingEntity) entityHitted;
                 livingEntity.damage(50);
             }
             Location loc = entityHitted.getLocation().clone().add(randomOffset(), randomOffset(), randomOffset());
-            Main.getInstance().world.spawn(loc, ArmorStand.class, armorStand -> {
+            Main.getInstance().flatworld.spawn(loc, ArmorStand.class, armorStand -> {
                 armorStand.setMarker(true);
                 armorStand.setVisible(false);
                 armorStand.setGravity(false);
                 armorStand.setSmall(true);
                 armorStand.setCustomNameVisible(true);
-                armorStand.setCustomName("§c" + Main.getInstance().formatter.format(damageFromWeapon) + " DMG");
+                armorStand.setCustomName("§c" + Main.getInstance().formatter.format(totalDamage) + " DMG");
                 Main.getInstance().indicators.put(armorStand, 20 * 2); //armorStand will last 2 seconds
             });
 
@@ -235,11 +294,12 @@ public class CombatEvents implements Listener {
             if (HPAfterHit <= 0){
                 player.damage(50);
             } else {
-                player.damage(damageOnHealth);
+                player.setHealth(20*HPAfterHit/maxHP);
             }
             setPlayerHPToXPBar(player);
         }
     }
+
     @EventHandler
     public void onEntityDamage(EntityDamageEvent event) { //prevent sun burn
         if (event.getCause() != EntityDamageEvent.DamageCause.CUSTOM){

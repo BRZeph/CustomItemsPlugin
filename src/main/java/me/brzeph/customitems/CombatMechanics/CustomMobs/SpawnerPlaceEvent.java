@@ -26,6 +26,8 @@ public class SpawnerPlaceEvent implements Listener {
             int respawnRate = nbtItem.getInteger("respawnRate");
             int maxAmountOfMobs = nbtItem.getInteger("maxAmountOfMobs");
             int size = nbtItem.getInteger("size");
+            int mobRangeLimit = nbtItem.getInteger("mobRangeLimit");
+            int playerDistanceToSpawn = nbtItem.getInteger("playerDistanceToSpawn");
             boolean registeredSpawner = nbtItem.getBoolean("registered");
             UUID uuid = UUID.randomUUID();
             placedBlock.setType(Material.SPAWNER);
@@ -37,6 +39,8 @@ public class SpawnerPlaceEvent implements Listener {
                 nbt.setInteger("maxAmountOfMobs", maxAmountOfMobs);
                 nbt.setInteger("size", size);
                 nbt.setBoolean("registered", registeredSpawner);
+                nbt.setInteger("mobRangeLimit", mobRangeLimit);
+                nbt.setInteger("playerDistanceToSpawn", playerDistanceToSpawn);
                 nbt.setUUID("randomID", uuid);
             });
         }

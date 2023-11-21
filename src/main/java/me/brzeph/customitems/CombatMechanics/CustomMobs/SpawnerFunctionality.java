@@ -4,6 +4,7 @@ import de.tr7zw.nbtapi.*;
 import me.brzeph.customitems.CombatMechanics.CombatSystem.CustomMobsListEnum2;
 import me.brzeph.customitems.Main;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -15,17 +16,23 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.*;
 
 import static me.brzeph.customitems.Utils.Utils.getRandomValue;
+import static org.bukkit.Bukkit.getServer;
 
 public class SpawnerFunctionality implements Listener {
-    public static SpawnerFunctionality getInstance() {return instance;}
-    public static SpawnerFunctionality instance;
+    public static synchronized SpawnerFunctionality getInstance() {
+        if (instance == null) {
+            instance = new SpawnerFunctionality();
+        }
+        return instance;
+    }
+    public static SpawnerFunctionality instance = new SpawnerFunctionality();
     public Map<Location, Set<Entity>> entitiesMap = new HashMap<>();
     public Map<Location, Integer> tickCount = new HashMap<>();
     public HashMap<Location, Block> spawnerList = new HashMap<>();
     public void registerSpawner(Block spawner){
         spawnerList.put(spawner.getLocation(), spawner);
         entitiesMap.put(spawner.getLocation(), new HashSet<>());
-        tickCount.put(spawner.getLocation(), 1);
+        tickCount.put(spawner.getLocation(), 1000);
     }
     public void unRegisterSpawner(Block block) {
         spawnerList.remove(block.getLocation(), block);
@@ -42,49 +49,87 @@ public class SpawnerFunctionality implements Listener {
                     int respawnRate = nbtTileEntity.getPersistentDataContainer().getInteger("respawnRate");
                     int mobCap = nbtTileEntity.getPersistentDataContainer().getInteger("maxAmountOfMobs");
                     int size = nbtTileEntity.getPersistentDataContainer().getInteger("size");
+                    int mobRangeLimit = nbtTileEntity.getPersistentDataContainer().getInteger("mobRangeLimit");
+                    int playerDistanceToSpawn = nbtTileEntity.getPersistentDataContainer().getInteger("playerDistanceToSpawn");
                     UUID uuid = nbtTileEntity.getPersistentDataContainer().getUUID("randomID");
+                    boolean playerNearby = false;
+                    List<Entity> nearbyEntities = new ArrayList<>(spawnerLocation.getWorld().getNearbyLivingEntities(spawnerLocation, playerDistanceToSpawn, 4, playerDistanceToSpawn));
 
-                    List<Entity> deadEntities = new ArrayList<>();
                     for (Entity entity : spawned) {
-                        if (!entity.isValid() || entity.isDead()) {
-                            deadEntities.add(entity);
+                        NBTEntity nbtEntity = new NBTEntity(entity);
+                        World flatworld = entity.getWorld();
+                        int XPos = nbtEntity.getPersistentDataContainer().getInteger("XPos");
+                        int YPos = nbtEntity.getPersistentDataContainer().getInteger("YPos");
+                        int ZPos = nbtEntity.getPersistentDataContainer().getInteger("ZPos");
+                        Location mobLocation = entity.getLocation();
+                        Location spawnerLocationFromMob = new Location(flatworld, XPos, YPos, ZPos);
+                        double distance = mobLocation.distance(spawnerLocationFromMob);
+                        if (distance >= mobRangeLimit) {
+                            entity.teleport(spawnerLocationFromMob.add(size*randomOffset(), 0, size*randomOffset()));
                         }
                     }
-                    deadEntities.forEach(spawned::remove);
-                    int missingMobs = mobCap - spawned.size();
-                    if (missingMobs <= 0) continue;
+                    for (Entity entity: nearbyEntities){
+                        if (entity instanceof Player) {
+                            playerNearby = true;
+                            break;
+                        }
+                    }
+                    if (playerNearby) {
+                        List<Entity> deadEntities = new ArrayList<>();
+                        for (Entity entity : spawned) {
+                            if (!entity.isValid() || entity.isDead()) {
+                                deadEntities.add(entity);
+                            }
+                        }
+                        deadEntities.forEach(spawned::remove);
+                        int missingMobs = mobCap - spawned.size();
+                        if (missingMobs <= 0) continue;
+                        if (tickCount.get(spawnerLocation) >= respawnRate) {
+                            tickCount.put(spawnerLocation, 1);
 
-                    if (tickCount.get(spawnerLocation) >= respawnRate){
-                        tickCount.put(spawnerLocation, 1);
+                            int count = 0;
 
-                        int count = 0;
+                            while (count < missingMobs) {
+                                count++;
+                                int randomX = (int) (getRandomWithNegative(size) + spawnerLocation.getX());
+                                int randomZ = (int) (getRandomWithNegative(size) + spawnerLocation.getZ());
+                                Block block = Main.getInstance().flatworld.getHighestBlockAt(randomX, randomZ);
+                                double xOffset = randomOffset();
+                                double zOffset = randomOffset();
+                                Location location1 = block.getLocation().clone().add(xOffset, 1, zOffset);
+                                if (!isSpawnable(location1)) continue;
 
-                        while (count < missingMobs) {
-                            count++;
-                            int randomX = (int) (getRandomWithNegative(size) + spawnerLocation.getX());
-                            int randomZ = (int) (getRandomWithNegative(size) + spawnerLocation.getZ());
-                            Block block = Main.getInstance().world.getHighestBlockAt(randomX, randomZ);
-                            double xOffset = randomOffset();
-                            double zOffset = randomOffset();
-                            Location location1 = block.getLocation().clone().add(xOffset, 1, zOffset);
-                            if (!isSpawnable(location1)) continue;
+                                CustomMobsListEnum2 checkForFail = choseMobToSpawn(spawnerLocation.getBlock());
+                                if (checkForFail == null) {
+                                    throw new IllegalStateException("Could not find a mob.");
+                                } else {
+                                    Entity spawnedEntity = checkForFail.spawnWithRandomStats(location1);
+                                    NBT.modifyPersistentData(spawnedEntity, nbt -> {
+                                        nbt.setUUID("randomID", uuid);
+                                        nbt.setString("customMob", "yes");
+                                        nbt.setInteger("XPos", spawnerLocation.getBlockX());
+                                        nbt.setInteger("YPos", spawnerLocation.getBlockY());
+                                        nbt.setInteger("ZPos", spawnerLocation.getBlockZ());
+                                    });
+                                    spawned.add(spawnedEntity);
 
-                            CustomMobsListEnum2 checkForFail = choseMobToSpawn(spawnerLocation.getBlock());
-                            if (checkForFail == null) {
-                                throw new IllegalStateException("Could not find a mob.");
+                                    if (spawned.size() >= mobCap) break;
+                                }
+                            }
+                        } else {
+                            if (tickCount.get(spawnerLocation) > respawnRate){
+                                tickCount.put(spawnerLocation, respawnRate + 1);
+
                             } else {
-                                Entity spawnedEntity = checkForFail.spawnWithRandomStats(location1);
-                                NBT.modifyPersistentData(spawnedEntity, nbt -> {
-                                    nbt.setUUID("randomID", uuid);
-                                    nbt.setString("customMob", "yes");
-                                });
-                                spawned.add(spawnedEntity);
-
-                                if (spawned.size() >= mobCap) break;
+                                tickCount.put(spawnerLocation, tickCount.get(spawnerLocation) + 1);
                             }
                         }
                     } else {
-                        tickCount.put(spawnerLocation, tickCount.get(spawnerLocation) + 1);
+                        if (tickCount.get(spawnerLocation) > respawnRate){
+                            tickCount.put(spawnerLocation, respawnRate + 1);
+                        } else {
+                            tickCount.put(spawnerLocation, tickCount.get(spawnerLocation) + 1);
+                        }
                     }
                 }
             }
@@ -141,5 +186,8 @@ public class SpawnerFunctionality implements Listener {
     @EventHandler
     public void onServerStart(ServerLoadEvent event){
         spawnMobs();
+        for (Location location : Main.getInstance().loadedLocations) {
+            registerSpawner(location.getBlock());
+        }
     }
 }

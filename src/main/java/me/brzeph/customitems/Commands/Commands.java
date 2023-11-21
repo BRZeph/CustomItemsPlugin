@@ -42,7 +42,8 @@ public class Commands implements CommandExecutor {
                         "mobType",
                         "respawnRate",
                         "maxAmountOfMobs",
-                        "size"
+                        "size",
+                        "mobRangeLimit"
                 };
                 StringBuilder nbtTags = new StringBuilder();
                 for (String key : desiredOrderPickaxe) {

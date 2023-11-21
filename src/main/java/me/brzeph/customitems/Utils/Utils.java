@@ -20,7 +20,6 @@ public class Utils {
     }
 
 
-
     public static void setBlockNBTTags(Block block, String[] keys, int[] values) {
         for (int i = 0; i < keys.length; i++) {
             int finalI = i;

@@ -29,20 +29,16 @@ public class GeneratingWeaponOrb {
         int enchantmentMultiplicityRoll = getRandomValue(100, 1);
         int enchantmentMultiplicityDifficulty = 10;
         boolean increaseDifficulty = true;
-        getServer().getConsoleSender().sendMessage("[DEBUG] enchantment multiplicity roll value " + enchantmentMultiplicityRoll);
 
         outerLoop: while (enchantmentMultiplicityRoll > enchantmentMultiplicityDifficulty) {
             if (increaseDifficulty) {
                 enchantmentMultiplicityDifficulty *= 2;
             }
-            getServer().getConsoleSender().sendMessage("[DEBUG] enchantment multiplicity difficulty " + enchantmentMultiplicityDifficulty);
             increaseDifficulty = false;
             String newEnchantment = rollEnchantment();
-            getServer().getConsoleSender().sendMessage("[DEBUG] rolled enchantment " + newEnchantment);
 
             for (String enchantmentToBeAdded : enchantmentsToBeAdded) {
                 if (enchantmentToBeAdded.equals(newEnchantment)){
-                    getServer().getConsoleSender().sendMessage("[DEBUG] removed duplicated enchant " + newEnchantment);
                     continue outerLoop;
                 }
             } //prevents repeating enchants
@@ -54,7 +50,6 @@ public class GeneratingWeaponOrb {
                     if (enchantmentToBeAdded.equals(ChanceFire.name()) || enchantmentToBeAdded.equals(ChanceIce.name()) || //checks for double elemental
                             enchantmentToBeAdded.equals(ChancePoison.name()) || enchantmentToBeAdded.equals(ChancePure.name())) {
                         if (!(newEnchantment.equals(ChancePure.name()) && new NBTItem(itemStack).getBoolean("doubleElemental"))) {
-                            getServer().getConsoleSender().sendMessage("[DEBUG] skipping elemental enchantment due to already having elemental");
                             continue outerLoop;
                         }
                     }
@@ -63,7 +58,6 @@ public class GeneratingWeaponOrb {
             if (newEnchantment.equals(ChanceVSPlayer.name())) {
                 for (String enchantmentToBeAdded : enchantmentsToBeAdded) {
                     if (enchantmentToBeAdded.equals(ChanceVSMonster.name())) {
-                        getServer().getConsoleSender().sendMessage("[DEBUG] skipping VSPlayer enchantment due to already having VSMonster");
                         continue outerLoop;
                     }
                 }
@@ -71,7 +65,6 @@ public class GeneratingWeaponOrb {
             if (newEnchantment.equals(ChanceVSMonster.name())) {
                 for (String enchantmentToBeAdded : enchantmentsToBeAdded) {
                     if (enchantmentToBeAdded.equals(ChanceVSPlayer.name())) {
-                        getServer().getConsoleSender().sendMessage("[DEBUG] skipping VSMonster enchantment due to already having VSPlayer");
                         continue outerLoop;
                     }
                 }

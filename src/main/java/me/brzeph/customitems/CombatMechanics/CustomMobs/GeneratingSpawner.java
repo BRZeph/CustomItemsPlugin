@@ -25,6 +25,8 @@ public class GeneratingSpawner {
         int mobCap = 5;
         int mobType = 1; //mobType{1,2,...} == {zombie,skeleton,...}
         int size = 3;
+        int mobRangeLimit = 20;
+        int playerDistanceToSpawn = 10;
 
         nbtItem.setInteger("customBlock", 1);
         nbtItem.setInteger("tier", tier);
@@ -32,6 +34,8 @@ public class GeneratingSpawner {
         nbtItem.setInteger("respawnRate", respawnRate);
         nbtItem.setInteger("maxAmountOfMobs", mobCap);
         nbtItem.setInteger("size", size);
+        nbtItem.setInteger("mobRangeLimit", mobRangeLimit);
+        nbtItem.setInteger("playerDistanceToSpawn", playerDistanceToSpawn);
         nbtItem.setBoolean("registered", false);
         return nbtItem.getItem();
     }

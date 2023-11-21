@@ -4,6 +4,7 @@ package me.brzeph.customitems;
 // TODO: consider creating a method that automatically updates the player vanilla HP based on the NBTTags of currentHealth and maxHP
 // TODO: create method that sets the player level to the player hp
 
+import de.tr7zw.nbtapi.NBTEntity;
 import me.brzeph.customitems.CombatMechanics.CombatSystem.CombatEvents;
 import me.brzeph.customitems.CombatMechanics.CombatSystem.PlayerCombatTime;
 import me.brzeph.customitems.CombatMechanics.CombatSystem.PlayerHealthRegeneration;
@@ -16,24 +17,33 @@ import me.brzeph.customitems.MiningMechanics.MiningEvents.MiningEvents;
 import me.brzeph.customitems.Events.OnJoinEvents.PlayerRegister;
 import me.brzeph.customitems.CombatMechanics.OnArmorEquip;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.io.*;
 import java.text.DecimalFormat;
 import java.util.*;
 
 public final class Main extends JavaPlugin{
-    public World world;
+    private File dataFile;
+    private Properties properties;
+    public World flatworld;
     public DecimalFormat formatter = new DecimalFormat("#.##");
     public Map<Entity, Integer> indicators = new HashMap<>();
+
     private static Main instance;
     public static Main getInstance() {return instance;}
     @Override
     public void onEnable() {
         // Plugin startup logic
-        getServer().getConsoleSender().sendMessage("[CustomItems] plugin is now active");
+        dataFile = new File("D:\\coding\\ExternalServerFiles", "locations.properties");
+        properties = new Properties();
+        loadLocations();
 
         getServer().getPluginManager().registerEvents(new MiningEvents(), this);
         getServer().getPluginManager().registerEvents(new PlayerRegister(), this);
@@ -57,8 +67,7 @@ public final class Main extends JavaPlugin{
         getServer().getPluginManager().registerEvents(new ReWritingVanillaDamageCode(), this);
         getServer().getPluginManager().registerEvents(new GUIEventsHandler(this), this);
 
-
-        world = Bukkit.getWorld("world");
+        getLogger().info("Plugin enabled. Maps loaded.");
 
         String[] commands = {"nbt", "nbtplayer", "nbtArmor", "nbtSpawner", "nbtPick", "nbtWeapon","t1pick", "t2pick", "t3pick", "t4pick", "t5pick", "pick"};
         for (String command : commands) {
@@ -77,7 +86,7 @@ public final class Main extends JavaPlugin{
         this.getCommand("spawnergui").setExecutor(new NPCCommands());
         this.getCommand("orb").setExecutor(new NPCCommands());
 
-        instance = this;
+
         new BukkitRunnable() {
             Set<Entity> stands = indicators.keySet();
             List<Entity> removal = new ArrayList<>();
@@ -96,10 +105,85 @@ public final class Main extends JavaPlugin{
                 stands.removeAll(removal);
             }
         }.runTaskTimer(this, 0L, 1L);
+        flatworld = Bukkit.getWorld("flatworld");
+
+        instance = this;
     }
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        saveLocations();
+        killAllHostileMobs();
+        clearDroppedItems();
+    }
+    public List<Location> loadedLocations = new ArrayList<>();
+    private void loadLocations() {
+        try (InputStream input = new FileInputStream(dataFile)) {
+            properties.load(input);
+
+            for (String key : properties.stringPropertyNames()) {
+                String[] parts = properties.getProperty(key).split(",");
+                double x = Double.parseDouble(parts[0]);
+                double y = Double.parseDouble(parts[1]);
+                double z = Double.parseDouble(parts[2]);
+
+                loadedLocations.add(new Location(getServer().getWorld("flatworld"), x, y, z));
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private void saveLocations() {
+        // Assuming you have a list of locations to save
+        List<Location> locationsToSave = new ArrayList<>(SpawnerFunctionality.getInstance().spawnerList.keySet());
+
+        // Check if the file exists, create it if not
+        if (!dataFile.exists()) {
+            try {
+                dataFile.getParentFile().mkdirs(); // Create parent directories if they don't exist
+                dataFile.createNewFile(); // Create the file
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // Save the locations to the data file
+        try (OutputStream output = new FileOutputStream(dataFile)) {
+            for (int i = 0; i < locationsToSave.size(); i++) {
+                Location location = locationsToSave.get(i);
+                String key = "location" + i;
+                String value = location.getX() + "," + location.getY() + "," + location.getZ();
+                properties.setProperty(key, value);
+            }
+
+            properties.store(output, "Saved Locations");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private void killAllHostileMobs() {
+        for (World world : getServer().getWorlds()) {
+            for (Entity entity : world.getEntities()) {
+                if (entity instanceof LivingEntity && isHostileMob((LivingEntity) entity)) {
+                    ((LivingEntity) entity).setHealth(0); // Set health to 0 to "kill" the entity
+                }
+            }
+        }
+    }
+    private boolean isHostileMob(LivingEntity entity) {
+        if (new NBTEntity(entity).getPersistentDataContainer().getString("customMob").equals("yes")) {
+            return true;
+        }
+        return false;
+    }
+    private void clearDroppedItems() {
+        for (World world : getServer().getWorlds()) {
+            for (Entity entity : world.getEntities()) {
+                if (entity instanceof Item) {
+                    entity.remove();
+                }
+            }
+        }
     }
 }

@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.jetbrains.annotations.NotNull;
 
 import static me.brzeph.customitems.CombatMechanics.CombatSystem.SetPlayerHPToXPBar.setPlayerHPToXPBar;
@@ -17,6 +18,18 @@ public class PlayerRegister implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event){
+        Player player = event.getPlayer();
+        NBTEntity nbtEntity = new NBTEntity(player);
+        NBTCompound playerData = getNbtCompound(nbtEntity);
+        nbtEntity.mergeCompound(playerData);
+        updatingPlayerMaxHealth(player, true);
+        setPlayerHPToXPBar(player);
+        if (PlayerHealthRegeneration.playerHealthRegenTickCount.get(player) != null) {
+            PlayerHealthRegeneration.playerHealthRegenTickCount.remove(player);
+        }
+    }
+    @EventHandler
+    public void onPlayerRevive(PlayerRespawnEvent event){
         Player player = event.getPlayer();
         NBTEntity nbtEntity = new NBTEntity(player);
         NBTCompound playerData = getNbtCompound(nbtEntity);
