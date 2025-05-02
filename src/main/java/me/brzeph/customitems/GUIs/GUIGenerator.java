@@ -127,15 +127,14 @@ public enum GUIGenerator {
         String guiName = event.getView().getTitle();
 
         for (GUIGenerator generator : GUIGenerator.values()) {
-            if (guiName.equals(generator.getGuiName())) {
-                if (clickedItem != null) {
-                    for (ClickableItem item : generator.items) {
-                        if (item.isSimilar(clickedItem)) {
-                            item.handleClick(player, event);
-                            break;
-                        }
+            if (guiName.equals(generator.getGuiName()) && clickedItem != null) {
+                for (ClickableItem item : generator.items) {
+                    if (item.isSimilar(clickedItem)) {
+                        item.handleClick(player, event);
+                        break;
                     }
                 }
+
             }
         }
     }

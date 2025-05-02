@@ -11,7 +11,6 @@ import java.util.Random;
 
 import static me.brzeph.customitems.CombatMechanics.CustomCombatItems.ComatItemsEnums.WeaponEnchantments.*;
 import static me.brzeph.customitems.Utils.Utils.*;
-import static org.bukkit.Bukkit.getServer;
 
 public class GeneratingWeaponOrb {
     public static ItemStack orbWeapon(ItemStack itemStack) {

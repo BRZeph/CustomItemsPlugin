@@ -193,7 +193,7 @@ public class CombatEvents implements Listener {
                 if (HPAfterHit > playerMaxHP){
                     player.setHealth(20);
                     playerData.setFloat("currentHP", playerMaxHP);
-                    player.sendMessage("+" + (int) playerLifeSteal + " HP recovered");
+                    player.sendMessage("§a+" + (int) playerLifeSteal + " HP recovered");
                     player.sendMessage("[" + (int)playerMaxHP + "/" + (int)playerMaxHP + "]" + " HP");
                 } else {
                     playerData.setFloat("currentHP", HPAfterHit);

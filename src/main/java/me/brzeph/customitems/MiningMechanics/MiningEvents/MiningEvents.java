@@ -30,19 +30,30 @@ public class MiningEvents implements Listener {
         Player player = event.getPlayer();
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
         Block blockBroken = event.getBlock();
-
-        if (player.getGameMode() == GameMode.CREATIVE) {
-        } else {
+        if (player.getGameMode() != GameMode.CREATIVE) {
             Set<Material> validMaterials = new HashSet<>();
             validMaterials.add(Material.COAL_ORE);
             validMaterials.add(Material.EMERALD_ORE);
             validMaterials.add(Material.IRON_ORE);
             validMaterials.add(Material.DIAMOND_ORE);
             validMaterials.add(Material.GOLD_ORE);
-            if (validMaterials.contains(blockBroken.getType())) {
-                if (isCustomPickaxe(itemInHand)) {
-                    if (pickaxeCanBreakOre(itemInHand, blockBroken)) {
-                        if (didBlockBreak(itemInHand, blockBroken, player)) {
+            if (!validMaterials.contains(blockBroken.getType())) {
+                player.sendMessage("You can not break this block!");
+                event.setCancelled(true);
+            } else {
+                if (!isCustomPickaxe(itemInHand)) {
+                    player.sendMessage("You are not using a custom pickaxe!");
+                    event.setCancelled(true);//any custom item used to break a block different from pickaxes will not work
+                } else {
+                    if (!pickaxeCanBreakOre(itemInHand, blockBroken)) {
+                        player.sendMessage("Your pickaxe tier is not great enough to break this ore!");
+                        event.setCancelled(true);
+                    } else {
+                        if (!didBlockBreak(itemInHand, blockBroken, player)) {
+                            player.sendMessage("§cFailed to break the ore!");
+                            oreRespawnMechanic(blockBroken);
+                            event.setCancelled(true);
+                        } else {
                             event.setDropItems(false);
                             event.setExpToDrop(0);
                             blockBrokenResult(itemInHand, blockBroken, player);
@@ -54,25 +65,12 @@ public class MiningEvents implements Listener {
                             if (didPickaxeLoseDurability(itemInHand, player)) {
                                 event.setCancelled(true);
                             }
-                        } else {
-                            player.sendMessage("§cFailed to break the ore!");
-                            oreRespawnMechanic(blockBroken);
-                            event.setCancelled(true);
                         }
-                    } else {
-                        player.sendMessage("Your pickaxe tier is not great enough to break this ore!");
-                        event.setCancelled(true);
                     }
-                } else {
-                    player.sendMessage("You are not using a custom pickaxe!");
-                    event.setCancelled(true);//any custom item used to break a block different from pickaxes will not work
                 }
-            }else {
-                player.sendMessage("You can not break this block!");
-                event.setCancelled(true);
             }
         }
-    }//to add new custom items add a ''if'' after the last ''else'' and create the item there
+    }
 
     private boolean isCustomPickaxe(ItemStack itemHeld) {
         // Check if the item exists.

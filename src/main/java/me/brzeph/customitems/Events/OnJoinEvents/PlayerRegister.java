@@ -18,26 +18,21 @@ public class PlayerRegister implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event){
-        Player player = event.getPlayer();
-        NBTEntity nbtEntity = new NBTEntity(player);
-        NBTCompound playerData = getNbtCompound(nbtEntity);
-        nbtEntity.mergeCompound(playerData);
-        updatingPlayerMaxHealth(player, true);
-        setPlayerHPToXPBar(player);
-        if (PlayerHealthRegeneration.playerHealthRegenTickCount.get(player) != null) {
-            PlayerHealthRegeneration.playerHealthRegenTickCount.remove(player);
-        }
+        updatePlayer(event.getPlayer());
     }
     @EventHandler
     public void onPlayerRevive(PlayerRespawnEvent event){
-        Player player = event.getPlayer();
-        NBTEntity nbtEntity = new NBTEntity(player);
+        updatePlayer(event.getPlayer());
+    }
+
+    private void updatePlayer(Player player2) {
+        NBTEntity nbtEntity = new NBTEntity(player2);
         NBTCompound playerData = getNbtCompound(nbtEntity);
         nbtEntity.mergeCompound(playerData);
-        updatingPlayerMaxHealth(player, true);
-        setPlayerHPToXPBar(player);
-        if (PlayerHealthRegeneration.playerHealthRegenTickCount.get(player) != null) {
-            PlayerHealthRegeneration.playerHealthRegenTickCount.remove(player);
+        updatingPlayerMaxHealth(player2, true);
+        setPlayerHPToXPBar(player2);
+        if (PlayerHealthRegeneration.playerHealthRegenTickCount.get(player2) != null) {
+            PlayerHealthRegeneration.playerHealthRegenTickCount.remove(player2);
         }
     }
 

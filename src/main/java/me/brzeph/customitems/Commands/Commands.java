@@ -177,26 +177,22 @@ public class Commands implements CommandExecutor {
         if (cmd.getName().equalsIgnoreCase("nbt")) {
             ItemStack heldItem = new ItemStack(player.getInventory().getItemInMainHand());
 
-            if (heldItem != null) {
-                if (strings.length == 2) {
-                    String nbtKey = strings[0].replace("modifiers.", ""); // Remove the "modifiers." part
-                    int nbtValue = Integer.parseInt(strings[1]);
+            if (strings.length == 2) {
+                String nbtKey = strings[0].replace("modifiers.", ""); // Remove the "modifiers." part
+                int nbtValue = Integer.parseInt(strings[1]);
 
-                    NBTItem nbti = new NBTItem(heldItem);
-                    nbti.setInteger(nbtKey, nbtValue);
-                    player.getInventory().setItemInMainHand(nbti.getItem());
+                NBTItem nbti = new NBTItem(heldItem);
+                nbti.setInteger(nbtKey, nbtValue);
+                player.getInventory().setItemInMainHand(nbti.getItem());
 
-                    if (validMaterialsPickaxe.contains(player.getInventory().getItemInMainHand().getType())) {
-                    } else if (player.getInventory().getItemInMainHand().getType() == Material.SPAWNER) {
-                    } else {
-                        player.getInventory().setItemInMainHand(upgradingArmorLore(player.getInventory().getItemInMainHand()));
-                    }
-                    player.sendMessage("Successfully changed the NBT tag " + nbtKey + "'s value to " + nbtValue);
+                if (validMaterialsPickaxe.contains(player.getInventory().getItemInMainHand().getType())) {
+                } else if (player.getInventory().getItemInMainHand().getType() == Material.SPAWNER) {
                 } else {
-                    player.sendMessage("That is an invalid input, ask upper staff how to use this command");
+                    player.getInventory().setItemInMainHand(upgradingArmorLore(player.getInventory().getItemInMainHand()));
                 }
+                player.sendMessage("Successfully changed the NBT tag " + nbtKey + "'s value to " + nbtValue);
             } else {
-                player.sendMessage("You are not holding any items");
+                player.sendMessage("That is an invalid input, ask upper staff how to use this command");
             }
             return true;
         }
